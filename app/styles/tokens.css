@@ -1,0 +1,81 @@
+/*
+ * Paintbox color tokens — source: "Style Guide - Color".
+ *
+ * Layer 1 (primitives): raw brand colors, prefixed `paintbox-` so they never
+ *   collide with Tailwind's default palette. e.g. `bg-paintbox-neutral-100`.
+ * Layer 2 (semantic):   theme tokens named exactly as in the style guide.
+ *   Use these in components. e.g. `bg-surface`, `text-text-muted`.
+ *
+ * Light/dark: semantic tokens use `light-dark()`, which resolves against the
+ * element's `color-scheme`. The scheme follows the OS by default and can be
+ * forced with `data-theme="light" | "dark"` on <html> (see globals.css).
+ *
+ * `static` makes every variable always emitted, so `var(--color-*)` works in
+ * plain CSS even when no utility class references the token.
+ */
+
+/* ------------------------------------------------------------------------ */
+/* Primitives                                                                */
+/* ------------------------------------------------------------------------ */
+@theme static {
+  /* Neutral */
+  --color-paintbox-neutral-0: #ffffff;
+  --color-paintbox-neutral-50: #f7f8f6;
+  --color-paintbox-neutral-75: #eef0ee;
+  --color-paintbox-neutral-100: #ecefec;
+  --color-paintbox-neutral-200: #dde1dd;
+  --color-paintbox-neutral-400: #959ca4;
+  --color-paintbox-neutral-500: #7a828b;
+  --color-paintbox-neutral-550: #737b85;
+  --color-paintbox-neutral-600: #545b63;
+  --color-paintbox-neutral-750: #33373e;
+  --color-paintbox-neutral-800: #2a2e34;
+  --color-paintbox-neutral-850: #212429;
+  --color-paintbox-neutral-900: #1b1f24;
+  --color-paintbox-neutral-950: #17191c;
+
+  /* Violet */
+  --color-paintbox-violet-300: #b892f0;
+  --color-paintbox-violet-600: #6a2bc9;
+
+  /* Green */
+  --color-paintbox-green-400: #58b374;
+  --color-paintbox-green-700: #1e7a3e;
+
+  /* Transparent */
+  --color-paintbox-neutral-alpha-10: #1b1f241a; /* 27 31 36 / 0.102 */
+  --color-paintbox-neutral-alpha-13: #1b1f2421; /* 27 31 36 / 0.129 */
+  --color-paintbox-neutral-alpha-14: #1b1f2424; /* 27 31 36 / 0.14 */
+  --color-paintbox-neutral-alpha-15: #1b1f2426; /* 27 31 36 / 0.15 */
+  --color-paintbox-neutral-light-alpha-18: #eef0ee2e; /* 238 240 238 / 0.18 */
+  --color-paintbox-white-alpha-15: #ffffff26; /* 255 255 255 / 0.15 */
+  --color-paintbox-black-alpha-45: #00000073; /* 0 0 0 / 0.451 */
+  --color-paintbox-black-alpha-50: #00000080; /* 0 0 0 / 0.502 */
+}
+
+/* ------------------------------------------------------------------------ */
+/* Semantic theme tokens — light-dark(<light>, <dark>)                       */
+/* ------------------------------------------------------------------------ */
+@theme static {
+  --color-background: light-dark(var(--color-paintbox-neutral-50), var(--color-paintbox-neutral-950));
+  --color-surface: light-dark(var(--color-paintbox-neutral-0), var(--color-paintbox-neutral-850));
+  --color-surface-alt: light-dark(var(--color-paintbox-neutral-100), var(--color-paintbox-neutral-800));
+  --color-text: light-dark(var(--color-paintbox-neutral-900), var(--color-paintbox-neutral-75));
+  --color-text-muted: light-dark(var(--color-paintbox-neutral-600), var(--color-paintbox-neutral-400));
+  --color-divider: light-dark(var(--color-paintbox-neutral-200), var(--color-paintbox-neutral-750));
+  --color-border: light-dark(var(--color-paintbox-neutral-500), var(--color-paintbox-neutral-550));
+  --color-focus: light-dark(var(--color-paintbox-violet-600), var(--color-paintbox-violet-300));
+  --color-pending: light-dark(var(--color-paintbox-green-700), var(--color-paintbox-green-400));
+
+  /* Same value in both themes */
+  --color-on-swatch-light: var(--color-paintbox-neutral-0);
+  --color-on-swatch-dark: var(--color-paintbox-neutral-900);
+  --color-on-swatch-light-hover: var(--color-paintbox-white-alpha-15);
+  --color-on-swatch-dark-hover: var(--color-paintbox-neutral-alpha-15);
+
+  --color-swatch-edge: light-dark(var(--color-paintbox-neutral-alpha-14), var(--color-paintbox-neutral-light-alpha-18));
+
+  /* Shadow colors only; shadow geometry is not defined yet. */
+  --color-shadow-md: light-dark(var(--color-paintbox-neutral-alpha-10), var(--color-paintbox-black-alpha-45));
+  --color-shadow-lg: light-dark(var(--color-paintbox-neutral-alpha-13), var(--color-paintbox-black-alpha-50));
+}
