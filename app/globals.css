@@ -3,6 +3,7 @@
 @import "./styles/typography.css";
 @import "./styles/spacing.css";
 @import "./styles/radius.css";
+@import "./styles/effects.css";
 
 /*
  * `dark:` variant: matches when data-theme="dark" is set, or when the OS is

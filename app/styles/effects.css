@@ -1,0 +1,104 @@
+/*
+ * Paintbox effects — source: "Style Guide - Effects".
+ * Shadows and layout grids, prefixed `paintbox-` like the other tokens.
+ */
+
+/* ------------------------------------------------------------------------ */
+/* Shadows                                                                   */
+/* ------------------------------------------------------------------------ */
+/*
+ * Usage: shadow-paintbox-md, shadow-paintbox-lg, or var(--shadow-paintbox-md).
+ * Colors come from the theme tokens in tokens.css, so the shadows switch to
+ * their dark-theme colors automatically.
+ *
+ *   md: tooltips and the toast.
+ *   lg: the Copy palette menu and the Palette type popover.
+ */
+@theme static {
+  /* Drop shadow — X 0, Y 3px, blur 8px, spread 0 */
+  --shadow-paintbox-md: 0 3px 8px 0 var(--color-shadow-md);
+  /* Drop shadow — X 0, Y 10px, blur 24px, spread -2px */
+  --shadow-paintbox-lg: 0 10px 24px -2px var(--color-shadow-lg);
+}
+
+/* ------------------------------------------------------------------------ */
+/* Grids                                                                     */
+/* ------------------------------------------------------------------------ */
+/*
+ * The grid variables switch automatically per layout:
+ *
+ *   grid-mobile     < 768px          5 columns, margin 12, gutter 8
+ *   grid-tablet     768px – 1023px   5 columns, margin 32, gutter 12  (md:)
+ *   grid-desktop    >= 1024px        5 columns, margin 48, gutter 12  (lg:)
+ *                                    content max 1504px, centred
+ *   grid-landscape  phone on its side (landscape, height <= 480px,
+ *                   width < 1024px): colors column + 176px rail,
+ *                   margin 12, gutter 16  (paintbox-landscape:)
+ *
+ * Layout classes:
+ *   container-paintbox  page margins + centred 1504px max content width
+ *   grid-paintbox       the column grid (5 columns, or colors + rail)
+ *
+ * Variables, for custom layouts:
+ *   --grid-paintbox-columns, --grid-paintbox-margin, --grid-paintbox-gutter,
+ *   --grid-paintbox-template, --grid-paintbox-rail,
+ *   --grid-paintbox-content-max
+ *
+ * Margins and gutters reuse the spacing tokens, so they are in rem.
+ */
+
+/* Phone in landscape. Width cap keeps short desktop windows on the
+   desktop grid. Mirrors the media query in the :root block below. */
+@custom-variant paintbox-landscape (@media (orientation: landscape) and (height <= 30rem) and (width < 64rem));
+
+@layer base {
+  /* grid-mobile (default) */
+  :root {
+    --grid-paintbox-columns: 5;
+    --grid-paintbox-margin: var(--spacing-paintbox-150); /* 12px */
+    --grid-paintbox-gutter: var(--spacing-paintbox-100); /* 8px */
+    --grid-paintbox-rail: 11rem; /* 176px */
+    --grid-paintbox-content-max: 94rem; /* 1504px */
+    --grid-paintbox-template: repeat(var(--grid-paintbox-columns), minmax(0, 1fr));
+  }
+
+  /* grid-tablet */
+  @media (width >= 48rem) {
+    :root {
+      --grid-paintbox-margin: var(--spacing-paintbox-400); /* 32px */
+      --grid-paintbox-gutter: var(--spacing-paintbox-150); /* 12px */
+    }
+  }
+
+  /* grid-desktop */
+  @media (width >= 64rem) {
+    :root {
+      --grid-paintbox-margin: var(--spacing-paintbox-600); /* 48px */
+      --grid-paintbox-gutter: var(--spacing-paintbox-150); /* 12px */
+    }
+  }
+
+  /* grid-landscape — last, so it wins over grid-tablet on wide phones */
+  @media (orientation: landscape) and (height <= 30rem) and (width < 64rem) {
+    :root {
+      --grid-paintbox-margin: var(--spacing-paintbox-150); /* 12px */
+      --grid-paintbox-gutter: var(--spacing-paintbox-200); /* 16px */
+      --grid-paintbox-template: minmax(0, 1fr) var(--grid-paintbox-rail);
+    }
+  }
+}
+
+/* Page margins + centred max content width (1504px). */
+@utility container-paintbox {
+  width: 100%;
+  max-width: calc(var(--grid-paintbox-content-max) + 2 * var(--grid-paintbox-margin));
+  margin-inline: auto;
+  padding-inline: var(--grid-paintbox-margin);
+}
+
+/* Column grid: 5 columns, or colors column + rail in landscape. */
+@utility grid-paintbox {
+  display: grid;
+  grid-template-columns: var(--grid-paintbox-template);
+  column-gap: var(--grid-paintbox-gutter);
+}

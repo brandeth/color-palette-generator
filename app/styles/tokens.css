@@ -75,7 +75,7 @@
 
   --color-swatch-edge: light-dark(var(--color-paintbox-neutral-alpha-14), var(--color-paintbox-neutral-light-alpha-18));
 
-  /* Shadow colors only; shadow geometry is not defined yet. */
+  /* Shadow colors; the full shadows are in effects.css (shadow-paintbox-*). */
   --color-shadow-md: light-dark(var(--color-paintbox-neutral-alpha-10), var(--color-paintbox-black-alpha-45));
   --color-shadow-lg: light-dark(var(--color-paintbox-neutral-alpha-13), var(--color-paintbox-black-alpha-50));
 }
