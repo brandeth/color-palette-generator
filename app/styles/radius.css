@@ -1,0 +1,27 @@
+/*
+ * Paintbox corner radius tokens — source: "Style Guide - Radius".
+ *
+ * Named `paintbox-<px>` to match the brand prefix used elsewhere. They work
+ * with every Tailwind radius utility:
+ *   rounded-paintbox-12, rounded-t-paintbox-16, rounded-paintbox-full, ...
+ * and as CSS variables: var(--radius-paintbox-12).
+ *
+ * Values stay in px (not rem): focus ring radii are "control radius + ring
+ * offset", and both sides need the same unit for that math to hold.
+ */
+
+@theme static {
+  /* Control radii */
+  --radius-paintbox-0: 0px;
+  --radius-paintbox-8: 8px;
+  --radius-paintbox-12: 12px;
+  --radius-paintbox-16: 16px;
+  --radius-paintbox-20: 20px;
+  --radius-paintbox-full: 9999px;
+
+  /* Focus ring radii: radius of the surrounded control + the ring's offset */
+  --radius-paintbox-13: 13px;
+  --radius-paintbox-17: 17px;
+  --radius-paintbox-19: 19px;
+  --radius-paintbox-21: 21px;
+}
