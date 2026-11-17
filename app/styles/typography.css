@@ -1,0 +1,149 @@
+/*
+ * Paintbox typography — source: "Style Guide - Typography".
+ *
+ * Fonts are loaded with next/font in app/layout.tsx, which sets
+ * --font-funnel-sans / --font-funnel-display on <html>.
+ *
+ * Each `text-preset-*` class applies a whole preset from the guide: family,
+ * weight, size, line height, letter spacing and text case. Color is separate:
+ * combine with a color token, e.g. `text-preset-7 text-text-muted`.
+ *
+ * Sizes are in rem (respect the user's browser font size); letter spacing is
+ * in em, so "-2%" in the guide is -0.02em.
+ *
+ * Fluid presets (1-3) scale linearly between 375px and 1440px viewports:
+ *   size = intercept + slope * 100vw, clamped to the guide's min/max.
+ *   Preset 1: 28px @375 -> 42px @1440, max 44px (reached at ~1592px).
+ *   Preset 2: 24px @375 -> 32px @1440.
+ *   Preset 3: 24px @375 -> 28px @1440.
+ */
+
+@theme static {
+  --font-sans: var(--font-funnel-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-funnel-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Preset 1 — Funnel Sans Bold, 28–44px fluid, 105%, -2% */
+@utility text-preset-1 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 1.4419rem + 1.3146vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 2 — Funnel Sans Bold, 24–32px fluid, 115%, -2% */
+@utility text-preset-2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1.3239rem + 0.7512vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 3 — Funnel Display SemiBold, 24–28px fluid, 120%, 0, lowercase */
+@utility text-preset-3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 1.412rem + 0.3756vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
+/* Preset 4 — Funnel Display SemiBold, 28px, 100%, 2%, uppercase */
+@utility text-preset-4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Preset 5 — Funnel Display Bold, 22px, 100%, 2%, uppercase */
+@utility text-preset-5 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Preset 6 — Funnel Sans, 19px, 150% */
+@utility text-preset-6 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+@utility text-preset-6-bold {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+@utility text-preset-6-tight {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 7 — Funnel Sans, 16px, 155% (also the body default) */
+@utility text-preset-7 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+@utility text-preset-7-bold {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+/* Preset 8 — Funnel Sans, 14px, 145% */
+@utility text-preset-8 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+@utility text-preset-8-bold {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+/* Preset 9 — Funnel Sans Bold, 13px, 130% */
+@utility text-preset-9 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/* Preset 9 (Hex) — as Preset 9 without letter spacing */
+@utility text-preset-9-hex {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
