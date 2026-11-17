@@ -1,0 +1,27 @@
+/*
+ * Paintbox spacing tokens — source: "Style Guide - Spacing".
+ *
+ * Named `paintbox-<step>` to match the brand prefix used by the color
+ * primitives. They work with every Tailwind spacing utility:
+ *   p-paintbox-200, gap-paintbox-150, mt-paintbox-400, -mx-paintbox-100,
+ *   w-paintbox-1000, inset-paintbox-050, space-y-paintbox-300, ...
+ * and as CSS variables: var(--spacing-paintbox-200).
+ *
+ * Values are in rem (16px base) so spacing follows the user's font size.
+ * Tailwind's default numeric scale (p-4 etc.) still works alongside these.
+ */
+
+@theme static {
+  --spacing-paintbox-0: 0rem; /* 0px */
+  --spacing-paintbox-050: 0.25rem; /* 4px */
+  --spacing-paintbox-100: 0.5rem; /* 8px */
+  --spacing-paintbox-150: 0.75rem; /* 12px */
+  --spacing-paintbox-200: 1rem; /* 16px */
+  --spacing-paintbox-250: 1.25rem; /* 20px */
+  --spacing-paintbox-300: 1.5rem; /* 24px */
+  --spacing-paintbox-400: 2rem; /* 32px */
+  --spacing-paintbox-500: 2.5rem; /* 40px */
+  --spacing-paintbox-600: 3rem; /* 48px */
+  --spacing-paintbox-800: 4rem; /* 64px */
+  --spacing-paintbox-1000: 5rem; /* 80px */
+}
