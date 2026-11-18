@@ -8,7 +8,7 @@
 /* ------------------------------------------------------------------------ */
 /*
  * Usage: shadow-paintbox-md, shadow-paintbox-lg, or var(--shadow-paintbox-md).
- * Colors come from the theme tokens in tokens.css, so the shadows switch to
+ * Colors come from the theme tokens in color-tokens.css, so the shadows switch to
  * their dark-theme colors automatically.
  *
  *   md: tooltips and the toast.
