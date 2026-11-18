@@ -14,6 +14,7 @@ type TabProps = Omit<ComponentProps<"button">, "role"> & {
  * Default state: no border, transparent background, pill shape,
  * height 40, padding-inline 16, icon–label gap 8, Text Preset 8 (Bold),
  * text color token. Width hugs the content (105px for "Palette").
+ * Icon and label are optically centred (label trimmed to cap height).
  *
  * Hover: 2px border in the divider token (#DDE1DD light). Drawn as an
  * inset ring (box-shadow), not a real border, so the tab doesn't change
@@ -47,7 +48,11 @@ export function Tab({
       {...props}
     >
       {icon}
-      {children}
+      {/* Trim the label box to cap height → baseline so flex centering lines
+          the letters up with the icon. Funnel Sans has more space above caps
+          than below the baseline, which otherwise sits the text ~0.4px low.
+          Browsers without text-box support just keep the default box. */}
+      <span className="[text-box:trim-both_cap_alphabetic]">{children}</span>
     </button>
   );
 }
