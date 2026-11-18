@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
-import { IconPalette, IconPreview } from "../../components/icons";
+import { IconPalette } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { Code, Group, Meta, Section } from "./section";
+import { TabDemo } from "./tab-demo";
 
 /** A labelled demo cell. */
 function Demo({ label, note, children }: { label: string; note?: ReactNode; children: ReactNode }) {
@@ -32,12 +33,9 @@ export function ComponentsSection() {
           Preset 8 (Bold). Width hugs the label.
         </p>
 
-        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 lg:grid-cols-3">
-          <Demo label="Live" note="Hover to see the real hover state.">
-            <div role="tablist" aria-label="Live tab example" className="flex gap-paintbox-100">
-              <Tab icon={<IconPalette />}>Palette</Tab>
-              <Tab icon={<IconPreview />}>Preview</Tab>
-            </div>
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-4">
+          <Demo label="Live" note="Click to select, hover to see the hover state.">
+            <TabDemo />
           </Demo>
 
           <Demo label="Default" note="No border, no background.">
@@ -53,9 +51,17 @@ export function ComponentsSection() {
               </Tab>
             </div>
           </Demo>
+
+          <Demo label="Selected" note="surface-alt background, 2px inset ring in text-muted.">
+            <div role="tablist" aria-label="Selected state example">
+              <Tab icon={<IconPalette />} selected>
+                Palette
+              </Tab>
+            </div>
+          </Demo>
         </div>
 
-        <Meta>Selected and focus states: not built yet.</Meta>
+        <Meta>Focus state: not built yet.</Meta>
       </Group>
     </Section>
   );

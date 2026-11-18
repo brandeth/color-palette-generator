@@ -21,8 +21,12 @@ type TabProps = Omit<ComponentProps<"button">, "role"> & {
  * size or shift its neighbours. Tailwind only applies hover: on devices
  * that can hover, so taps on touch screens don't leave it stuck on.
  *
- * Selected / focus states come next; `selected` already sets
- * aria-selected so they can be styled with `aria-selected:` classes.
+ * Selected (`selected` → aria-selected="true"): surface-alt background
+ * (#ECEFEC light) and a 2px text-muted ring (#545B63 light), also inset.
+ * The hover ring only applies to unselected tabs, so hovering the
+ * selected tab doesn't swap its darker ring for the lighter one.
+ *
+ * Focus state comes next.
  */
 export function Tab({
   icon,
@@ -40,7 +44,8 @@ export function Tab({
         "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
         "rounded-paintbox-full px-paintbox-200",
         "text-preset-8-bold text-text",
-        "hover:inset-ring-2 hover:inset-ring-divider",
+        "hover:not-aria-selected:inset-ring-2 hover:not-aria-selected:inset-ring-divider",
+        "aria-selected:bg-surface-alt aria-selected:inset-ring-2 aria-selected:inset-ring-text-muted",
         className,
       ]
         .filter(Boolean)
