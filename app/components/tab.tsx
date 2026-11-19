@@ -26,7 +26,9 @@ type TabProps = Omit<ComponentProps<"button">, "role"> & {
  * The hover ring only applies to unselected tabs, so hovering the
  * selected tab doesn't swap its darker ring for the lighter one.
  *
- * Focus state comes next.
+ * Focus (keyboard only, :focus-visible): 3px outline in the focus token
+ * (#6A2BC9 light), 2px outside the tab. Outlines follow the pill shape
+ * and don't take up space, so nothing shifts. Applies on top of any state.
  */
 export function Tab({
   icon,
@@ -46,6 +48,7 @@ export function Tab({
         "text-preset-8-bold text-text",
         "hover:not-aria-selected:inset-ring-2 hover:not-aria-selected:inset-ring-divider",
         "aria-selected:bg-surface-alt aria-selected:inset-ring-2 aria-selected:inset-ring-text-muted",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
       ]
         .filter(Boolean)
