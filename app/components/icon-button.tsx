@@ -23,7 +23,12 @@ type IconButtonProps = Omit<ComponentProps<"button">, "children" | "aria-label" 
  * square with a full radius, so the fill is a circle (same as 50%).
  * Only on enabled buttons, and only on devices that can hover.
  *
- * Pressed-on, disabled and focus states come next.
+ * Disabled (native `disabled`): the icon drops to 40% opacity and the
+ * button shows the normal arrow cursor. Only the icon fades, not the
+ * button, so a background added by a later state isn't faded with it.
+ * No hover fill (see above). Disabled buttons can't be focused or clicked.
+ *
+ * Pressed-on and focus states come next.
  */
 export function IconButton({ icon, label, pressed, className, ...props }: IconButtonProps) {
   return (
@@ -35,6 +40,7 @@ export function IconButton({ icon, label, pressed, className, ...props }: IconBu
         "inline-flex size-paintbox-500 shrink-0 cursor-pointer items-center justify-center",
         "rounded-paintbox-full text-text",
         "hover:enabled:bg-surface-alt",
+        "disabled:cursor-default disabled:*:opacity-40",
         className,
       ]
         .filter(Boolean)
