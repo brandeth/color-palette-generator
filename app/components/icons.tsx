@@ -40,3 +40,32 @@ export function IconPreview(props: IconProps) {
     </svg>
   );
 }
+
+/** app/assets/icon-undo.svg */
+export function IconUndo(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M7.5 11.667 3.333 7.5 7.5 3.333" />
+      <path d="M3.333 7.5h8.75a4.583 4.583 0 1 1 0 9.167H9.166" />
+    </svg>
+  );
+}
+
+/** app/assets/icon-redo.svg */
+export function IconRedo(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12.5 11.667 16.667 7.5 12.5 3.333" />
+      <path d="M16.666 7.5h-8.75a4.583 4.583 0 0 0 0 9.167h2.917" />
+    </svg>
+  );
+}
+
+/** app/assets/icon-moon.svg */
+export function IconMoon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M16.666 12.083a6.667 6.667 0 0 1-8.75-8.75 6.667 6.667 0 1 0 8.75 8.75" />
+    </svg>
+  );
+}
