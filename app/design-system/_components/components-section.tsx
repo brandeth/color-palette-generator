@@ -33,8 +33,8 @@ export function ComponentsSection() {
           Preset 8 (Bold). Width hugs the label.
         </p>
 
-        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-4">
-          <Demo label="Live" note="Click to select, hover to see the hover state.">
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Live" note="Click to select, hover for the hover state, press Tab for the focus ring.">
             <TabDemo />
           </Demo>
 
@@ -59,9 +59,15 @@ export function ComponentsSection() {
               </Tab>
             </div>
           </Demo>
-        </div>
 
-        <Meta>Focus state: not built yet.</Meta>
+          <Demo label="Focus" note="Keyboard only. 3px outline in focus, 2px offset. Shown forced on here.">
+            <div role="tablist" aria-label="Focus state example">
+              <Tab icon={<IconPalette />} selected className="outline-3 outline-offset-2 outline-focus">
+                Palette
+              </Tab>
+            </div>
+          </Demo>
+        </div>
       </Group>
     </Section>
   );
