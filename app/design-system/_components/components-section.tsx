@@ -2,6 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { IconButton } from "../../components/icon-button";
 import { IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
+import { IconButtonToggleDemo } from "./icon-button-demo";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
 
@@ -89,6 +90,12 @@ export function ComponentsSection() {
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Live" note="Click the moon to toggle pressed on/off, hover for the hover state, press Tab for the focus ring.">
+            <IconButton icon={<IconUndo />} label="Undo (live example)" />
+            <IconButton icon={<IconRedo />} label="Redo (live example)" />
+            <IconButtonToggleDemo />
+          </Demo>
+
           <Demo label="Default (pressed off)" note="No border, no background, text color icon.">
             <IconButton icon={<IconUndo />} label="Undo" />
             <IconButton icon={<IconRedo />} label="Redo" />
@@ -112,9 +119,29 @@ export function ComponentsSection() {
             <IconButton icon={<IconRedo />} label="Redo (focus example)" className="outline-3 outline-offset-2 outline-focus" />
             <IconButton icon={<IconMoon />} label="Dark mode (focus example)" pressed={false} className="outline-3 outline-offset-2 outline-focus" />
           </Demo>
+
+          <Demo label="Pressed on" note="surface-alt background, 2px inset ring in text-muted. Hovering it looks the same.">
+            <IconButton icon={<IconMoon />} label="Dark mode (pressed example)" pressed />
+          </Demo>
+
+          <Demo label="Disabled (pressed on)" note="Background and ring stay; the icon drops to 40%.">
+            <IconButton icon={<IconMoon />} label="Dark mode (disabled pressed example)" pressed disabled />
+          </Demo>
+
+          <Demo label="Focus (pressed on)" note="Focus ring outside the pressed ring, 2px gap between them. Shown forced on here.">
+            <IconButton
+              icon={<IconMoon />}
+              label="Dark mode (focus pressed example)"
+              pressed
+              className="outline-3 outline-offset-2 outline-focus"
+            />
+          </Demo>
         </div>
 
-        <Meta>Pressed on state: not built yet.</Meta>
+        <Meta>
+          Only toggles (such as the theme switch) use <Code>pressed</Code>. Undo and Redo are plain
+          actions, so they never show the pressed look.
+        </Meta>
       </Group>
     </Section>
   );

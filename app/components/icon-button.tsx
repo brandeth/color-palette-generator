@@ -33,7 +33,11 @@ type IconButtonProps = Omit<ComponentProps<"button">, "children" | "aria-label" 
  * follows the full radius, so it's a circle, and takes no space, so
  * nothing shifts. Applies on top of hover and pressed.
  *
- * Pressed-on state comes next.
+ * Pressed on (`pressed` → aria-pressed="true"): surface-alt background
+ * (#ECEFEC light) and a 2px text-muted ring (#545B63 light), drawn inset
+ * so the button stays 40×40. Same look as the selected Tab. Hovering a
+ * pressed button looks the same (its hover fill is the same color).
+ * Disabled + pressed keeps the background and ring; only the icon fades.
  */
 export function IconButton({ icon, label, pressed, className, ...props }: IconButtonProps) {
   return (
@@ -45,6 +49,7 @@ export function IconButton({ icon, label, pressed, className, ...props }: IconBu
         "inline-flex size-paintbox-500 shrink-0 cursor-pointer items-center justify-center",
         "rounded-paintbox-full text-text",
         "hover:enabled:bg-surface-alt",
+        "aria-pressed:bg-surface-alt aria-pressed:inset-ring-2 aria-pressed:inset-ring-text-muted",
         "disabled:cursor-default disabled:*:opacity-40",
         "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
