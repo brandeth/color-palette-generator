@@ -1,6 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
+import { Button } from "../../components/button";
 import { IconButton } from "../../components/icon-button";
-import { IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
+import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { IconButtonToggleDemo } from "./icon-button-demo";
 import { Code, Group, Meta, Section } from "./section";
@@ -142,6 +143,21 @@ export function ComponentsSection() {
           Only toggles (such as the theme switch) use <Code>pressed</Code>. Undo and Redo are plain
           actions, so they never show the pressed look.
         </Meta>
+      </Group>
+
+      <Group title="Button">
+        <p className="text-preset-8 text-text-muted">
+          Labelled header button: icon + text. Height 40, padding-inline 12, gap 8, pill shape, Text
+          Preset 8 (Bold). Width hugs the label: &quot;Copy palette&quot; is 133px wide.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default" note="No border, no background, text color icon and label.">
+            <Button icon={<IconCopyAll />}>Copy palette</Button>
+          </Demo>
+        </div>
+
+        <Meta>Hover, pressed, focus and disabled states: not built yet.</Meta>
       </Group>
     </Section>
   );
