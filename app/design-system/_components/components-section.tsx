@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
-import { IconPalette } from "../../components/icons";
+import { IconButton } from "../../components/icon-button";
+import { IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
@@ -79,6 +80,23 @@ export function ComponentsSection() {
             <StatePair state="Focus" selected className="outline-3 outline-offset-2 outline-focus" />
           </Demo>
         </div>
+      </Group>
+
+      <Group title="Icon button">
+        <p className="text-preset-8 text-text-muted">
+          Icon-only header button: 40×40 circle, 20px icon. Always pass a <Code>label</Code> (its
+          accessible name). Pass <Code>pressed</Code> only for toggles such as the theme switch.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default (pressed off)" note="No border, no background, text color icon.">
+            <IconButton icon={<IconUndo />} label="Undo" />
+            <IconButton icon={<IconRedo />} label="Redo" />
+            <IconButton icon={<IconMoon />} label="Dark mode" pressed={false} />
+          </Demo>
+        </div>
+
+        <Meta>Hover, pressed on, disabled and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );
