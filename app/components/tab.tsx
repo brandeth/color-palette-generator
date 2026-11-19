@@ -5,7 +5,14 @@ type TabProps = Omit<ComponentProps<"button">, "role"> & {
   icon?: ReactNode;
   /** Whether this tab's panel is the one showing. */
   selected?: boolean;
+  /** `compact` uses 12px side padding instead of 16 (97px wide for "Palette"). */
+  size?: "default" | "compact";
 };
+
+const paddingBySize = {
+  default: "px-paintbox-200", // 16px → 105px for "Palette"
+  compact: "px-paintbox-150", // 12px → 97px for "Palette"
+} as const;
 
 /*
  * One tab in the Palette / Preview switcher (WAI-ARIA tabs pattern).
@@ -15,6 +22,9 @@ type TabProps = Omit<ComponentProps<"button">, "role"> & {
  * height 40, padding-inline 16, icon–label gap 8, Text Preset 8 (Bold),
  * text color token. Width hugs the content (105px for "Palette").
  * Icon and label are optically centred (label trimmed to cap height).
+ *
+ * Compact size (`size="compact"`): same height, gap, type and states;
+ * padding-inline 12 instead of 16, so "Palette" is 97px wide.
  *
  * Hover: 2px border in the divider token (#DDE1DD light). Drawn as an
  * inset ring (box-shadow), not a real border, so the tab doesn't change
@@ -33,6 +43,7 @@ type TabProps = Omit<ComponentProps<"button">, "role"> & {
 export function Tab({
   icon,
   selected = false,
+  size = "default",
   className,
   children,
   ...props
@@ -44,7 +55,8 @@ export function Tab({
       aria-selected={selected}
       className={[
         "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
-        "rounded-paintbox-full px-paintbox-200",
+        "rounded-paintbox-full",
+        paddingBySize[size],
         "text-preset-8-bold text-text",
         "hover:not-aria-selected:inset-ring-2 hover:not-aria-selected:inset-ring-divider",
         "aria-selected:bg-surface-alt aria-selected:inset-ring-2 aria-selected:inset-ring-text-muted",
