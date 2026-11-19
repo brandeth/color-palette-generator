@@ -100,9 +100,15 @@ export function ComponentsSection() {
             <IconButton icon={<IconRedo />} label="Redo (hover example)" className="bg-surface-alt" />
             <IconButton icon={<IconMoon />} label="Dark mode (hover example)" pressed={false} className="bg-surface-alt" />
           </Demo>
+
+          <Demo label="Disabled (pressed off)" note="Icon at 40% opacity, normal cursor, no hover fill.">
+            <IconButton icon={<IconUndo />} label="Undo" disabled />
+            <IconButton icon={<IconRedo />} label="Redo" disabled />
+            <IconButton icon={<IconMoon />} label="Dark mode" pressed={false} disabled />
+          </Demo>
         </div>
 
-        <Meta>Pressed on, disabled and focus states: not built yet.</Meta>
+        <Meta>Pressed on and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );
