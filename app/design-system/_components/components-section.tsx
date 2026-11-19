@@ -155,9 +155,15 @@ export function ComponentsSection() {
           <Demo label="Default" note="No border, no background, text color icon and label.">
             <Button icon={<IconCopyAll />}>Copy palette</Button>
           </Demo>
+
+          <Demo label="Hover" note="surface-alt background (#ECEFEC light), no border. Shown forced on here; hover the Default one for the real thing.">
+            <Button icon={<IconCopyAll />} className="bg-surface-alt">
+              Copy palette
+            </Button>
+          </Demo>
         </div>
 
-        <Meta>Hover, pressed, focus and disabled states: not built yet.</Meta>
+        <Meta>Pressed, focus and disabled states: not built yet.</Meta>
       </Group>
     </Section>
   );
