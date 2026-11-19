@@ -3,6 +3,7 @@ import { Button } from "../../components/button";
 import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
+import { ButtonMenuDemo } from "./button-demo";
 import { IconButtonToggleDemo } from "./icon-button-demo";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
@@ -151,7 +152,21 @@ export function ComponentsSection() {
           Preset 8 (Bold). Width hugs the label: &quot;Copy palette&quot; is 133px wide.
         </p>
 
+        <ul className="flex flex-col gap-paintbox-050 text-preset-8 text-text-muted">
+          <li>
+            Opens a menu (Copy palette): pass <Code>aria-haspopup=&quot;menu&quot;</Code> and{" "}
+            <Code>aria-expanded</Code>. Expanded shows the pressed-on look.
+          </li>
+          <li>
+            Toggle: pass <Code>pressed</Code> (sets <Code>aria-pressed</Code>). Same look.
+          </li>
+        </ul>
+
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Live" note="Click to open/close (pressed on/off), hover for the hover state. There's no real menu yet.">
+            <ButtonMenuDemo />
+          </Demo>
+
           <Demo label="Default" note="No border, no background, text color icon and label.">
             <Button icon={<IconCopyAll />}>Copy palette</Button>
           </Demo>
@@ -161,9 +176,15 @@ export function ComponentsSection() {
               Copy palette
             </Button>
           </Demo>
+
+          <Demo label="Pressed on" note="Menu open (aria-expanded). surface-alt background, 2px inset ring in text-muted. Hovering it looks the same.">
+            <Button icon={<IconCopyAll />} aria-haspopup="menu" aria-expanded>
+              Copy palette
+            </Button>
+          </Demo>
         </div>
 
-        <Meta>Pressed, focus and disabled states: not built yet.</Meta>
+        <Meta>Focus and disabled states: not built yet.</Meta>
       </Group>
     </Section>
   );

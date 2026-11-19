@@ -1,8 +1,16 @@
 import type { ComponentProps, ReactNode } from "react";
 
-type ButtonProps = ComponentProps<"button"> & {
+type ButtonProps = Omit<ComponentProps<"button">, "aria-pressed"> & {
   /** Leading icon, e.g. <IconCopyAll />. Rendered decoratively. */
   icon?: ReactNode;
+  /**
+   * Leave undefined for a plain action button.
+   * Pass a boolean to make it a toggle: sets aria-pressed.
+   * For a button that opens a menu (e.g. "Copy palette"), don't use this:
+   * pass aria-haspopup="menu" and aria-expanded={open} instead. Both give
+   * the same pressed-on look.
+   */
+  pressed?: boolean;
 };
 
 /*
@@ -18,17 +26,25 @@ type ButtonProps = ComponentProps<"button"> & {
  * filling the pill. Same as IconButton. Only on enabled buttons, and only
  * on devices that can hover.
  *
- * Pressed, focus and disabled states come next.
+ * Pressed on (aria-pressed="true", or aria-expanded="true" while its menu
+ * is open): surface-alt background and a 2px text-muted ring (#545B63
+ * light), drawn inset so the size doesn't change. Same as IconButton and
+ * the selected Tab. Hovering it looks the same (same fill color).
+ *
+ * Focus and disabled states come next.
  */
-export function Button({ icon, className, children, ...props }: ButtonProps) {
+export function Button({ icon, pressed, className, children, ...props }: ButtonProps) {
   return (
     <button
       type="button"
+      aria-pressed={pressed}
       className={[
         "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
         "rounded-paintbox-full px-paintbox-150",
         "text-preset-8-bold text-text",
         "hover:enabled:bg-surface-alt",
+        "aria-pressed:bg-surface-alt aria-pressed:inset-ring-2 aria-pressed:inset-ring-text-muted",
+        "aria-expanded:bg-surface-alt aria-expanded:inset-ring-2 aria-expanded:inset-ring-text-muted",
         className,
       ]
         .filter(Boolean)
