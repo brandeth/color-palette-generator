@@ -18,7 +18,12 @@ type IconButtonProps = Omit<ComponentProps<"button">, "children" | "aria-label" 
  * Default state (pressed off): 40×40 circle, no border, transparent
  * background, 20px icon centred in the text color token.
  *
- * Hover, pressed-on, disabled and focus states come next.
+ * Hover: surface-alt background (paintbox-neutral-100, #ECEFEC, in light;
+ * neutral-800 in dark so the light icon stays visible). The button is a
+ * square with a full radius, so the fill is a circle (same as 50%).
+ * Only on enabled buttons, and only on devices that can hover.
+ *
+ * Pressed-on, disabled and focus states come next.
  */
 export function IconButton({ icon, label, pressed, className, ...props }: IconButtonProps) {
   return (
@@ -29,6 +34,7 @@ export function IconButton({ icon, label, pressed, className, ...props }: IconBu
       className={[
         "inline-flex size-paintbox-500 shrink-0 cursor-pointer items-center justify-center",
         "rounded-paintbox-full text-text",
+        "hover:enabled:bg-surface-alt",
         className,
       ]
         .filter(Boolean)

@@ -94,9 +94,15 @@ export function ComponentsSection() {
             <IconButton icon={<IconRedo />} label="Redo" />
             <IconButton icon={<IconMoon />} label="Dark mode" pressed={false} />
           </Demo>
+
+          <Demo label="Hover" note="surface-alt background (#ECEFEC light). Shown forced on here; hover the Default ones for the real thing.">
+            <IconButton icon={<IconUndo />} label="Undo (hover example)" className="bg-surface-alt" />
+            <IconButton icon={<IconRedo />} label="Redo (hover example)" className="bg-surface-alt" />
+            <IconButton icon={<IconMoon />} label="Dark mode (hover example)" pressed={false} className="bg-surface-alt" />
+          </Demo>
         </div>
 
-        <Meta>Hover, pressed on, disabled and focus states: not built yet.</Meta>
+        <Meta>Pressed on, disabled and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );
