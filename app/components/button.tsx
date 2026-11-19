@@ -14,7 +14,11 @@ type ButtonProps = ComponentProps<"button"> & {
  * (133px for "Copy palette"). Icon and label are optically centred
  * (label trimmed to cap height), same as Tab.
  *
- * Hover, pressed, focus and disabled states come next.
+ * Hover: surface-alt background (#ECEFEC light, #2A2E34 dark), no border,
+ * filling the pill. Same as IconButton. Only on enabled buttons, and only
+ * on devices that can hover.
+ *
+ * Pressed, focus and disabled states come next.
  */
 export function Button({ icon, className, children, ...props }: ButtonProps) {
   return (
@@ -24,6 +28,7 @@ export function Button({ icon, className, children, ...props }: ButtonProps) {
         "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
         "rounded-paintbox-full px-paintbox-150",
         "text-preset-8-bold text-text",
+        "hover:enabled:bg-surface-alt",
         className,
       ]
         .filter(Boolean)
