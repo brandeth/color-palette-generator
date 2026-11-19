@@ -106,9 +106,15 @@ export function ComponentsSection() {
             <IconButton icon={<IconRedo />} label="Redo" disabled />
             <IconButton icon={<IconMoon />} label="Dark mode" pressed={false} disabled />
           </Demo>
+
+          <Demo label="Focus (pressed off)" note="Keyboard only. 3px outline in focus, 2px offset. Shown forced on here; press Tab on the Default ones for the real thing.">
+            <IconButton icon={<IconUndo />} label="Undo (focus example)" className="outline-3 outline-offset-2 outline-focus" />
+            <IconButton icon={<IconRedo />} label="Redo (focus example)" className="outline-3 outline-offset-2 outline-focus" />
+            <IconButton icon={<IconMoon />} label="Dark mode (focus example)" pressed={false} className="outline-3 outline-offset-2 outline-focus" />
+          </Demo>
         </div>
 
-        <Meta>Pressed on and focus states: not built yet.</Meta>
+        <Meta>Pressed on state: not built yet.</Meta>
       </Group>
     </Section>
   );
