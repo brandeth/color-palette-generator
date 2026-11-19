@@ -28,7 +28,12 @@ type IconButtonProps = Omit<ComponentProps<"button">, "children" | "aria-label" 
  * button, so a background added by a later state isn't faded with it.
  * No hover fill (see above). Disabled buttons can't be focused or clicked.
  *
- * Pressed-on and focus states come next.
+ * Focus (keyboard only, :focus-visible): 3px outline in the focus token
+ * (#6A2BC9 light), 2px outside the button, same as Tab. The outline
+ * follows the full radius, so it's a circle, and takes no space, so
+ * nothing shifts. Applies on top of hover and pressed.
+ *
+ * Pressed-on state comes next.
  */
 export function IconButton({ icon, label, pressed, className, ...props }: IconButtonProps) {
   return (
@@ -41,6 +46,7 @@ export function IconButton({ icon, label, pressed, className, ...props }: IconBu
         "rounded-paintbox-full text-text",
         "hover:enabled:bg-surface-alt",
         "disabled:cursor-default disabled:*:opacity-40",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
       ]
         .filter(Boolean)
