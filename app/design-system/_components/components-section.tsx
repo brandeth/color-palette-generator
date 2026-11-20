@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Button } from "../../components/button";
+import { CopyOption } from "../../components/copy-option";
 import { GenerateButton } from "../../components/generate-button";
 import { IconModeAnalogous } from "../../components/mode-icons";
 import { PaletteTypeButton } from "../../components/palette-type-button";
@@ -396,6 +397,21 @@ export function ComponentsSection() {
           <PaletteTypeGroupDemo variant="row" size="compact" />
         </Demo>
 
+      </Group>
+
+      <Group title="Copy option">
+        <p className="text-preset-8 text-text-muted">
+          One format in the &quot;Copy palette&quot; menu: the format&apos;s name (Text Preset 7 Bold) above a
+          sample of the output (Text Preset 8, text-muted). 256px wide, padding 8 / 12, radius 12, 61px tall.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default" note="No border, no background.">
+            <CopyOption preview="--color-1: #EEE8DF;">CSS variables</CopyOption>
+          </Demo>
+        </div>
+
+        <Meta>Hover, selected and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );
