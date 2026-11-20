@@ -14,6 +14,11 @@ type PaletteTypeButtonProps = Omit<ComponentProps<"button">, "role" | "aria-chec
   variant?: "labelled" | "cell" | "row";
   /** Row variant only: a short line under the title. */
   description?: ReactNode;
+  /**
+   * Row variant only. "compact" uses 4px top/bottom padding instead of 8,
+   * so the row is 53px tall instead of 61. Same name as Tab's size prop.
+   */
+  size?: "default" | "compact";
 };
 
 // Icon above the label, centred.
@@ -25,7 +30,12 @@ const variantClasses = {
   // The mode icons are drawn at 32px; cell and row shrink them to 24.
   cell: `${stacked} w-[8.625rem] [&>svg]:size-paintbox-300`,
   // :first-child so only the mode icon shrinks, not the checkmark.
-  row: "flex w-full items-center gap-paintbox-150 rounded-paintbox-12 px-paintbox-200 py-paintbox-100 text-left [&>svg:first-child]:size-paintbox-300",
+  row: "flex w-full items-center gap-paintbox-150 rounded-paintbox-12 px-paintbox-200 text-left [&>svg:first-child]:size-paintbox-300",
+};
+
+const rowPaddingBySize = {
+  default: "py-paintbox-100", // 8px → 61px tall
+  compact: "py-paintbox-050", // 4px → 53px tall
 };
 
 /*
@@ -72,12 +82,17 @@ const variantClasses = {
  * line rather than the middle of the row. The check's space is kept
  * when it's hidden, so selecting doesn't re-wrap the description. It's
  * decorative; aria-checked already says the option is selected.
+ *
+ * Compact row (size="compact"): 4px top/bottom padding instead of 8, so
+ * 4 + 24.8 + 20.3 + 4 = 53px tall. Everything else is the same; the
+ * checkmark still lines up with the title.
  */
 export function PaletteTypeButton({
   icon,
   selected = false,
   variant = "labelled",
   description,
+  size = "default",
   className,
   children,
   ...props
@@ -90,6 +105,7 @@ export function PaletteTypeButton({
       className={[
         "shrink-0 cursor-pointer text-text",
         variantClasses[variant],
+        variant === "row" ? rowPaddingBySize[size] : "",
         // not-aria-checked: so hover doesn't swap the selected border for the lighter one.
         "hover:enabled:not-aria-checked:inset-ring-2 hover:enabled:not-aria-checked:inset-ring-divider",
         "aria-checked:bg-surface-alt aria-checked:inset-ring-2 aria-checked:inset-ring-text-muted",
