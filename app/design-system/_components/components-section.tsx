@@ -333,9 +333,22 @@ export function ComponentsSection() {
               </PaletteTypeButton>
             </div>
           </Demo>
+
+          <Demo label="Hover (row)" note="Same as the other variants: 2px inset ring in divider, no background, following the 12px corners. Shown forced on here; hover the default row for the real thing.">
+            <div role="radiogroup" aria-label="Row hover state example" className="w-[20.9375rem] max-w-full">
+              <PaletteTypeButton
+                variant="row"
+                icon={<IconModeAnalogous />}
+                description="Calm colours that sit side by side"
+                className="inset-ring-2 inset-ring-divider"
+              >
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
         </div>
 
-        <Meta>Row hover, selected (with checkmark) and focus states: not built yet.</Meta>
+        <Meta>Row selected (with checkmark) and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );
