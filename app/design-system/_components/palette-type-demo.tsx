@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type ComponentProps, type KeyboardEvent } from "react";
 import {
   IconModeAnalogous,
   IconModeComplementary,
@@ -24,7 +24,11 @@ const types = [
  * selected option and the arrow keys move the selection (wrapping round),
  * as in a native radio group.
  */
-export function PaletteTypeGroupDemo() {
+export function PaletteTypeGroupDemo({
+  variant = "labelled",
+}: {
+  variant?: ComponentProps<typeof PaletteTypeButton>["variant"];
+}) {
   const [selected, setSelected] = useState(1);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -38,13 +42,14 @@ export function PaletteTypeGroupDemo() {
   }
 
   return (
-    <div role="radiogroup" aria-label="Palette type (live example)" onKeyDown={onKeyDown} className="flex flex-wrap gap-paintbox-100">
+    <div role="radiogroup" aria-label={variant === "cell" ? "Palette type, cells (live example)" : "Palette type (live example)"} onKeyDown={onKeyDown} className="flex flex-wrap gap-paintbox-100">
       {types.map((type, i) => (
         <PaletteTypeButton
           key={type.name}
           ref={(el) => {
             refs.current[i] = el;
           }}
+          variant={variant}
           icon={type.icon}
           selected={i === selected}
           tabIndex={i === selected ? 0 : -1}
