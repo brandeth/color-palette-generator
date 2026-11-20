@@ -273,13 +273,31 @@ export function ComponentsSection() {
               </PaletteTypeButton>
             </div>
           </Demo>
+
+          <Demo label="Focus (labelled)" note="3px outline in focus, 2px outside, on the selected option. Shown forced on here; Tab into the live group below for the real thing.">
+            <div role="radiogroup" aria-label="Focus state example">
+              <PaletteTypeButton icon={<IconModeAnalogous />} selected className="outline-3 outline-offset-2 outline-focus">
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
         </div>
 
         <Demo label="All palette types (live)" note="A working radio group: click to select, or Tab in and use the arrow keys.">
           <PaletteTypeGroupDemo />
         </Demo>
 
-        <Meta>Focus state and the other variants: not built yet.</Meta>
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default (cell)" note="variant=&quot;cell&quot;: fixed 138px wide, 24px icon, 138×61. Hover, selected and focus work the same as labelled.">
+            <div role="radiogroup" aria-label="Cell default state example">
+              <PaletteTypeButton variant="cell" icon={<IconModeAnalogous />}>
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
+        </div>
+
+        <Meta>The row variant: not built yet.</Meta>
       </Group>
     </Section>
   );
