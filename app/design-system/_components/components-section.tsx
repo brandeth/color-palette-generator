@@ -1,19 +1,14 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Button } from "../../components/button";
 import { GenerateButton } from "../../components/generate-button";
-import {
-  IconModeAnalogous,
-  IconModeComplementary,
-  IconModeMonochrome,
-  IconModeRandom,
-  IconModeTriadic,
-} from "../../components/mode-icons";
+import { IconModeAnalogous } from "../../components/mode-icons";
 import { PaletteTypeButton } from "../../components/palette-type-button";
 import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { ButtonMenuDemo } from "./button-demo";
 import { IconButtonToggleDemo } from "./icon-button-demo";
+import { PaletteTypeGroupDemo } from "./palette-type-demo";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
 
@@ -258,25 +253,33 @@ export function ComponentsSection() {
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
           <Demo label="Default (labelled)" note="No border, no background.">
-            <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
+            <div role="radiogroup" aria-label="Default state example">
+              <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
+            </div>
           </Demo>
 
           <Demo label="Hover (labelled)" note="2px inset ring in divider, no background. Shown forced on here; hover the others for the real thing.">
-            <PaletteTypeButton icon={<IconModeAnalogous />} className="inset-ring-2 inset-ring-divider">
-              Analogous
-            </PaletteTypeButton>
+            <div role="radiogroup" aria-label="Hover state example">
+              <PaletteTypeButton icon={<IconModeAnalogous />} className="inset-ring-2 inset-ring-divider">
+                Analogous
+              </PaletteTypeButton>
+            </div>
           </Demo>
 
-          <Demo label="All palette types" note="Default state, every mode icon.">
-            <PaletteTypeButton icon={<IconModeRandom />}>Random</PaletteTypeButton>
-            <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
-            <PaletteTypeButton icon={<IconModeComplementary />}>Complementary</PaletteTypeButton>
-            <PaletteTypeButton icon={<IconModeTriadic />}>Triadic</PaletteTypeButton>
-            <PaletteTypeButton icon={<IconModeMonochrome />}>Monochrome</PaletteTypeButton>
+          <Demo label="Selected (labelled)" note="surface-alt background, 2px inset ring in text-muted. aria-checked=&quot;true&quot;; hover doesn't change it.">
+            <div role="radiogroup" aria-label="Selected state example">
+              <PaletteTypeButton icon={<IconModeAnalogous />} selected>
+                Analogous
+              </PaletteTypeButton>
+            </div>
           </Demo>
         </div>
 
-        <Meta>Selected and focus states, and the other variants: not built yet.</Meta>
+        <Demo label="All palette types (live)" note="A working radio group: click to select, or Tab in and use the arrow keys.">
+          <PaletteTypeGroupDemo />
+        </Demo>
+
+        <Meta>Focus state and the other variants: not built yet.</Meta>
       </Group>
     </Section>
   );

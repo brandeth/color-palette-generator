@@ -1,8 +1,10 @@
 import type { ComponentProps, ReactNode } from "react";
 
-type PaletteTypeButtonProps = ComponentProps<"button"> & {
+type PaletteTypeButtonProps = Omit<ComponentProps<"button">, "role" | "aria-checked"> & {
   /** The mode icon, e.g. <IconModeAnalogous />. 32×32, decorative. */
   icon: ReactNode;
+  /** Whether this is the chosen palette type. Sets aria-checked. */
+  selected?: boolean;
 };
 
 /*
@@ -17,19 +19,32 @@ type PaletteTypeButtonProps = ComponentProps<"button"> & {
  * Hover: 2px border in the divider token (#DDE1DD light), background
  * stays transparent. Same as Tab. Drawn as an inset ring, so the button
  * doesn't change size. Only on enabled buttons, and only on devices that
- * can hover.
+ * can hover. Skipped on the selected option, so it keeps its own border.
  *
- * Selected and focus states, and the other variants, come next.
+ * Selected: surface-alt background (#ECEFEC light) with a 2px border in
+ * text-muted (#545B63 light), same as a pressed icon button. Also an
+ * inset ring, so the size doesn't change.
+ *
+ * Only one palette type can be picked, so each option is a radio
+ * (role="radio" + aria-checked) and the picker that holds them should be
+ * a role="radiogroup" with a label. The group handles the arrow keys and
+ * makes only the selected option tabbable (tabIndex 0, the rest -1).
+ *
+ * Focus state and the other variants come next.
  */
-export function PaletteTypeButton({ icon, className, children, ...props }: PaletteTypeButtonProps) {
+export function PaletteTypeButton({ icon, selected = false, className, children, ...props }: PaletteTypeButtonProps) {
   return (
     <button
       type="button"
+      role="radio"
+      aria-checked={selected}
       className={[
         "inline-flex shrink-0 cursor-pointer flex-col items-center gap-paintbox-050 whitespace-nowrap",
         "rounded-paintbox-16 px-paintbox-150 py-paintbox-100",
         "text-preset-9 text-text",
-        "hover:enabled:inset-ring-2 hover:enabled:inset-ring-divider",
+        // not-aria-checked: so hover doesn't swap the selected border for the lighter one.
+        "hover:enabled:not-aria-checked:inset-ring-2 hover:enabled:not-aria-checked:inset-ring-divider",
+        "aria-checked:bg-surface-alt aria-checked:inset-ring-2 aria-checked:inset-ring-text-muted",
         className,
       ]
         .filter(Boolean)
