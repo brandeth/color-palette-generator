@@ -1,6 +1,14 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Button } from "../../components/button";
 import { GenerateButton } from "../../components/generate-button";
+import {
+  IconModeAnalogous,
+  IconModeComplementary,
+  IconModeMonochrome,
+  IconModeRandom,
+  IconModeTriadic,
+} from "../../components/mode-icons";
+import { PaletteTypeButton } from "../../components/palette-type-button";
 import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
@@ -239,6 +247,30 @@ export function ComponentsSection() {
         </div>
 
         <Meta>Disabled state: not built yet.</Meta>
+      </Group>
+
+      <Group title="Palette type button">
+        <p className="text-preset-8 text-text-muted">
+          One option in the palette type picker. Labelled variant: 32px mode icon above a Text Preset
+          9 label, padding 8 / 12, gap 4, radius 16. &quot;Analogous&quot; is 90×69. Mode icons keep
+          their own colors (<Code>app/components/mode-icons.tsx</Code>).
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default (labelled)" note="No border, no background.">
+            <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
+          </Demo>
+
+          <Demo label="All palette types" note="Default state, every mode icon.">
+            <PaletteTypeButton icon={<IconModeRandom />}>Random</PaletteTypeButton>
+            <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
+            <PaletteTypeButton icon={<IconModeComplementary />}>Complementary</PaletteTypeButton>
+            <PaletteTypeButton icon={<IconModeTriadic />}>Triadic</PaletteTypeButton>
+            <PaletteTypeButton icon={<IconModeMonochrome />}>Monochrome</PaletteTypeButton>
+          </Demo>
+        </div>
+
+        <Meta>Hover, selected and focus states, and the other variants: not built yet.</Meta>
       </Group>
     </Section>
   );
