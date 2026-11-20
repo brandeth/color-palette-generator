@@ -288,14 +288,42 @@ export function ComponentsSection() {
         </Demo>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
-          <Demo label="Default (cell)" note="variant=&quot;cell&quot;: fixed 138px wide, 24px icon, 138×61. Hover, selected and focus work the same as labelled.">
+          <Demo label="Default (cell)" note="variant=&quot;cell&quot;: fixed 138px wide, 24px icon, 138×61.">
             <div role="radiogroup" aria-label="Cell default state example">
               <PaletteTypeButton variant="cell" icon={<IconModeAnalogous />}>
                 Analogous
               </PaletteTypeButton>
             </div>
           </Demo>
+
+          <Demo label="Hover (cell)" note="Same as labelled: 2px inset ring in divider. Shown forced on here.">
+            <div role="radiogroup" aria-label="Cell hover state example">
+              <PaletteTypeButton variant="cell" icon={<IconModeAnalogous />} className="inset-ring-2 inset-ring-divider">
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
+
+          <Demo label="Selected (cell)" note="Same as labelled: surface-alt background, 2px inset ring in text-muted.">
+            <div role="radiogroup" aria-label="Cell selected state example">
+              <PaletteTypeButton variant="cell" icon={<IconModeAnalogous />} selected>
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
+
+          <Demo label="Focus (cell)" note="Same as labelled: 3px outline in focus, 2px outside, on the selected option. Shown forced on here.">
+            <div role="radiogroup" aria-label="Cell focus state example">
+              <PaletteTypeButton variant="cell" icon={<IconModeAnalogous />} selected className="outline-3 outline-offset-2 outline-focus">
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
         </div>
+
+        <Demo label="All palette types, cells (live)" note="A working radio group of cells: click to select, or Tab in and use the arrow keys.">
+          <PaletteTypeGroupDemo variant="cell" />
+        </Demo>
 
         <Meta>The row variant: not built yet.</Meta>
       </Group>
