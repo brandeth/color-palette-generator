@@ -354,13 +354,26 @@ export function ComponentsSection() {
               </PaletteTypeButton>
             </div>
           </Demo>
+
+          <Demo label="Focus (row)" note="Same as the other variants: 3px outline in focus, 2px outside, on the selected option (so the checkmark shows). Shown forced on here; Tab into the live rows for the real thing.">
+            <div role="radiogroup" aria-label="Row focus state example" className="w-[20.9375rem] max-w-full">
+              <PaletteTypeButton
+                variant="row"
+                icon={<IconModeAnalogous />}
+                description="Calm colours that sit side by side"
+                selected
+                className="outline-3 outline-offset-2 outline-focus"
+              >
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
         </div>
 
         <Demo label="All palette types, rows (live)" note="A working radio group of rows, in as many 335px columns as fit: click to select, or Tab in and use the arrow keys. Only Analogous's description is from the design; the others are placeholders.">
           <PaletteTypeGroupDemo variant="row" />
         </Demo>
 
-        <Meta>Row focus state: not built yet.</Meta>
       </Group>
     </Section>
   );
