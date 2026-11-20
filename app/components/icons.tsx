@@ -71,6 +71,16 @@ export function IconCopyAll(props: IconProps) {
   );
 }
 
+/** app/assets/icon-generate.svg */
+export function IconGenerate(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M16.667 10A6.667 6.667 0 0 1 5 14.417M3.333 10A6.667 6.667 0 0 1 15 5.583" />
+      <path d="M15 2.5v3.333h-3.333M5 17.5v-3.333h3.333" />
+    </svg>
+  );
+}
+
 /** app/assets/icon-moon.svg */
 export function IconMoon(props: IconProps) {
   return (

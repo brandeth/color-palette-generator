@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Button } from "../../components/button";
+import { GenerateButton } from "../../components/generate-button";
 import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
@@ -182,9 +183,49 @@ export function ComponentsSection() {
               Copy palette
             </Button>
           </Demo>
+
+          <Demo label="Focus (pressed off)" note="Keyboard only. 3px outline in focus, 2px offset. Shown forced on here; press Tab on the Live one for the real thing.">
+            <Button icon={<IconCopyAll />} className="outline-3 outline-offset-2 outline-focus">
+              Copy palette
+            </Button>
+          </Demo>
+
+          <Demo label="Focus (pressed on)" note="Focus ring outside the pressed ring, 2px gap between them. Shown forced on here.">
+            <Button
+              icon={<IconCopyAll />}
+              aria-haspopup="menu"
+              aria-expanded
+              className="outline-3 outline-offset-2 outline-focus"
+            >
+              Copy palette
+            </Button>
+          </Demo>
         </div>
 
-        <Meta>Focus and disabled states: not built yet.</Meta>
+        <Meta>Disabled state: not built yet.</Meta>
+      </Group>
+
+      <Group title="Generate button">
+        <p className="text-preset-8 text-text-muted">
+          The main action. Height 48, padding-inline 32, gap 8, pill shape, Text Preset 7 (Bold).
+          Background in <Code>text</Code>, content in <Code>surface</Code>, so it inverts in dark
+          mode. Pass <Code>shortcut=&quot;Space&quot;</Code> to show the key badge (about 230px
+          wide); the page has to handle the key itself.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default" note="With the Space badge, and without it.">
+            <GenerateButton shortcut="Space" />
+            <GenerateButton />
+          </Demo>
+
+          <Demo label="Hover" note="2px ring in the button color, 2px outside it. Shown forced on here; hover the Default ones for the real thing.">
+            <GenerateButton shortcut="Space" className="outline-2 outline-offset-2 outline-text" />
+            <GenerateButton className="outline-2 outline-offset-2 outline-text" />
+          </Demo>
+        </div>
+
+        <Meta>Pressed, focus and disabled states: not built yet.</Meta>
       </Group>
     </Section>
   );

@@ -31,7 +31,12 @@ type ButtonProps = Omit<ComponentProps<"button">, "aria-pressed"> & {
  * light), drawn inset so the size doesn't change. Same as IconButton and
  * the selected Tab. Hovering it looks the same (same fill color).
  *
- * Focus and disabled states come next.
+ * Focus (keyboard only, :focus-visible): 3px outline in the focus token
+ * (#6A2BC9 light), 2px outside the button, same as IconButton and Tab.
+ * The outline follows the pill and takes no space, so nothing shifts.
+ * Applies on top of hover and pressed.
+ *
+ * Disabled state comes next.
  */
 export function Button({ icon, pressed, className, children, ...props }: ButtonProps) {
   return (
@@ -45,6 +50,7 @@ export function Button({ icon, pressed, className, children, ...props }: ButtonP
         "hover:enabled:bg-surface-alt",
         "aria-pressed:bg-surface-alt aria-pressed:inset-ring-2 aria-pressed:inset-ring-text-muted",
         "aria-expanded:bg-surface-alt aria-expanded:inset-ring-2 aria-expanded:inset-ring-text-muted",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
       ]
         .filter(Boolean)
