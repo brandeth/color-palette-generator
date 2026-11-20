@@ -8,6 +8,7 @@ import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { ButtonMenuDemo } from "./button-demo";
+import { CopyMenuDemo } from "./copy-option-demo";
 import { IconButtonToggleDemo } from "./icon-button-demo";
 import { PaletteTypeGroupDemo } from "./palette-type-demo";
 import { Code, Group, Meta, Section } from "./section";
@@ -407,17 +408,33 @@ export function ComponentsSection() {
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
           <Demo label="Default" note="No border, no background.">
-            <CopyOption preview="--color-1: #EEE8DF;">CSS variables</CopyOption>
+            <div role="menu" aria-label="Copy option default state example">
+              <CopyOption preview="--color-1: #EEE8DF;">CSS variables</CopyOption>
+            </div>
           </Demo>
 
           <Demo label="Hover" note="surface-alt background, no border. Shown forced on here; hover the default for the real thing.">
-            <CopyOption preview="--color-1: #EEE8DF;" className="bg-surface-alt">
-              CSS variables
-            </CopyOption>
+            <div role="menu" aria-label="Copy option hover state example">
+              <CopyOption preview="--color-1: #EEE8DF;" className="bg-surface-alt">
+                CSS variables
+              </CopyOption>
+            </div>
+          </Demo>
+
+          <Demo label="Selected" note="20px checkmark at the right, lined up with the name; no background. aria-checked=&quot;true&quot;.">
+            <div role="menu" aria-label="Copy option selected state example">
+              <CopyOption preview="--color-1: #EEE8DF;" selected>
+                CSS variables
+              </CopyOption>
+            </div>
           </Demo>
         </div>
 
-        <Meta>Selected and focus states: not built yet.</Meta>
+        <Demo label="Copy format menu (live)" note="A working menu: click a format to choose it, or Tab in, move with the arrow keys and press Enter. Only CSS variables is from the design; the other formats are placeholders.">
+          <CopyMenuDemo />
+        </Demo>
+
+        <Meta>Focus state: not built yet.</Meta>
       </Group>
     </Section>
   );

@@ -1,8 +1,11 @@
 import type { ComponentProps, ReactNode } from "react";
+import { IconCheck } from "./icons";
 
-type CopyOptionProps = ComponentProps<"button"> & {
+type CopyOptionProps = Omit<ComponentProps<"button">, "role" | "aria-checked"> & {
   /** A sample of what gets copied, e.g. "--color-1: #EEE8DF;". */
   preview: ReactNode;
+  /** Whether this is the chosen format. Shows the checkmark; sets aria-checked. */
+  selected?: boolean;
 };
 
 /*
@@ -18,12 +21,24 @@ type CopyOptionProps = ComponentProps<"button"> & {
  * Hover: surface-alt background (#ECEFEC light), no border. Only on
  * enabled buttons, and only on devices that can hover.
  *
- * Selected and focus states come next.
+ * Selected: a 20px checkmark in the text color at the right (12px from
+ * the edge, 12px after the text), lined up with the name rather than the
+ * middle of the option. No background or border. The check's space is
+ * kept when it's hidden, so selecting doesn't re-wrap the text.
+ *
+ * The "Copy palette" button opens a menu, so each option is a checkable
+ * menu item (role="menuitemradio" + aria-checked) inside a role="menu".
+ * The menu handles the arrow keys and moves focus between the options.
+ * The check is decorative; aria-checked already says which is chosen.
+ *
+ * Focus state comes next.
  */
-export function CopyOption({ preview, className, children, ...props }: CopyOptionProps) {
+export function CopyOption({ preview, selected = false, className, children, ...props }: CopyOptionProps) {
   return (
     <button
       type="button"
+      role="menuitemradio"
+      aria-checked={selected}
       className={[
         "flex w-[16rem] shrink-0 cursor-pointer items-center gap-paintbox-150",
         "rounded-paintbox-12 px-paintbox-150 py-paintbox-100",
@@ -39,6 +54,8 @@ export function CopyOption({ preview, className, children, ...props }: CopyOptio
         <span className="text-preset-7-bold">{children}</span>
         <span className="text-preset-8 text-text-muted">{preview}</span>
       </span>
+      {/* mt: (name line 1.55rem - 20px icon) / 2, so it centres on the name. */}
+      <IconCheck className={["mt-[0.15rem] shrink-0 self-start", selected ? "" : "invisible"].join(" ")} />
     </button>
   );
 }
