@@ -5,6 +5,17 @@ type PaletteTypeButtonProps = Omit<ComponentProps<"button">, "role" | "aria-chec
   icon: ReactNode;
   /** Whether this is the chosen palette type. Sets aria-checked. */
   selected?: boolean;
+  /**
+   * "labelled" (default): hugs its content, 32px icon.
+   * "cell": fixed 138px wide, 24px icon, for a grid of options.
+   */
+  variant?: "labelled" | "cell";
+};
+
+const variantClasses = {
+  labelled: "",
+  // The mode icons are drawn at 32px; the cell shrinks them to 24.
+  cell: "w-[8.625rem] [&>svg]:size-paintbox-300",
 };
 
 /*
@@ -30,9 +41,25 @@ type PaletteTypeButtonProps = Omit<ComponentProps<"button">, "role" | "aria-chec
  * a role="radiogroup" with a label. The group handles the arrow keys and
  * makes only the selected option tabbable (tabIndex 0, the rest -1).
  *
- * Focus state and the other variants come next.
+ * Focus (keyboard only, :focus-visible): 3px outline in the focus token
+ * (#6A2BC9 light), 2px outside the button, same as the other buttons.
+ * Because Tab lands on the selected option, it usually shows together
+ * with the selected look. A mouse click doesn't show it.
+ *
+ * Cell variant: same layout, padding, gap, label and states, but a fixed
+ * 138px width with the content centred, and a 24px icon:
+ * 8 + 24 + 4 + 17 + 8 = 61px tall.
+ *
+ * The row variant (with a description) comes next.
  */
-export function PaletteTypeButton({ icon, selected = false, className, children, ...props }: PaletteTypeButtonProps) {
+export function PaletteTypeButton({
+  icon,
+  selected = false,
+  variant = "labelled",
+  className,
+  children,
+  ...props
+}: PaletteTypeButtonProps) {
   return (
     <button
       type="button"
@@ -45,6 +72,8 @@ export function PaletteTypeButton({ icon, selected = false, className, children,
         // not-aria-checked: so hover doesn't swap the selected border for the lighter one.
         "hover:enabled:not-aria-checked:inset-ring-2 hover:enabled:not-aria-checked:inset-ring-divider",
         "aria-checked:bg-surface-alt aria-checked:inset-ring-2 aria-checked:inset-ring-text-muted",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
+        variantClasses[variant],
         className,
       ]
         .filter(Boolean)
