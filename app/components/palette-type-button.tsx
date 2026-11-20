@@ -14,7 +14,12 @@ type PaletteTypeButtonProps = ComponentProps<"button"> & {
  * Size hugs the content: 32px icon + 4 + 17px label line + padding
  * = 69px tall; "Analogous" is 90px wide.
  *
- * Hover, selected and focus states, and the other variants, come next.
+ * Hover: 2px border in the divider token (#DDE1DD light), background
+ * stays transparent. Same as Tab. Drawn as an inset ring, so the button
+ * doesn't change size. Only on enabled buttons, and only on devices that
+ * can hover.
+ *
+ * Selected and focus states, and the other variants, come next.
  */
 export function PaletteTypeButton({ icon, className, children, ...props }: PaletteTypeButtonProps) {
   return (
@@ -24,6 +29,7 @@ export function PaletteTypeButton({ icon, className, children, ...props }: Palet
         "inline-flex shrink-0 cursor-pointer flex-col items-center gap-paintbox-050 whitespace-nowrap",
         "rounded-paintbox-16 px-paintbox-150 py-paintbox-100",
         "text-preset-9 text-text",
+        "hover:enabled:inset-ring-2 hover:enabled:inset-ring-divider",
         className,
       ]
         .filter(Boolean)

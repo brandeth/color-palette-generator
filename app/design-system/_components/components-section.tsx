@@ -261,6 +261,12 @@ export function ComponentsSection() {
             <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
           </Demo>
 
+          <Demo label="Hover (labelled)" note="2px inset ring in divider, no background. Shown forced on here; hover the others for the real thing.">
+            <PaletteTypeButton icon={<IconModeAnalogous />} className="inset-ring-2 inset-ring-divider">
+              Analogous
+            </PaletteTypeButton>
+          </Demo>
+
           <Demo label="All palette types" note="Default state, every mode icon.">
             <PaletteTypeButton icon={<IconModeRandom />}>Random</PaletteTypeButton>
             <PaletteTypeButton icon={<IconModeAnalogous />}>Analogous</PaletteTypeButton>
@@ -270,7 +276,7 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Meta>Hover, selected and focus states, and the other variants: not built yet.</Meta>
+        <Meta>Selected and focus states, and the other variants: not built yet.</Meta>
       </Group>
     </Section>
   );
