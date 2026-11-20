@@ -325,7 +325,7 @@ export function ComponentsSection() {
           <PaletteTypeGroupDemo variant="cell" />
         </Demo>
 
-        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
           <Demo label="Default (row)" note="variant=&quot;row&quot;: fills its container (335px here, as in the design), 24px icon, title and description, 61px tall.">
             <div role="radiogroup" aria-label="Row default state example" className="w-[20.9375rem] max-w-full">
               <PaletteTypeButton variant="row" icon={<IconModeAnalogous />} description="Calm colours that sit side by side">
@@ -346,9 +346,21 @@ export function ComponentsSection() {
               </PaletteTypeButton>
             </div>
           </Demo>
+
+          <Demo label="Selected (row)" note="surface-alt background, 2px inset ring in text-muted, plus a 20px checkmark at the right, lined up with the title.">
+            <div role="radiogroup" aria-label="Row selected state example" className="w-[20.9375rem] max-w-full">
+              <PaletteTypeButton variant="row" icon={<IconModeAnalogous />} description="Calm colours that sit side by side" selected>
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
         </div>
 
-        <Meta>Row selected (with checkmark) and focus states: not built yet.</Meta>
+        <Demo label="All palette types, rows (live)" note="A working radio group of rows, in as many 335px columns as fit: click to select, or Tab in and use the arrow keys. Only Analogous's description is from the design; the others are placeholders.">
+          <PaletteTypeGroupDemo variant="row" />
+        </Demo>
+
+        <Meta>Row focus state: not built yet.</Meta>
       </Group>
     </Section>
   );

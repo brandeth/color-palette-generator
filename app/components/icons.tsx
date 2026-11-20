@@ -81,6 +81,15 @@ export function IconGenerate(props: IconProps) {
   );
 }
 
+/** app/assets/icon-check.svg */
+export function IconCheck(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m4.167 10.417 3.75 3.75 7.917-7.917" />
+    </svg>
+  );
+}
+
 /** app/assets/icon-moon.svg */
 export function IconMoon(props: IconProps) {
   return (
