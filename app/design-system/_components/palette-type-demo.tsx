@@ -34,8 +34,10 @@ const labels = {
  */
 export function PaletteTypeGroupDemo({
   variant = "labelled",
+  size,
 }: {
   variant?: ComponentProps<typeof PaletteTypeButton>["variant"];
+  size?: ComponentProps<typeof PaletteTypeButton>["size"];
 }) {
   const [selected, setSelected] = useState(1);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -52,7 +54,7 @@ export function PaletteTypeGroupDemo({
   return (
     <div
       role="radiogroup"
-      aria-label={labels[variant]}
+      aria-label={size === "compact" ? "Palette type, compact rows (live example)" : labels[variant]}
       onKeyDown={onKeyDown}
       className={
         variant === "row"
@@ -68,6 +70,7 @@ export function PaletteTypeGroupDemo({
             refs.current[i] = el;
           }}
           variant={variant}
+          size={size}
           icon={type.icon}
           description={variant === "row" ? type.description : undefined}
           selected={i === selected}

@@ -374,6 +374,28 @@ export function ComponentsSection() {
           <PaletteTypeGroupDemo variant="row" />
         </Demo>
 
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default (compact row)" note="variant=&quot;row&quot; size=&quot;compact&quot;: 4px top/bottom padding instead of 8, so 53px tall. Hover, selected and focus are the same as the row.">
+            <div role="radiogroup" aria-label="Compact row default state example" className="w-[20.9375rem] max-w-full">
+              <PaletteTypeButton variant="row" size="compact" icon={<IconModeAnalogous />} description="Calm colours that sit side by side">
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
+
+          <Demo label="Selected (compact row)" note="The checkmark still lines up with the title.">
+            <div role="radiogroup" aria-label="Compact row selected state example" className="w-[20.9375rem] max-w-full">
+              <PaletteTypeButton variant="row" size="compact" icon={<IconModeAnalogous />} description="Calm colours that sit side by side" selected>
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
+        </div>
+
+        <Demo label="All palette types, compact rows (live)" note="A working radio group of compact rows: click to select, or Tab in and use the arrow keys.">
+          <PaletteTypeGroupDemo variant="row" size="compact" />
+        </Demo>
+
       </Group>
     </Section>
   );
