@@ -31,7 +31,11 @@ type CopyOptionProps = Omit<ComponentProps<"button">, "role" | "aria-checked"> &
  * The menu handles the arrow keys and moves focus between the options.
  * The check is decorative; aria-checked already says which is chosen.
  *
- * Focus state comes next.
+ * Focus (keyboard only, :focus-visible): 3px outline in the focus token
+ * (#6A2BC9 light), 2px outside the option, same as the other buttons.
+ * In a menu the arrow keys move focus without choosing, so the ring can
+ * sit on an option that isn't selected (as in the design). A mouse
+ * click doesn't show it.
  */
 export function CopyOption({ preview, selected = false, className, children, ...props }: CopyOptionProps) {
   return (
@@ -44,6 +48,7 @@ export function CopyOption({ preview, selected = false, className, children, ...
         "rounded-paintbox-12 px-paintbox-150 py-paintbox-100",
         "text-left text-text",
         "hover:enabled:bg-surface-alt",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
       ]
         .filter(Boolean)

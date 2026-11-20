@@ -428,13 +428,20 @@ export function ComponentsSection() {
               </CopyOption>
             </div>
           </Demo>
+
+          <Demo label="Focus" note="3px outline in focus, 2px outside, on an option that isn't selected (as in the design). Shown forced on here; Tab into the live menu for the real thing.">
+            <div role="menu" aria-label="Copy option focus state example">
+              <CopyOption preview="--color-1: #EEE8DF;" className="outline-3 outline-offset-2 outline-focus">
+                CSS variables
+              </CopyOption>
+            </div>
+          </Demo>
         </div>
 
         <Demo label="Copy format menu (live)" note="A working menu: click a format to choose it, or Tab in, move with the arrow keys and press Enter. Only CSS variables is from the design; the other formats are placeholders.">
           <CopyMenuDemo />
         </Demo>
 
-        <Meta>Focus state: not built yet.</Meta>
       </Group>
     </Section>
   );
