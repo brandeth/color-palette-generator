@@ -31,7 +31,17 @@ type GenerateButtonProps = Omit<ComponentProps<"button">, "children"> & {
  * outline, so the button doesn't grow or shift its neighbours. Only on
  * enabled buttons, and only on devices that can hover.
  *
- * Pressed, focus and disabled states come next.
+ * Focus (keyboard only, :focus-visible): 3px outline in the focus token
+ * (#6A2BC9 light), 2px outside the button, same as the other buttons.
+ * It uses the same outline as hover; the hover ring is skipped while the
+ * button has keyboard focus, so the focus ring replaces it.
+ *
+ * Pressed (:active, while the mouse button or Space/Enter is held down):
+ * a 4px ring in text-muted (#545B63 light) inside the button, drawn
+ * inset so the size doesn't change. With a mouse, the hover ring stays
+ * outside it; with the keyboard, the focus ring does.
+ *
+ * Disabled state comes next.
  */
 export function GenerateButton({ shortcut, className, ...props }: GenerateButtonProps) {
   return (
@@ -42,7 +52,10 @@ export function GenerateButton({ shortcut, className, ...props }: GenerateButton
         "inline-flex h-paintbox-600 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
         "rounded-paintbox-full bg-text px-paintbox-400",
         "text-preset-7-bold text-surface",
-        "hover:enabled:outline-2 hover:enabled:outline-offset-2 hover:enabled:outline-text",
+        // not-focus-visible: so the keyboard focus ring always wins over hover.
+        "hover:enabled:not-focus-visible:outline-2 hover:enabled:not-focus-visible:outline-offset-2 hover:enabled:not-focus-visible:outline-text",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
+        "active:enabled:inset-ring-4 active:enabled:inset-ring-text-muted",
         className,
       ]
         .filter(Boolean)
