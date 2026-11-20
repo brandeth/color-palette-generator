@@ -45,7 +45,7 @@ export function CopyOption({ preview, selected = false, className, children, ...
       role="menuitemradio"
       aria-checked={selected}
       className={[
-        "flex w-[16rem] shrink-0 cursor-pointer items-center gap-paintbox-150",
+        "flex w-[16rem] shrink-0 cursor-pointer items-center",
         "rounded-paintbox-12 px-paintbox-150 py-paintbox-100",
         "text-left text-text",
         "hover:enabled:bg-surface-alt",
@@ -56,12 +56,16 @@ export function CopyOption({ preview, selected = false, className, children, ...
         .join(" ")}
       {...props}
     >
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-preset-7-bold">{children}</span>
-        <span className="truncate text-preset-8 text-text-muted">{preview}</span>
+      {/* Text and check share a row, so the check stays level with the name
+          even when the option is taller than its text (as in the sheet menu). */}
+      <span className="flex min-w-0 flex-1 items-start gap-paintbox-150">
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="truncate text-preset-7-bold">{children}</span>
+          <span className="truncate text-preset-8 text-text-muted">{preview}</span>
+        </span>
+        {/* mt: (name line 1.55rem - 20px icon) / 2, so it centres on the name. */}
+        <IconCheck className={["mt-[0.15rem] shrink-0", selected ? "" : "invisible"].join(" ")} />
       </span>
-      {/* mt: (name line 1.55rem - 20px icon) / 2, so it centres on the name. */}
-      <IconCheck className={["mt-[0.15rem] shrink-0 self-start", selected ? "" : "invisible"].join(" ")} />
     </button>
   );
 }
