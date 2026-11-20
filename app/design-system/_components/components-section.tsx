@@ -325,7 +325,17 @@ export function ComponentsSection() {
           <PaletteTypeGroupDemo variant="cell" />
         </Demo>
 
-        <Meta>The row variant: not built yet.</Meta>
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2">
+          <Demo label="Default (row)" note="variant=&quot;row&quot;: fills its container (335px here, as in the design), 24px icon, title and description, 61px tall.">
+            <div role="radiogroup" aria-label="Row default state example" className="w-[20.9375rem] max-w-full">
+              <PaletteTypeButton variant="row" icon={<IconModeAnalogous />} description="Calm colours that sit side by side">
+                Analogous
+              </PaletteTypeButton>
+            </div>
+          </Demo>
+        </div>
+
+        <Meta>Row hover, selected (with checkmark) and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );
