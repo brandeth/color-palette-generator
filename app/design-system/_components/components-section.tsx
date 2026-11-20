@@ -441,13 +441,13 @@ export function ComponentsSection() {
         </div>
 
         <Meta>For a working menu of copy options, see Copy palette menu below.</Meta>
-
       </Group>
 
       <Group title="Copy palette menu">
         <p className="text-preset-8 text-text-muted">
           What the &quot;Copy palette&quot; button opens: a Text Preset 9 heading above one copy option per
-          format. 272×254 with three formats: 1px divider border, padding 8 (12 at the bottom), radius 20, large shadow.
+          format. Default: 272×254 with three formats, 1px divider border, padding 8 (12 at the bottom), radius
+          20, large shadow. Sheet (<Code>variant=&quot;sheet&quot;</Code>): 272×295, 72px options, radius 16.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
@@ -455,8 +455,16 @@ export function ComponentsSection() {
             <CopyPaletteMenu heading="Copy all five colours as" formats={copyFormats} />
           </Demo>
 
-          <Demo label="Live" note="Click a format to check it, or Tab in and use the arrow keys, Home/End and Enter. Doesn't copy anything.">
+          <Demo label="Sheet" note="12px above the heading, 72px options with their text centred, 16px at the bottom, radius 16.">
+            <CopyPaletteMenu variant="sheet" heading="Copy all five colours as" formats={copyFormats} />
+          </Demo>
+
+          <Demo label="Live (default)" note="Click a format to check it, or Tab in and use the arrow keys, Home/End and Enter. Doesn't copy anything.">
             <CopyMenuDemo />
+          </Demo>
+
+          <Demo label="Live (sheet)" note="The same, as a sheet. The check stays level with the name in the taller options.">
+            <CopyMenuDemo variant="sheet" />
           </Demo>
         </div>
       </Group>
