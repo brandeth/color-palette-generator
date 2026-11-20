@@ -10,13 +10,21 @@ import {
 } from "../../components/mode-icons";
 import { PaletteTypeButton } from "../../components/palette-type-button";
 
+// Only Analogous's description comes from the design; the rest are
+// placeholder copy for the demo.
 const types = [
-  { name: "Random", icon: <IconModeRandom /> },
-  { name: "Analogous", icon: <IconModeAnalogous /> },
-  { name: "Complementary", icon: <IconModeComplementary /> },
-  { name: "Triadic", icon: <IconModeTriadic /> },
-  { name: "Monochrome", icon: <IconModeMonochrome /> },
+  { name: "Random", icon: <IconModeRandom />, description: "Any colours, picked at random" },
+  { name: "Analogous", icon: <IconModeAnalogous />, description: "Calm colours that sit side by side" },
+  { name: "Complementary", icon: <IconModeComplementary />, description: "Opposite colours that stand out" },
+  { name: "Triadic", icon: <IconModeTriadic />, description: "Three colours evenly spread out" },
+  { name: "Monochrome", icon: <IconModeMonochrome />, description: "Shades and tints of one colour" },
 ];
+
+const labels = {
+  labelled: "Palette type (live example)",
+  cell: "Palette type, cells (live example)",
+  row: "Palette type, rows (live example)",
+};
 
 /*
  * Working palette type picker for the design system page: a radio group.
@@ -42,7 +50,17 @@ export function PaletteTypeGroupDemo({
   }
 
   return (
-    <div role="radiogroup" aria-label={variant === "cell" ? "Palette type, cells (live example)" : "Palette type (live example)"} onKeyDown={onKeyDown} className="flex flex-wrap gap-paintbox-100">
+    <div
+      role="radiogroup"
+      aria-label={labels[variant]}
+      onKeyDown={onKeyDown}
+      className={
+        variant === "row"
+          ? // As many 335px columns as fit (one on narrow screens, where rows can shrink).
+            "grid w-full grid-cols-[repeat(auto-fill,minmax(min(20.9375rem,100%),20.9375rem))] gap-paintbox-100"
+          : "flex flex-wrap gap-paintbox-100"
+      }
+    >
       {types.map((type, i) => (
         <PaletteTypeButton
           key={type.name}
@@ -51,6 +69,7 @@ export function PaletteTypeGroupDemo({
           }}
           variant={variant}
           icon={type.icon}
+          description={variant === "row" ? type.description : undefined}
           selected={i === selected}
           tabIndex={i === selected ? 0 : -1}
           onClick={() => setSelected(i)}

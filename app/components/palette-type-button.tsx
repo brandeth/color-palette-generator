@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactNode } from "react";
+import { IconCheck } from "./icons";
 
 type PaletteTypeButtonProps = Omit<ComponentProps<"button">, "role" | "aria-checked"> & {
   /** The mode icon, e.g. <IconModeAnalogous />. 32×32, decorative. */
@@ -23,7 +24,8 @@ const variantClasses = {
   labelled: stacked,
   // The mode icons are drawn at 32px; cell and row shrink them to 24.
   cell: `${stacked} w-[8.625rem] [&>svg]:size-paintbox-300`,
-  row: "flex w-full items-center gap-paintbox-150 rounded-paintbox-12 px-paintbox-200 py-paintbox-100 text-left [&>svg]:size-paintbox-300",
+  // :first-child so only the mode icon shrinks, not the checkmark.
+  row: "flex w-full items-center gap-paintbox-150 rounded-paintbox-12 px-paintbox-200 py-paintbox-100 text-left [&>svg:first-child]:size-paintbox-300",
 };
 
 /*
@@ -64,6 +66,12 @@ const variantClasses = {
  * radius 12. Fills the width of its container (335px in the design);
  * 8 + 24.8 + 20.3 + 8 = 61px tall. The description may wrap.
  * Hover, selected and focus use the same styles as the other variants.
+ *
+ * Row selected: also a 20px checkmark in the text color at the right
+ * (16px from the edge, 12px after the text), lined up with the title
+ * line rather than the middle of the row. The check's space is kept
+ * when it's hidden, so selecting doesn't re-wrap the description. It's
+ * decorative; aria-checked already says the option is selected.
  */
 export function PaletteTypeButton({
   icon,
@@ -94,10 +102,14 @@ export function PaletteTypeButton({
     >
       {icon}
       {variant === "row" ? (
-        <span className="flex min-w-0 flex-col">
-          <span className="text-preset-7-bold">{children}</span>
-          {description ? <span className="text-preset-8 text-text-muted">{description}</span> : null}
-        </span>
+        <>
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span className="text-preset-7-bold">{children}</span>
+            {description ? <span className="text-preset-8 text-text-muted">{description}</span> : null}
+          </span>
+          {/* mt: (title line 1.55rem - 20px icon) / 2, so it centres on the title. */}
+          <IconCheck className={["mt-[0.15rem] shrink-0 self-start", selected ? "" : "invisible"].join(" ")} />
+        </>
       ) : (
         <span>{children}</span>
       )}
