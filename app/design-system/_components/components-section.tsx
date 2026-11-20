@@ -1,6 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Button } from "../../components/button";
 import { CopyOption } from "../../components/copy-option";
+import { CopyPaletteMenu } from "../../components/copy-palette-menu";
 import { GenerateButton } from "../../components/generate-button";
 import { IconModeAnalogous } from "../../components/mode-icons";
 import { PaletteTypeButton } from "../../components/palette-type-button";
@@ -8,6 +9,7 @@ import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { ButtonMenuDemo } from "./button-demo";
+import { copyFormats } from "./copy-formats";
 import { CopyMenuDemo } from "./copy-option-demo";
 import { IconButtonToggleDemo } from "./icon-button-demo";
 import { PaletteTypeGroupDemo } from "./palette-type-demo";
@@ -438,10 +440,25 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Demo label="Copy format menu (live)" note="A working menu: click a format to choose it, or Tab in, move with the arrow keys and press Enter. Only CSS variables is from the design; the other formats are placeholders.">
-          <CopyMenuDemo />
-        </Demo>
+        <Meta>For a working menu of copy options, see Copy palette menu below.</Meta>
 
+      </Group>
+
+      <Group title="Copy palette menu">
+        <p className="text-preset-8 text-text-muted">
+          What the &quot;Copy palette&quot; button opens: a Text Preset 9 heading above one copy option per
+          format. 272×254 with three formats: 1px divider border, padding 8 (12 at the bottom), radius 20, large shadow.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default" note="Three formats, none checked. The Hex codes sample is cut off with &quot;…&quot;.">
+            <CopyPaletteMenu heading="Copy all five colours as" formats={copyFormats} />
+          </Demo>
+
+          <Demo label="Live" note="Click a format to check it, or Tab in and use the arrow keys, Home/End and Enter. Doesn't copy anything.">
+            <CopyMenuDemo />
+          </Demo>
+        </div>
       </Group>
     </Section>
   );
