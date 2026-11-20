@@ -409,9 +409,15 @@ export function ComponentsSection() {
           <Demo label="Default" note="No border, no background.">
             <CopyOption preview="--color-1: #EEE8DF;">CSS variables</CopyOption>
           </Demo>
+
+          <Demo label="Hover" note="surface-alt background, no border. Shown forced on here; hover the default for the real thing.">
+            <CopyOption preview="--color-1: #EEE8DF;" className="bg-surface-alt">
+              CSS variables
+            </CopyOption>
+          </Demo>
         </div>
 
-        <Meta>Hover, selected and focus states: not built yet.</Meta>
+        <Meta>Selected and focus states: not built yet.</Meta>
       </Group>
     </Section>
   );

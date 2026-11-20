@@ -15,7 +15,10 @@ type CopyOptionProps = ComponentProps<"button"> & {
  * left-aligned: 8 + 24.8 + 20.3 + 8 = 61px tall. The 12px gap is
  * between the text and the checkmark the selected state adds.
  *
- * Hover, selected and focus states come next.
+ * Hover: surface-alt background (#ECEFEC light), no border. Only on
+ * enabled buttons, and only on devices that can hover.
+ *
+ * Selected and focus states come next.
  */
 export function CopyOption({ preview, className, children, ...props }: CopyOptionProps) {
   return (
@@ -25,6 +28,7 @@ export function CopyOption({ preview, className, children, ...props }: CopyOptio
         "flex w-[16rem] shrink-0 cursor-pointer items-center gap-paintbox-150",
         "rounded-paintbox-12 px-paintbox-150 py-paintbox-100",
         "text-left text-text",
+        "hover:enabled:bg-surface-alt",
         className,
       ]
         .filter(Boolean)
