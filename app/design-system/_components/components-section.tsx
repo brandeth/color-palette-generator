@@ -223,9 +223,22 @@ export function ComponentsSection() {
             <GenerateButton shortcut="Space" className="outline-2 outline-offset-2 outline-text" />
             <GenerateButton className="outline-2 outline-offset-2 outline-text" />
           </Demo>
+
+          <Demo label="Focus" note="Keyboard only. 3px outline in focus, 2px offset; replaces the hover ring. Shown forced on here; press Tab on the Default ones for the real thing.">
+            <GenerateButton shortcut="Space" className="outline-3 outline-offset-2 outline-focus" />
+            <GenerateButton className="outline-3 outline-offset-2 outline-focus" />
+          </Demo>
+
+          <Demo label="Pressed" note="While held down: 4px inset ring in text-muted, with the hover ring outside. Shown forced on here; press and hold the Default ones for the real thing.">
+            <GenerateButton
+              shortcut="Space"
+              className="outline-2 outline-offset-2 outline-text inset-ring-4 inset-ring-text-muted"
+            />
+            <GenerateButton className="outline-2 outline-offset-2 outline-text inset-ring-4 inset-ring-text-muted" />
+          </Demo>
         </div>
 
-        <Meta>Pressed, focus and disabled states: not built yet.</Meta>
+        <Meta>Disabled state: not built yet.</Meta>
       </Group>
     </Section>
   );
