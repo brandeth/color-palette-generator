@@ -22,6 +22,18 @@ type PaletteTypeMenuProps = Omit<ComponentProps<"div">, "role" | "children" | "o
   selected: string;
   /** Called with a type's value when it's clicked or reached with the arrow keys. */
   onSelect?: (value: string) => void;
+  /**
+   * "one-column" (default): 358px wide, roomy 92px rows.
+   * "landscape": for a phone on its side: 459px wide, short 52px rows.
+   */
+  variant?: "one-column" | "landscape";
+};
+
+// The rows are 61px on their own. The selectors out-rank the row's own
+// padding, so the menu can set the height with the content centred.
+const variantClasses = {
+  "one-column": "w-[22.375rem] [&>[role=radio]]:min-h-[5.75rem]", // 358px, rows ≥ 92px
+  landscape: "w-[28.6875rem] [&>[role=radio]]:min-h-[3.25rem] [&>[role=radio]]:py-0", // 459px, rows 52px
 };
 
 /*
@@ -35,13 +47,25 @@ type PaletteTypeMenuProps = Omit<ComponentProps<"div">, "role" | "children" | "o
  * with the icon and text centred; long descriptions wrap to two lines.
  * With five types it's 494px tall (1 + 8 + 5 × 92 + 4 × 4 + 8 + 1).
  *
+ * Landscape variant: same box, padding, gap and keyboard, but 459px
+ * wide with 52px rows (441px wide): the text is centred with no extra
+ * padding, and every description fits on one line. With five types it's
+ * 294px tall (1 + 8 + 5 × 52 + 4 × 4 + 8 + 1).
+ *
  * Only one type can be chosen, so it's a role="radiogroup" of radios,
  * like a native radio group: Tab lands on the selected type, and the
  * arrow keys move the selection (wrapping round), as do Home and End.
  * Opening, closing (Escape) and returning focus to the button are the
  * button's job.
  */
-export function PaletteTypeMenu({ types, selected, onSelect, className, ...props }: PaletteTypeMenuProps) {
+export function PaletteTypeMenu({
+  types,
+  selected,
+  onSelect,
+  variant = "one-column",
+  className,
+  ...props
+}: PaletteTypeMenuProps) {
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const current = Math.max(
     0,
@@ -69,10 +93,9 @@ export function PaletteTypeMenu({ types, selected, onSelect, className, ...props
       role="radiogroup"
       onKeyDown={onKeyDown}
       className={[
-        "flex w-[22.375rem] flex-col gap-paintbox-050",
+        "flex flex-col gap-paintbox-050",
         "rounded-paintbox-16 border border-divider bg-surface p-paintbox-100 shadow-paintbox-lg",
-        // Rows are 61px on their own; here they are at least 92px, content centred.
-        "[&>[role=radio]]:min-h-[5.75rem]",
+        variantClasses[variant],
         className,
       ]
         .filter(Boolean)
