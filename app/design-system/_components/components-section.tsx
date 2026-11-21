@@ -487,7 +487,8 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           What the palette type button opens: one palette type row per type, as a radio group. One column:
           358px wide, 1px divider border, padding 8, rows 4px apart and at least 92px tall, radius 16, large
-          shadow. 358×494 with five types.
+          shadow. 358×494 with five types. Landscape (<Code>variant=&quot;landscape&quot;</Code>): 459px wide
+          with 52px rows, 459×294.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 xl:grid-cols-2">
@@ -497,6 +498,20 @@ export function ComponentsSection() {
 
           <Demo label="Live (one column)" note="Click a type, or Tab in and use the arrow keys, Home and End.">
             <PaletteTypeMenuDemo />
+          </Demo>
+
+          <Demo label="Landscape" note="For a phone on its side: 459px wide, 52px rows, every description on one line.">
+            <PaletteTypeMenu
+              variant="landscape"
+              aria-label="Palette type, landscape example"
+              types={paletteTypes}
+              selected="analogous"
+              className="max-w-full"
+            />
+          </Demo>
+
+          <Demo label="Live (landscape)" note="The same, working.">
+            <PaletteTypeMenuDemo variant="landscape" />
           </Demo>
         </div>
       </Group>
