@@ -24,13 +24,22 @@ type CopyPaletteMenuProps = Omit<ComponentProps<"div">, "children" | "onSelect">
    * "default": the dropdown under the button.
    * "sheet": the version that slides up on small screens: roomier, with
    * 72px options (bigger touch targets) and 16px corners.
+   * "landscape": the sheet for a phone on its side: same layout, 459px wide.
    */
-  variant?: "default" | "sheet";
+  variant?: "default" | "sheet" | "landscape";
+};
+
+// Sheet and landscape share everything but the width.
+const roomy = {
+  box: "rounded-paintbox-16 pb-paintbox-200",
+  heading: "pt-paintbox-150",
+  option: "[&>[role=menuitemradio]]:min-h-[4.5rem]",
 };
 
 const variantClasses = {
-  default: { box: "rounded-paintbox-20 pb-paintbox-150", heading: "pt-paintbox-100", option: "" },
-  sheet: { box: "rounded-paintbox-16 pb-paintbox-200", heading: "pt-paintbox-150", option: "[&>[role=menuitemradio]]:min-h-[4.5rem]" },
+  default: { width: "w-[17rem]", box: "rounded-paintbox-20 pb-paintbox-150", heading: "pt-paintbox-100", option: "" },
+  sheet: { width: "w-[17rem]", ...roomy }, // 272px
+  landscape: { width: "w-[28.6875rem]", ...roomy }, // 459px
 };
 
 /*
@@ -50,6 +59,10 @@ const variantClasses = {
  * radius 16, 12px above the heading, 16px at the bottom, and each option
  * at least 72px tall with its text centred: 295px tall with three
  * formats (1 + 8 + 12 + 16.9 + 8 + 3 × 72 + 2 × 8 + 16 + 1).
+ *
+ * Landscape variant: the sheet at 459px wide (options 441px), for a phone
+ * on its side. Same heights, so 459×295; the samples have room to show
+ * in full (all five hex codes).
  *
  * Keyboard: the list of formats is a role="menu" named by the heading
  * (the heading itself sits outside it, as a menu holds only items).
@@ -89,7 +102,8 @@ export function CopyPaletteMenu({
   return (
     <div
       className={[
-        "flex w-[17rem] flex-col",
+        "flex flex-col",
+        classes.width,
         "border border-divider bg-surface shadow-paintbox-lg",
         "px-paintbox-100 pt-paintbox-100",
         classes.box,
@@ -106,7 +120,7 @@ export function CopyPaletteMenu({
         role="menu"
         aria-labelledby={headingId}
         onKeyDown={onKeyDown}
-        // The options are 256px on their own; here they fill the 254px inside the border.
+        // The options are 256px on their own; here they fill the width inside the border.
         className={`mt-paintbox-100 flex flex-col gap-paintbox-100 [&>[role=menuitemradio]]:w-full ${classes.option}`}
       >
         {formats.map((format, i) => (

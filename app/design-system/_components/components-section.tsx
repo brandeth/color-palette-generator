@@ -447,7 +447,8 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           What the &quot;Copy palette&quot; button opens: a Text Preset 9 heading above one copy option per
           format. Default: 272×254 with three formats, 1px divider border, padding 8 (12 at the bottom), radius
-          20, large shadow. Sheet (<Code>variant=&quot;sheet&quot;</Code>): 272×295, 72px options, radius 16.
+          20, large shadow. Sheet (<Code>variant=&quot;sheet&quot;</Code>): 272×295, 72px options, radius 16. Landscape
+          (<Code>variant=&quot;landscape&quot;</Code>): the sheet at 459×295.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
@@ -465,6 +466,16 @@ export function ComponentsSection() {
 
           <Demo label="Live (sheet)" note="The same, as a sheet. The check stays level with the name in the taller options.">
             <CopyMenuDemo variant="sheet" />
+          </Demo>
+        </div>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 xl:grid-cols-2">
+          <Demo label="Landscape" note="The sheet at 459px wide, for a phone on its side. All five hex codes fit.">
+            <CopyPaletteMenu variant="landscape" heading="Copy all five colours as" formats={copyFormats} className="max-w-full" />
+          </Demo>
+
+          <Demo label="Live (landscape)" note="The same, working.">
+            <CopyMenuDemo variant="landscape" className="max-w-full" />
           </Demo>
         </div>
       </Group>
