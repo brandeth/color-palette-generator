@@ -74,7 +74,9 @@ const rowPaddingBySize = {
  * (Text Preset 7 Bold, 16px) above the description (Text Preset 8,
  * 14px, text-muted). Padding 8 (top/bottom) and 16 (sides), gap 12,
  * radius 12. Fills the width of its container (335px in the design);
- * 8 + 24.8 + 20.3 + 8 = 61px tall. The description may wrap.
+ * 8 + 24.8 + 20.3 + 8 = 61px tall. The description may wrap; when it
+ * does, its lines are balanced ("A colour and its opposite, / for strong
+ * contrast").
  * Hover, selected and focus use the same styles as the other variants.
  *
  * Row selected: also a 20px checkmark in the text color at the right
@@ -118,14 +120,17 @@ export function PaletteTypeButton({
     >
       {icon}
       {variant === "row" ? (
-        <>
+        // Text and check share a row, so the check stays level with the title
+        // even when the row is taller than its text (as in the palette type menu).
+        <span className="flex min-w-0 flex-1 items-start gap-paintbox-150">
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="text-preset-7-bold">{children}</span>
-            {description ? <span className="text-preset-8 text-text-muted">{description}</span> : null}
+            {/* text-balance: a wrapped description splits into even lines, as in the design. */}
+            {description ? <span className="text-preset-8 text-balance text-text-muted">{description}</span> : null}
           </span>
           {/* mt: (title line 1.55rem - 20px icon) / 2, so it centres on the title. */}
-          <IconCheck className={["mt-[0.15rem] shrink-0 self-start", selected ? "" : "invisible"].join(" ")} />
-        </>
+          <IconCheck className={["mt-[0.15rem] shrink-0", selected ? "" : "invisible"].join(" ")} />
+        </span>
       ) : (
         <span>{children}</span>
       )}

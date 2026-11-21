@@ -5,6 +5,7 @@ import { CopyPaletteMenu } from "../../components/copy-palette-menu";
 import { GenerateButton } from "../../components/generate-button";
 import { IconModeAnalogous } from "../../components/mode-icons";
 import { PaletteTypeButton } from "../../components/palette-type-button";
+import { PaletteTypeMenu } from "../../components/palette-type-menu";
 import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
@@ -13,6 +14,8 @@ import { copyFormats } from "./copy-formats";
 import { CopyMenuDemo } from "./copy-option-demo";
 import { IconButtonToggleDemo } from "./icon-button-demo";
 import { PaletteTypeGroupDemo } from "./palette-type-demo";
+import { PaletteTypeMenuDemo } from "./palette-type-menu-demo";
+import { paletteTypes } from "./palette-types";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
 
@@ -476,6 +479,24 @@ export function ComponentsSection() {
 
           <Demo label="Live (landscape)" note="The same, working.">
             <CopyMenuDemo variant="landscape" className="max-w-full" />
+          </Demo>
+        </div>
+      </Group>
+
+      <Group title="Palette type menu">
+        <p className="text-preset-8 text-text-muted">
+          What the palette type button opens: one palette type row per type, as a radio group. One column:
+          358px wide, 1px divider border, padding 8, rows 4px apart and at least 92px tall, radius 16, large
+          shadow. 358×494 with five types.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 xl:grid-cols-2">
+          <Demo label="One column" note="Analogous selected, as in the design. Complementary and Triadic wrap to two lines.">
+            <PaletteTypeMenu aria-label="Palette type, one column example" types={paletteTypes} selected="analogous" className="max-w-full" />
+          </Demo>
+
+          <Demo label="Live (one column)" note="Click a type, or Tab in and use the arrow keys, Home and End.">
+            <PaletteTypeMenuDemo />
           </Demo>
         </div>
       </Group>
