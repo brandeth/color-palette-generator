@@ -6,6 +6,7 @@ import { GenerateButton } from "../../components/generate-button";
 import { IconModeAnalogous } from "../../components/mode-icons";
 import { PaletteTypeButton } from "../../components/palette-type-button";
 import { PaletteTypeMenu } from "../../components/palette-type-menu";
+import { PaletteTypeTrigger } from "../../components/palette-type-trigger";
 import { IconButton } from "../../components/icon-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
@@ -481,6 +482,23 @@ export function ComponentsSection() {
             <CopyMenuDemo variant="landscape" className="max-w-full" />
           </Demo>
         </div>
+      </Group>
+
+      <Group title="Palette type trigger">
+        <p className="text-preset-8 text-text-muted">
+          The button that opens the palette type menu, showing the current type. 236×48, pill shape,
+          surface-alt background, padding 16 left / 12 right. 24px mode icon, gap 8, &quot;Palette
+          type&quot; (Text Preset 9, text-muted) above the type&apos;s name (Text Preset 8 Bold), 20px
+          chevron at the right.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default (waiting off)" note="No border. The chevron points up.">
+            <PaletteTypeTrigger icon={<IconModeAnalogous />}>Analogous</PaletteTypeTrigger>
+          </Demo>
+        </div>
+
+        <Meta>Waiting, hover, open and focus states: not built yet.</Meta>
       </Group>
 
       <Group title="Palette type menu">
