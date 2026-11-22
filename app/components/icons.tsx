@@ -90,6 +90,15 @@ export function IconCheck(props: IconProps) {
   );
 }
 
+/** app/assets/icon-chevron-up.svg */
+export function IconChevronUp(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m5 12.5 5-5 5 5" />
+    </svg>
+  );
+}
+
 /** app/assets/icon-moon.svg */
 export function IconMoon(props: IconProps) {
   return (
