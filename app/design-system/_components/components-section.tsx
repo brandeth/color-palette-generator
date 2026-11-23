@@ -496,9 +496,15 @@ export function ComponentsSection() {
           <Demo label="Default (waiting off)" note="No border. The chevron points up.">
             <PaletteTypeTrigger icon={<IconModeAnalogous />}>Analogous</PaletteTypeTrigger>
           </Demo>
+
+          <Demo label="Hover (waiting off)" note="divider background (#DDE1DD light), &quot;Palette type&quot; label in the text color. Shown forced on here; hover the Default one for the real thing.">
+            <PaletteTypeTrigger icon={<IconModeAnalogous />} className="bg-divider! [&>span>span:first-child]:text-text">
+              Analogous
+            </PaletteTypeTrigger>
+          </Demo>
         </div>
 
-        <Meta>Waiting, hover, open and focus states: not built yet.</Meta>
+        <Meta>Waiting, open and focus states: not built yet.</Meta>
       </Group>
 
       <Group title="Palette type menu">
