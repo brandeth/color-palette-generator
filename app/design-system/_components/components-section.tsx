@@ -502,9 +502,15 @@ export function ComponentsSection() {
               Analogous
             </PaletteTypeTrigger>
           </Demo>
+
+          <Demo label="Focus (waiting off)" note="Keyboard only. 3px outline in focus, 2px offset; fill and label as in Default. Shown forced on here; press Tab on the Default one for the real thing.">
+            <PaletteTypeTrigger icon={<IconModeAnalogous />} className="outline-3 outline-offset-2 outline-focus">
+              Analogous
+            </PaletteTypeTrigger>
+          </Demo>
         </div>
 
-        <Meta>Waiting, open and focus states: not built yet.</Meta>
+        <Meta>Waiting and open states: not built yet.</Meta>
       </Group>
 
       <Group title="Palette type menu">
