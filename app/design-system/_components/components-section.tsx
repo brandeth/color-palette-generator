@@ -510,7 +510,21 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Meta>Waiting and open states: not built yet.</Meta>
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Open (waiting off)" note="Menu showing (aria-expanded). 2px inset ring in text-muted; fill, label and chevron unchanged. Hovering it looks the same.">
+            <PaletteTypeTrigger icon={<IconModeAnalogous />} aria-expanded>
+              Analogous
+            </PaletteTypeTrigger>
+          </Demo>
+
+          <Demo label="Focus (open, waiting off)" note="Focus ring outside the open ring, 2px gap between them. Shown forced on here.">
+            <PaletteTypeTrigger icon={<IconModeAnalogous />} aria-expanded className="outline-3 outline-offset-2 outline-focus">
+              Analogous
+            </PaletteTypeTrigger>
+          </Demo>
+        </div>
+
+        <Meta>Waiting state: not built yet.</Meta>
       </Group>
 
       <Group title="Palette type menu">
