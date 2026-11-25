@@ -58,7 +58,9 @@ const previewIcon = "hidden group-enabled:group-hover:block";
  * (on-swatch-dark), a 4px white outline sits right against it, and a 2px
  * dark ring outside that: 6px beyond the button in all. Drawn with
  * outline and box-shadow, so nothing moves. The label and padlock keep
- * the swatch's ink.
+ * the swatch's ink. Locked uses the same ring and keeps its fill: on a
+ * light swatch the dark border blends into the dark fill; on a dark
+ * swatch the white pill gets a dark border inside the white band.
  *
  * It's a toggle button (aria-pressed), so screen readers announce
  * "Locked, toggle button, pressed". Pass an aria-label that names the
