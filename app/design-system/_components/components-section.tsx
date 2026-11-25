@@ -9,6 +9,7 @@ import { PaletteTypeMenu } from "../../components/palette-type-menu";
 import { PaletteTypeTrigger } from "../../components/palette-type-trigger";
 import { IconButton } from "../../components/icon-button";
 import { LockButton } from "../../components/lock-button";
+import { LockButtonDemo } from "./lock-button-demo";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { ButtonMenuDemo } from "./button-demo";
@@ -599,8 +600,8 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           Locks a colour so Generate keeps it. It sits on the colour&apos;s swatch, so its ink follows the swatch
           (<Code>swatch=&quot;light&quot;</Code>: #1B1F24, <Code>swatch=&quot;dark&quot;</Code>: white), not the page
-          theme. Labelled: 40px pill, 2px border, padding 24, gap 8, 20px padlock, &quot;Lock&quot; in Text Preset 6
-          Bold.
+          theme. Labelled: 40 × 121px pill, 2px border, content centred, gap 8, 20px padlock, &quot;Lock&quot; or
+          &quot;Locked&quot; in Text Preset 6 Bold. A toggle (aria-pressed).
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
@@ -639,9 +640,30 @@ export function ComponentsSection() {
               <LockButton swatch="dark" className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Labelled, locked: default (light swatch)" note="Filled with the ink (#1B1F24), closed padlock, &quot;Locked&quot; in white. Same 121px width as Lock. Hover keeps the fill and shows the open padlock.">
+            <SwatchSample color="#EEE8DF">
+              <LockButton locked />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Labelled, locked: default (dark swatch)" note="Filled with white, the padlock and label in #1B1F24.">
+            <SwatchSample color="#561A45">
+              <LockButton swatch="dark" locked />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Lock button (live example)" note="Click, or Tab and press Space, to lock and unlock. Hover previews the click: the padlock closes on Lock and opens on Locked.">
+            <SwatchSample color="#EEE8DF">
+              <LockButtonDemo aria-label="Lock colour 1" />
+            </SwatchSample>
+            <SwatchSample color="#561A45">
+              <LockButtonDemo swatch="dark" aria-label="Lock colour 2" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>Locked and the icon-only sizes: not built yet.</Meta>
+        <Meta>Locked focus and the icon-only sizes: not built yet.</Meta>
       </Group>
     </Section>
   );
