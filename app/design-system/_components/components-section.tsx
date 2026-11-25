@@ -1,4 +1,4 @@
-import type { ComponentProps, ReactNode } from "react";
+import { Fragment, type ComponentProps, type ReactNode } from "react";
 import { Button } from "../../components/button";
 import { CopyOption } from "../../components/copy-option";
 import { CopyPaletteMenu } from "../../components/copy-palette-menu";
@@ -30,6 +30,42 @@ function Demo({ label, note, children }: { label: string; note?: ReactNode; chil
       <div className="flex flex-col gap-paintbox-050">
         <p className="text-preset-8-bold">{label}</p>
         {note ? <Meta>{note}</Meta> : null}
+      </div>
+    </div>
+  );
+}
+
+/** Every trigger state (columns) with waiting off and on (rows), as in the design. */
+function TriggerStateGrid({ size }: { size: "default" | "compact" }) {
+  const states = ["Default", "Hover", "Focus", "Open"] as const;
+  // Forced looks for the static grid. Hover only recolours the label when it isn't waiting.
+  const forced = (state: (typeof states)[number], waiting: boolean): Partial<ComponentProps<typeof PaletteTypeTrigger>> =>
+    ({
+      Default: {},
+      Hover: { className: waiting ? "bg-divider!" : "bg-divider! [&>span>span:first-child]:text-text" },
+      Focus: { className: "outline-3 outline-offset-2 outline-focus" },
+      Open: { "aria-expanded": true },
+    })[state];
+
+  return (
+    <div className="max-w-full overflow-x-auto p-paintbox-100">
+      <div className="grid w-max grid-cols-[auto_repeat(4,auto)] items-center gap-x-paintbox-400 gap-y-paintbox-300">
+        <span />
+        {states.map((state) => (
+          <p key={state} className="text-preset-9 text-text-muted">
+            {state}
+          </p>
+        ))}
+        {[false, true].map((waiting) => (
+          <Fragment key={String(waiting)}>
+            <p className="text-preset-9 text-text-muted">Waiting {waiting ? "on" : "off"}</p>
+            {states.map((state) => (
+              <PaletteTypeTrigger key={state} size={size} waiting={waiting} icon={<IconModeAnalogous />} {...forced(state, waiting)}>
+                Analogous
+              </PaletteTypeTrigger>
+            ))}
+          </Fragment>
+        ))}
       </div>
     </div>
   );
@@ -486,45 +522,34 @@ export function ComponentsSection() {
 
       <Group title="Palette type trigger">
         <p className="text-preset-8 text-text-muted">
-          The button that opens the palette type menu, showing the current type. 236×48, pill shape,
-          surface-alt background, padding 16 left / 12 right. 24px mode icon, gap 8, &quot;Palette
+          The button that opens the palette type menu, showing the current type. 236×48 (compact 176×48),
+          pill shape, surface-alt background, padding 16 left / 12 right. 24px mode icon, gap 8, &quot;Palette
           type&quot; (Text Preset 9, text-muted) above the type&apos;s name (Text Preset 8 Bold), 20px
           chevron at the right.
         </p>
 
-        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
-          <Demo label="Default (waiting off)" note="No border. The chevron points up.">
-            <PaletteTypeTrigger icon={<IconModeAnalogous />}>Analogous</PaletteTypeTrigger>
-          </Demo>
+        <Demo label="Default size" note="236×48. Hover and Focus are forced on here; hover or Tab to the Default ones for the real thing.">
+          <TriggerStateGrid size="default" />
+        </Demo>
 
-          <Demo label="Hover (waiting off)" note="divider background (#DDE1DD light), &quot;Palette type&quot; label in the text color. Shown forced on here; hover the Default one for the real thing.">
-            <PaletteTypeTrigger icon={<IconModeAnalogous />} className="bg-divider! [&>span>span:first-child]:text-text">
-              Analogous
-            </PaletteTypeTrigger>
-          </Demo>
+        <Demo label="Compact size" note="size=&quot;compact&quot;: 176×48, padding 12 left / 8 right, gap 4. Same states.">
+          <TriggerStateGrid size="compact" />
+        </Demo>
 
-          <Demo label="Focus (waiting off)" note="Keyboard only. 3px outline in focus, 2px offset; fill and label as in Default. Shown forced on here; press Tab on the Default one for the real thing.">
-            <PaletteTypeTrigger icon={<IconModeAnalogous />} className="outline-3 outline-offset-2 outline-focus">
-              Analogous
-            </PaletteTypeTrigger>
-          </Demo>
-        </div>
+        <ul className="flex list-disc flex-col gap-paintbox-050 pl-paintbox-250 text-preset-8 text-text-muted">
+          <li>Hover: divider background (#DDE1DD light); the &quot;Palette type&quot; label turns to the text color, &quot;Tap Generate&quot; stays green.</li>
+          <li>Focus (keyboard only): 3px outline in focus, 2px offset; fill and label as in Default.</li>
+          <li>Open (aria-expanded, menu showing): 2px inset ring in text-muted; hovering it looks the same.</li>
+          <li>Waiting on (after picking a type, before generating): &quot;Tap Generate&quot; in the pending token (#1E7A3E light) replaces &quot;Palette type&quot;.</li>
+        </ul>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
-          <Demo label="Open (waiting off)" note="Menu showing (aria-expanded). 2px inset ring in text-muted; fill, label and chevron unchanged. Hovering it looks the same.">
-            <PaletteTypeTrigger icon={<IconModeAnalogous />} aria-expanded>
-              Analogous
-            </PaletteTypeTrigger>
-          </Demo>
-
-          <Demo label="Focus (open, waiting off)" note="Focus ring outside the open ring, 2px gap between them. Shown forced on here.">
+          <Demo label="Focus (open)" note="Focus ring outside the open ring, 2px gap between them. Shown forced on here.">
             <PaletteTypeTrigger icon={<IconModeAnalogous />} aria-expanded className="outline-3 outline-offset-2 outline-focus">
               Analogous
             </PaletteTypeTrigger>
           </Demo>
         </div>
-
-        <Meta>Waiting state: not built yet.</Meta>
       </Group>
 
       <Group title="Palette type menu">

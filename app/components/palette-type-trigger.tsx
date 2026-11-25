@@ -5,6 +5,18 @@ type PaletteTypeTriggerProps = ComponentProps<"button"> & {
   /** The current type's mode icon, e.g. <IconModeAnalogous />. Shown at 24px, decorative. */
   icon: ReactNode;
   /** children: the current type's name, e.g. "Analogous". */
+  /**
+   * The type was changed but no palette has been generated with it yet.
+   * Swaps the "Palette type" label for a green "Tap Generate" hint.
+   */
+  waiting?: boolean;
+  /** "compact": 176px wide with tighter padding and gap. Same height, type and states. */
+  size?: "default" | "compact";
+};
+
+const sizeClasses = {
+  default: "w-[14.75rem] gap-paintbox-100 pr-paintbox-150 pl-paintbox-200", // 236px; 16 left, 8 gap, 12 right
+  compact: "w-[11rem] gap-paintbox-050 pr-paintbox-100 pl-paintbox-150", // 176px; 12 left, 4 gap, 8 right
 };
 
 /*
@@ -42,16 +54,31 @@ type PaletteTypeTriggerProps = ComponentProps<"button"> & {
  * the popup roles. The accessible name is the visible text, e.g.
  * "Palette type Analogous".
  *
- * The waiting state comes next.
+ * Waiting (waiting=true, after picking a type and before generating):
+ * the label reads "Tap Generate" in the pending token (#1E7A3E light,
+ * #58B374 dark) instead of "Palette type". Same type, size and position;
+ * nothing else changes. The hover label color is skipped, so the hint
+ * stays green. The accessible name becomes "Tap Generate Analogous".
+ *
+ * Compact size (size="compact"): 176×48, padding 12 left / 8 right, gap
+ * 4. Icon, text, chevron and every state are the same.
  */
-export function PaletteTypeTrigger({ icon, className, children, ...props }: PaletteTypeTriggerProps) {
+export function PaletteTypeTrigger({
+  icon,
+  waiting = false,
+  size = "default",
+  className,
+  children,
+  ...props
+}: PaletteTypeTriggerProps) {
   return (
     <button
       type="button"
       className={[
         // The mode icons are drawn at 32px; :first-child so only that one shrinks, not the chevron.
-        "flex h-paintbox-600 w-[14.75rem] shrink-0 cursor-pointer items-center gap-paintbox-100 [&>svg:first-child]:size-paintbox-300",
-        "group rounded-paintbox-full bg-surface-alt pr-paintbox-150 pl-paintbox-200 text-left text-text",
+        "flex h-paintbox-600 shrink-0 cursor-pointer items-center [&>svg:first-child]:size-paintbox-300",
+        sizeClasses[size],
+        "group rounded-paintbox-full bg-surface-alt text-left text-text",
         // not-aria-expanded: an open button keeps its open look when hovered.
         "hover:enabled:not-aria-expanded:bg-divider",
         "aria-expanded:inset-ring-2 aria-expanded:inset-ring-text-muted",
@@ -64,10 +91,14 @@ export function PaletteTypeTrigger({ icon, className, children, ...props }: Pale
     >
       {icon}
       <span className="flex min-w-0 flex-1 flex-col">
-        {/* Turns to the text color while the button is hovered, unless it's open. */}
-        <span className="truncate text-preset-9 text-text-muted group-enabled:group-hover:group-not-aria-expanded:text-text">
-          Palette type
-        </span>
+        {waiting ? (
+          <span className="truncate text-preset-9 text-pending">Tap Generate</span>
+        ) : (
+          // Turns to the text color while the button is hovered, unless it's open.
+          <span className="truncate text-preset-9 text-text-muted group-enabled:group-hover:group-not-aria-expanded:text-text">
+            Palette type
+          </span>
+        )}
         <span className="truncate text-preset-8-bold">{children}</span>
       </span>
       <IconChevronUp className="shrink-0" />
