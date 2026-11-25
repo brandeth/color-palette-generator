@@ -99,6 +99,24 @@ export function IconChevronUp(props: IconProps) {
   );
 }
 
+/** app/assets/icon-lock-open.svg */
+export function IconLockOpen(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M15 9.167H5c-.92 0-1.667.746-1.667 1.666v5c0 .92.746 1.667 1.667 1.667h10c.92 0 1.666-.746 1.666-1.667v-5c0-.92-.746-1.666-1.666-1.666m-8.334 0V5.833a3.333 3.333 0 0 1 6.25-1.666" />
+    </svg>
+  );
+}
+
+/** app/assets/icon-lock-closed.svg */
+export function IconLockClosed(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M15 9.167H5c-.92 0-1.667.746-1.667 1.666v5c0 .92.746 1.667 1.667 1.667h10c.92 0 1.666-.746 1.666-1.667v-5c0-.92-.746-1.666-1.666-1.666m-8.333 0V5.833a3.333 3.333 0 0 1 6.667 0v3.334" />
+    </svg>
+  );
+}
+
 /** app/assets/icon-moon.svg */
 export function IconMoon(props: IconProps) {
   return (

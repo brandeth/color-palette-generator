@@ -8,6 +8,7 @@ import { PaletteTypeButton } from "../../components/palette-type-button";
 import { PaletteTypeMenu } from "../../components/palette-type-menu";
 import { PaletteTypeTrigger } from "../../components/palette-type-trigger";
 import { IconButton } from "../../components/icon-button";
+import { LockButton } from "../../components/lock-button";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { ButtonMenuDemo } from "./button-demo";
@@ -31,6 +32,15 @@ function Demo({ label, note, children }: { label: string; note?: ReactNode; chil
         <p className="text-preset-8-bold">{label}</p>
         {note ? <Meta>{note}</Meta> : null}
       </div>
+    </div>
+  );
+}
+
+/** A palette colour behind a sample, for components that sit on a swatch. */
+function SwatchSample({ color, children }: { color: string; children: ReactNode }) {
+  return (
+    <div className="flex items-center rounded-paintbox-12 p-paintbox-300" style={{ backgroundColor: color }}>
+      {children}
     </div>
   );
 }
@@ -583,6 +593,31 @@ export function ComponentsSection() {
             <PaletteTypeMenuDemo variant="landscape" />
           </Demo>
         </div>
+      </Group>
+
+      <Group title="Lock button">
+        <p className="text-preset-8 text-text-muted">
+          Locks a colour so Generate keeps it. It sits on the colour&apos;s swatch, so its ink follows the swatch
+          (<Code>swatch=&quot;light&quot;</Code>: #1B1F24, <Code>swatch=&quot;dark&quot;</Code>: white), not the page
+          theme. Labelled: 40px pill, 2px border, padding 24, gap 8, 20px padlock, &quot;Lock&quot; in Text Preset 6
+          Bold.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Labelled, lock off: default (light swatch)" note="On #EEE8DF. Transparent background, so the swatch shows through.">
+            <SwatchSample color="#EEE8DF">
+              <LockButton />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Labelled, lock off: default (dark swatch)" note="On #561A45. Same, with white ink.">
+            <SwatchSample color="#561A45">
+              <LockButton swatch="dark" />
+            </SwatchSample>
+          </Demo>
+        </div>
+
+        <Meta>Hover, focus, locked and the icon-only sizes: not built yet.</Meta>
       </Group>
     </Section>
   );
