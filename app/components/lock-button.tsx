@@ -11,9 +11,10 @@ type LockButtonProps = Omit<ComponentProps<"button">, "children"> & {
   swatch?: "light" | "dark";
 };
 
+// Ink, plus the hover fill: that ink at 15%, so it tints whatever swatch is behind.
 const inkBySwatch = {
-  light: "border-on-swatch-dark text-on-swatch-dark",
-  dark: "border-on-swatch-light text-on-swatch-light",
+  light: "border-on-swatch-dark text-on-swatch-dark hover:enabled:bg-on-swatch-dark-hover",
+  dark: "border-on-swatch-light text-on-swatch-light hover:enabled:bg-on-swatch-light-hover",
 };
 
 /*
@@ -26,7 +27,12 @@ const inkBySwatch = {
  * then "Lock" in Text Preset 6 Bold (19px), both in the ink colour.
  * "Lock" is 121px wide (2 + 24 + 20 + 8 + 41 + 24 + 2).
  *
- * Hover, focus and the locked state come next.
+ * Hover: fills with the ink colour at 15% (on-swatch-dark-hover or
+ * on-swatch-light-hover), so the swatch shows through, tinted: #CECAC3
+ * on #EEE8DF, #6F3C61 on #561A45. Border, size and content stay the same.
+ * Only on enabled buttons, and only on devices that can hover.
+ *
+ * Focus and the locked state come next.
  */
 export function LockButton({ swatch = "light", className, ...props }: LockButtonProps) {
   return (
