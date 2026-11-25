@@ -627,9 +627,21 @@ export function ComponentsSection() {
               <LockButton swatch="dark" className="bg-on-swatch-light-hover" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Labelled, lock off: focus (light swatch)" note="Keyboard only. Dark border, 4px white, 2px dark: reads on any swatch. Shown forced on; press Tab on the default for the real thing.">
+            <SwatchSample color="#EEE8DF">
+              <LockButton className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Labelled, lock off: focus (dark swatch)" note="The same ring; the border turns dark too, the label and padlock stay white. Shown forced on.">
+            <SwatchSample color="#561A45">
+              <LockButton swatch="dark" className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>Focus, locked and the icon-only sizes: not built yet.</Meta>
+        <Meta>Locked and the icon-only sizes: not built yet.</Meta>
       </Group>
     </Section>
   );
