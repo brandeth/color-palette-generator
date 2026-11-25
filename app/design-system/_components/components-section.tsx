@@ -615,9 +615,21 @@ export function ComponentsSection() {
               <LockButton swatch="dark" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Labelled, lock off: hover (light swatch)" note="Ink at 15% (on-swatch-dark-hover) over the swatch: #CECAC3 here. Shown forced on; hover the default for the real thing.">
+            <SwatchSample color="#EEE8DF">
+              <LockButton className="bg-on-swatch-dark-hover" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Labelled, lock off: hover (dark swatch)" note="White at 15% (on-swatch-light-hover) over the swatch: #6F3C61 here. Shown forced on.">
+            <SwatchSample color="#561A45">
+              <LockButton swatch="dark" className="bg-on-swatch-light-hover" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>Hover, focus, locked and the icon-only sizes: not built yet.</Meta>
+        <Meta>Focus, locked and the icon-only sizes: not built yet.</Meta>
       </Group>
     </Section>
   );
