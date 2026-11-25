@@ -32,7 +32,14 @@ const inkBySwatch = {
  * on #EEE8DF, #6F3C61 on #561A45. Border, size and content stay the same.
  * Only on enabled buttons, and only on devices that can hover.
  *
- * Focus and the locked state come next.
+ * Focus (keyboard only, :focus-visible): a dark / white / dark ring that
+ * reads on any swatch, so it ignores `swatch`. The 2px border turns dark
+ * (on-swatch-dark), a 4px white outline sits right against it, and a 2px
+ * dark ring outside that: 6px beyond the button in all. Drawn with
+ * outline and box-shadow, so nothing moves. The label and padlock keep
+ * the swatch's ink.
+ *
+ * The locked state comes next.
  */
 export function LockButton({ swatch = "light", className, ...props }: LockButtonProps) {
   return (
@@ -43,6 +50,10 @@ export function LockButton({ swatch = "light", className, ...props }: LockButton
         "rounded-paintbox-full border-2 px-paintbox-300",
         "text-preset-6-bold",
         inkBySwatch[swatch],
+        // White outline (4px) over a dark ring (6px): dark/white/dark with the border.
+        "focus-visible:border-on-swatch-dark",
+        "focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-on-swatch-light",
+        "focus-visible:ring-6 focus-visible:ring-on-swatch-dark",
         className,
       ]
         .filter(Boolean)
