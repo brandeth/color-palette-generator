@@ -1,5 +1,7 @@
-import type { ComponentProps } from "react";
-import { IconCopy } from "./icons";
+"use client";
+
+import { useEffect, useState, type ComponentProps, type MouseEvent } from "react";
+import { IconCheck, IconCopy } from "./icons";
 
 type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
   /** The colour's hex code as shown, e.g. "#EEE8DF". */
@@ -10,12 +12,23 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
    * (on-swatch-light) for dark colours. The same in both page themes.
    */
   swatch?: "light" | "dark";
+  /** Show the copied look (the checkmark) regardless of clicks, e.g. in examples. */
+  copied?: boolean;
 };
+
+// How long the checkmark shows after a copy.
+const COPIED_MS = 2000;
 
 // Ink, plus the circle's hover fill: that ink at 15%, so it tints the swatch.
 const colorClasses = {
-  light: { ink: "text-on-swatch-dark", circle: "group-enabled:group-hover:bg-on-swatch-dark-hover" },
-  dark: { ink: "text-on-swatch-light", circle: "group-enabled:group-hover:bg-on-swatch-light-hover" },
+  light: {
+    ink: "text-on-swatch-dark",
+    circle: "group-enabled:group-hover:bg-on-swatch-dark-hover",
+  },
+  dark: {
+    ink: "text-on-swatch-light",
+    circle: "group-enabled:group-hover:bg-on-swatch-light-hover",
+  },
 };
 
 /*
@@ -42,40 +55,84 @@ const colorClasses = {
  * outside the button (200 × 54 with the ring). Drawn with box-shadow and
  * outline, so nothing moves. The code and icon keep the swatch's ink.
  *
+ * Copied: clicking writes the code to the clipboard, then the copy icon
+ * turns into a 20px checkmark (IconCheck) in the same spot for 2s.
+ * Nothing else changes: no fill, the code stays put. Clicking again
+ * copies again and restarts the 2s. If the clipboard refuses, nothing
+ * changes. `copied` forces the look.
+ *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
- * code says what it does.
+ * code says what it does. After a copy, a status message outside the
+ * button announces "Copied #EEE8DF" to screen readers.
  */
-export function CopyHex({ hex, swatch = "light", className, ...props }: CopyHexProps) {
+export function CopyHex({
+  hex,
+  swatch = "light",
+  copied: forceCopied = false,
+  className,
+  onClick,
+  ...props
+}: CopyHexProps) {
   const colors = colorClasses[swatch];
+  // When the last copy happened; null when the checkmark isn't showing.
+  const [copiedAt, setCopiedAt] = useState<number | null>(null);
+  const copied = forceCopied || copiedAt !== null;
+
+  useEffect(() => {
+    if (copiedAt === null) return;
+    const timer = setTimeout(() => setCopiedAt(null), COPIED_MS);
+    return () => clearTimeout(timer);
+  }, [copiedAt]);
+
+  async function copy(event: MouseEvent<HTMLButtonElement>) {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+    try {
+      await navigator.clipboard.writeText(hex);
+      setCopiedAt(Date.now());
+    } catch {
+      // Clipboard unavailable or refused: leave the button as it was.
+    }
+  }
 
   return (
-    <button
-      type="button"
-      className={[
-        "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
-        "rounded-paintbox-full px-paintbox-100",
-        colors.ink,
-        // Dark 7px ring with a white 3px outline 2px out: dark/white/dark.
-        "focus-visible:ring-7 focus-visible:ring-on-swatch-dark",
-        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-on-swatch-light",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
-      {...props}
-    >
-      <span className="sr-only">Copy </span>
-      {/* At least 130px, so the button stays 186px as the colour changes
-          (hex codes differ in width by a few px). */}
-      <span className="min-w-[8.125rem] text-preset-4 decoration-2 underline-offset-1 group-enabled:group-hover:underline">
-        {hex}
-      </span>
-      {/* 36px circle around the icon; filled on hover. */}
-      <span
-        className={["flex size-[2.25rem] items-center justify-center rounded-paintbox-full", colors.circle].join(" ")}
+    <>
+      <button
+        type="button"
+        className={[
+          "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
+          "rounded-paintbox-full px-paintbox-100",
+          colors.ink,
+          // Dark 7px ring with a white 3px outline 2px out: dark/white/dark.
+          "focus-visible:ring-7 focus-visible:ring-on-swatch-dark",
+          "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-on-swatch-light",
+          className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        onClick={copy}
+        {...props}
       >
-        <IconCopy />
+        <span className="sr-only">Copy </span>
+        {/* At least 130px, so the button stays 186px as the colour changes
+            (hex codes differ in width by a few px). */}
+        <span className="min-w-[8.125rem] text-preset-4 decoration-2 underline-offset-1 group-enabled:group-hover:underline">
+          {hex}
+        </span>
+        {/* 36px circle around the icon; filled on hover. */}
+        <span
+          className={[
+            "flex size-[2.25rem] items-center justify-center rounded-paintbox-full",
+            colors.circle,
+          ].join(" ")}
+        >
+          {copied ? <IconCheck /> : <IconCopy />}
+        </span>
+      </button>
+      {/* Outside the button, so it isn't part of the button's name. */}
+      <span role="status" className="sr-only">
+        {copiedAt !== null ? `Copied ${hex}` : ""}
       </span>
-    </button>
+    </>
   );
 }
