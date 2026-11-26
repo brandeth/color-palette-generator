@@ -9,9 +9,10 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
   hex: string;
   /**
    * "column" (default): tall, with Lock and the hex code at the bottom
-   * left. The other layouts come later.
+   * left. "row": wide and short, the hex code on the left and the round
+   * Lock on the right. The other layouts come later.
    */
-  layout?: "column";
+  layout?: "column" | "row";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -41,6 +42,14 @@ function luminance([r, g, b]: [number, number, number]) {
 function contrast(a: number, b: number) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
+
+// Each layout's arrangement and padding (the border takes no space).
+const layoutClasses = {
+  // Contents at the bottom left; padding 16 16 16 8, gap 8.
+  column: "flex-col items-start justify-end pt-paintbox-200 pr-paintbox-200 pb-paintbox-200 pl-paintbox-100",
+  // Hex on the left, Lock on the right, centred; padding 12 12 12 4, gap 8.
+  row: "flex-row items-center justify-between py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
+};
 
 /** The ink with more contrast on `hex` ("#RRGGBB" or "#RGB"): #1B1F24 or white. */
 export function inkFor(hex: string): Ink {
@@ -72,6 +81,12 @@ export function inkFor(hex: string): Ink {
  * (labelled, 122px) with 8 more on its left, so it starts 16px in; then
  * Copy Hex (large), whose code lines up 12px in.
  *
+ * Row layout (the design's 343 × 64): a row, centred, with Copy Hex
+ * (large) on the left and Lock (icon, the 40px circle) on the right, as
+ * far apart as the width allows. Padding 12 at the top, right and bottom
+ * and 4 on the left, gap 8: the code starts 16px in (4 + 12) and the
+ * circle ends 12px from the right.
+ *
  * It's a group named after the hex code, so screen readers announce
  * "#EEE8DF, group" before its "Lock" and "Copy #EEE8DF" buttons.
  */
@@ -87,6 +102,7 @@ export function Swatch({
 }: SwatchProps) {
   // The children name the swatch by its lightness: a dark ink sits on a light swatch.
   const swatch = (ink ?? inkFor(hex)) === "dark" ? "light" : "dark";
+  const toggleLock = () => onLockedChange?.(!locked);
 
   return (
     <div
@@ -94,8 +110,8 @@ export function Swatch({
       aria-label={hex}
       data-layout={layout}
       className={[
-        "flex flex-col items-start justify-end gap-paintbox-100",
-        "pt-paintbox-200 pr-paintbox-200 pb-paintbox-200 pl-paintbox-100",
+        "flex gap-paintbox-100",
+        layoutClasses[layout],
         "rounded-paintbox-12 inset-ring-2 inset-ring-paintbox-neutral-alpha-14",
         className,
       ]
@@ -104,10 +120,20 @@ export function Swatch({
       style={{ backgroundColor: hex, ...style }}
       {...props}
     >
-      <div className="pl-paintbox-100">
-        <LockButton swatch={swatch} locked={locked} onClick={() => onLockedChange?.(!locked)} />
-      </div>
-      <CopyHex hex={hex} swatch={swatch} />
+      {layout === "column" ? (
+        <>
+          {/* 8px more on the left, so Lock starts 16px in. */}
+          <div className="pl-paintbox-100">
+            <LockButton swatch={swatch} locked={locked} onClick={toggleLock} />
+          </div>
+          <CopyHex hex={hex} swatch={swatch} />
+        </>
+      ) : (
+        <>
+          <CopyHex hex={hex} swatch={swatch} />
+          <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />
+        </>
+      )}
     </div>
   );
 }
