@@ -909,9 +909,13 @@ export function ComponentsSection() {
           <Demo label="Hex hover" note="A 1px underline under the hex, 1px below the baseline. Shown forced on; hover the hex above for the real thing, or click it to copy.">
             <RoleLabel name="Page" hex="#EEE8DF" className="[&>button]:underline" />
           </Demo>
+
+          <Demo label="Hex focus" note="Keyboard only. A 3px violet ring (focus), 2px outside the hex; nothing moves. Shown forced on; press Tab to the hex above for the real thing.">
+            <RoleLabel name="Page" hex="#EEE8DF" className="[&>button]:outline-3 [&>button]:outline-offset-2 [&>button]:outline-focus" />
+          </Demo>
         </div>
 
-        <Meta>The hex&apos;s focus, and the dark label: not built yet.</Meta>
+        <Meta>The dark label: not built yet.</Meta>
       </Group>
     </Section>
   );
