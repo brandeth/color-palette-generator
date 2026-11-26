@@ -9,8 +9,19 @@ type LockButtonProps = Omit<ComponentProps<"button">, "children" | "aria-pressed
    * with the swatch. The same in both page themes.
    */
   swatch?: "light" | "dark";
-  /** Whether the colour is locked. Fills the pill with the ink; sets aria-pressed. */
+  /** Whether the colour is locked. Fills the button with the ink; sets aria-pressed. */
   locked?: boolean;
+  /**
+   * "labelled" (default): 121px pill with "Lock" / "Locked".
+   * "icon": 40px circle with just the padlock, for tight layouts. Its
+   * accessible name is "Lock" (pass an aria-label to name the colour).
+   */
+  variant?: "labelled" | "icon";
+};
+
+const variantClasses = {
+  labelled: "min-w-[7.5625rem] gap-paintbox-100 px-paintbox-150", // 121px
+  icon: "w-paintbox-500", // 40px circle
 };
 
 // Lock off: ink border and content, plus the hover fill (that ink at 15%,
@@ -62,19 +73,32 @@ const previewIcon = "hidden group-enabled:group-hover:block";
  * light swatch the dark border blends into the dark fill; on a dark
  * swatch the white pill gets a dark border inside the white band.
  *
+ * Icon variant: a 40px circle with the same 2px border and the 20px
+ * padlock centred, no label. Every state matches the labelled one: the
+ * ink fill when locked, the 15% hover tint, the padlock preview on hover,
+ * and the same focus ring.
+ *
  * It's a toggle button (aria-pressed), so screen readers announce
- * "Locked, toggle button, pressed". Pass an aria-label that names the
- * colour when there are several.
+ * "Locked, toggle button, pressed" ("Lock, toggle button, pressed" for
+ * the icon variant). Pass an aria-label that names the colour when there
+ * are several.
  */
-export function LockButton({ swatch = "light", locked = false, className, ...props }: LockButtonProps) {
+export function LockButton({
+  swatch = "light",
+  locked = false,
+  variant = "labelled",
+  className,
+  ...props
+}: LockButtonProps) {
   return (
     <button
       type="button"
       aria-pressed={locked}
       className={[
-        "group inline-flex h-paintbox-500 min-w-[7.5625rem] shrink-0 cursor-pointer items-center justify-center gap-paintbox-100 whitespace-nowrap",
-        "rounded-paintbox-full border-2 px-paintbox-150",
+        "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap",
+        "rounded-paintbox-full border-2",
         "text-preset-6-bold",
+        variantClasses[variant],
         colorClasses[swatch][locked ? "locked" : "off"],
         // White outline (4px) over a dark ring (6px): dark/white/dark with the border.
         "focus-visible:border-on-swatch-dark",
@@ -97,9 +121,14 @@ export function LockButton({ swatch = "light", locked = false, className, ...pro
           <IconLockClosed className={previewIcon} />
         </>
       )}
-      {/* No text-box trim: the design centres the whole line, which sits the
-          letters slightly below the padlock's middle. */}
-      <span>{locked ? "Locked" : "Lock"}</span>
+      {variant === "icon" ? (
+        // A stable name: aria-pressed already says whether it's locked.
+        <span className="sr-only">Lock</span>
+      ) : (
+        // No text-box trim: the design centres the whole line, which sits
+        // the letters slightly below the padlock's middle.
+        <span>{locked ? "Locked" : "Lock"}</span>
+      )}
     </button>
   );
 }

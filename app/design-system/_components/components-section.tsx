@@ -673,9 +673,42 @@ export function ComponentsSection() {
               <LockButtonDemo swatch="dark" aria-label="Lock colour 2" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Icon: every state (light swatch)" note="variant=&quot;icon&quot;: 40px circle, 2px border, 20px padlock. Lock off, hover, focus, then locked, locked focus. Hover and focus shown forced on; the padlock swap shows on real hover.">
+            <SwatchSample color="#EEE8DF">
+              <div className="flex items-center gap-paintbox-300">
+                <LockButton variant="icon" />
+                <LockButton variant="icon" className="bg-on-swatch-dark-hover" />
+                <LockButton variant="icon" className="outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+                <LockButton variant="icon" locked />
+                <LockButton variant="icon" locked className="outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+              </div>
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Icon: every state (dark swatch)" note="The same five, with white ink. Focus turns the border dark.">
+            <SwatchSample color="#561A45">
+              <div className="flex items-center gap-paintbox-300">
+                <LockButton variant="icon" swatch="dark" />
+                <LockButton variant="icon" swatch="dark" className="bg-on-swatch-light-hover" />
+                <LockButton variant="icon" swatch="dark" className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+                <LockButton variant="icon" swatch="dark" locked />
+                <LockButton variant="icon" swatch="dark" locked className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+              </div>
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Icon (live example)" note="Click, or Tab and press Space, to lock and unlock. Its accessible name stays &quot;Lock colour 3&quot;; aria-pressed says whether it's locked.">
+            <SwatchSample color="#EEE8DF">
+              <LockButtonDemo variant="icon" aria-label="Lock colour 3" />
+            </SwatchSample>
+            <SwatchSample color="#561A45">
+              <LockButtonDemo variant="icon" swatch="dark" aria-label="Lock colour 4" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>The icon-only sizes: not built yet.</Meta>
+        <Meta>The small and extra-small icon sizes: not built yet.</Meta>
       </Group>
     </Section>
   );
