@@ -10,6 +10,7 @@ import { PaletteTypeTrigger } from "../../components/palette-type-trigger";
 import { IconButton } from "../../components/icon-button";
 import { CopyHex } from "../../components/copy-hex";
 import { LockButton } from "../../components/lock-button";
+import { RoleLabel } from "../../components/role-label";
 import { LockButtonDemo } from "./lock-button-demo";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
@@ -887,6 +888,21 @@ export function ComponentsSection() {
         </div>
 
         <Meta>Every CopyHex size and state is built.</Meta>
+      </Group>
+
+      <Group title="Role label">
+        <p className="text-preset-8 text-text-muted">
+          Names the role a colour plays in the palette. It sits on the page background, so it follows the page
+          theme. Default: the role name in Text Preset 9 (Hex), in <Code>text-muted</Code>.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Default" note="Text Preset 9 (Hex): Funnel Sans Bold 13px, letter-spacing 0, in text-muted (#545B63).">
+            <RoleLabel name="Page" />
+          </Demo>
+        </div>
+
+        <Meta>Showing the hex, its hover and focus, and the dark label: not built yet.</Meta>
       </Group>
     </Section>
   );
