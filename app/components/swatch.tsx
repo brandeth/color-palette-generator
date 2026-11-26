@@ -10,9 +10,10 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
   /**
    * "column" (default): tall, with Lock and the hex code at the bottom
    * left. "row": wide and short, the hex code on the left and the round
-   * Lock on the right. The other layouts come later.
+   * Lock on the right. "strip": like row but narrower, with the small hex
+   * code (no copy icon). The other layouts come later.
    */
-  layout?: "column" | "row";
+  layout?: "column" | "row" | "strip";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -49,6 +50,8 @@ const layoutClasses = {
   column: "flex-col items-start justify-end pt-paintbox-200 pr-paintbox-200 pb-paintbox-200 pl-paintbox-100",
   // Hex on the left, Lock on the right, centred; padding 12 12 12 4, gap 8.
   row: "flex-row items-center justify-between py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
+  // The same, padding 8 all round.
+  strip: "flex-row items-center justify-between p-paintbox-100",
 };
 
 /** The ink with more contrast on `hex` ("#RRGGBB" or "#RGB"): #1B1F24 or white. */
@@ -86,6 +89,11 @@ export function inkFor(hex: string): Ink {
  * far apart as the width allows. Padding 12 at the top, right and bottom
  * and 4 on the left, gap 8: the code starts 16px in (4 + 12) and the
  * circle ends 12px from the right.
+ *
+ * Strip layout (the design's 259 × 64): the same arrangement with
+ * padding 8 all round, and Copy Hex small without its copy icon (113px
+ * for #EEE8DF), so the code starts 16px in (8 + 4 + 4) and the circle
+ * ends 8px from the right.
  *
  * It's a group named after the hex code, so screen readers announce
  * "#EEE8DF, group" before its "Lock" and "Copy #EEE8DF" buttons.
@@ -130,7 +138,11 @@ export function Swatch({
         </>
       ) : (
         <>
-          <CopyHex hex={hex} swatch={swatch} />
+          {layout === "strip" ? (
+            <CopyHex hex={hex} swatch={swatch} size="small" icon={false} />
+          ) : (
+            <CopyHex hex={hex} swatch={swatch} />
+          )}
           <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />
         </>
       )}
