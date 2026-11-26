@@ -809,9 +809,21 @@ export function ComponentsSection() {
               <CopyHex hex="#561A45" swatch="dark" className="[&>.text-preset-4]:underline [&>span:last-child]:bg-on-swatch-light-hover" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Large: focus (light swatch)" note="Keyboard only. 2px dark, 3px white, 2px dark, all outside the button. Shown forced on; press Tab on the default for the real thing.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" className="ring-7 ring-on-swatch-dark outline-3 outline-offset-2 outline-on-swatch-light" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Large: focus (dark swatch)" note="The same ring; the code and icon stay white. Shown forced on.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" className="ring-7 ring-on-swatch-dark outline-3 outline-offset-2 outline-on-swatch-light" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>Focus, copied and the small size: not built yet.</Meta>
+        <Meta>Copied and the small size: not built yet.</Meta>
       </Group>
     </Section>
   );
