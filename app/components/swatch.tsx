@@ -11,9 +11,10 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
    * "column" (default): tall, with Lock and the hex code at the bottom
    * left. "row": wide and short, the hex code on the left and the round
    * Lock on the right. "strip": like row but narrower, with the small hex
-   * code (no copy icon). The other layouts come later.
+   * code (no copy icon). "strip-icon": just the round Lock, centred.
+   * The other layouts come later.
    */
-  layout?: "column" | "row" | "strip";
+  layout?: "column" | "row" | "strip" | "strip-icon";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -52,6 +53,8 @@ const layoutClasses = {
   row: "flex-row items-center justify-between py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
   // The same, padding 8 all round.
   strip: "flex-row items-center justify-between p-paintbox-100",
+  // Just Lock, centred; padding 12.
+  "strip-icon": "flex-row items-center justify-center p-paintbox-150",
 };
 
 /** The ink with more contrast on `hex` ("#RRGGBB" or "#RGB"): #1B1F24 or white. */
@@ -95,6 +98,10 @@ export function inkFor(hex: string): Ink {
  * for #EEE8DF), so the code starts 16px in (8 + 4 + 4) and the circle
  * ends 8px from the right.
  *
+ * Strip Icon layout (the design's 259 × 64): no hex code, just Lock
+ * (icon, the 40px circle) in the middle; padding 12. The swatch is
+ * still a group named after the code, so Lock says which colour it's on.
+ *
  * It's a group named after the hex code, so screen readers announce
  * "#EEE8DF, group" before its "Lock" and "Copy #EEE8DF" buttons.
  */
@@ -136,6 +143,8 @@ export function Swatch({
           </div>
           <CopyHex hex={hex} swatch={swatch} />
         </>
+      ) : layout === "strip-icon" ? (
+        <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />
       ) : (
         <>
           {layout === "strip" ? (

@@ -935,7 +935,7 @@ export function ComponentsSection() {
           in <Code>paintbox-neutral-alpha-14</Code>. Column: contents at the bottom left, padding 16 16 16 8, gap 8,
           Lock 16px in. Row (<Code>layout=&quot;row&quot;</Code>): the hex on the left, the round Lock on the right,
           padding 12 12 12 4. Strip (<Code>layout=&quot;strip&quot;</Code>): the same with padding 8 and the small hex,
-          no copy icon.
+          no copy icon. Strip Icon (<Code>layout=&quot;strip-icon&quot;</Code>): just the round Lock, centred.
         </p>
 
         <div className="flex flex-wrap gap-paintbox-300">
@@ -968,7 +968,17 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Meta>Row Compact, Strip Icon and Strip Compact: not built yet.</Meta>
+        <div className="flex flex-wrap gap-paintbox-300">
+          <Demo label="Strip Icon: default (light colour)" note='layout="strip-icon" at the design&apos;s 259 × 64. Just the round Lock, centred; padding 12.'>
+            <SwatchDemo hex="#EEE8DF" layout="strip-icon" className="h-paintbox-800 w-[16.1875rem]" />
+          </Demo>
+
+          <Demo label="Strip Icon: default (dark colour)" note="#B6363F, so white ink. The same layout.">
+            <SwatchDemo hex="#B6363F" layout="strip-icon" className="h-paintbox-800 w-[16.1875rem]" />
+          </Demo>
+        </div>
+
+        <Meta>Row Compact and Strip Compact: not built yet.</Meta>
       </Group>
     </Section>
   );
