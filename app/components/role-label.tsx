@@ -1,11 +1,15 @@
+"use client";
+
 import type { ComponentProps } from "react";
+import { useCopy } from "./use-copy";
 
 type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
   /** The colour's role in the palette, e.g. "Page". */
   name: string;
   /**
    * The colour's hex code, e.g. "#EEE8DF". When given, it shows after the
-   * role name; leave it out to show the role name alone.
+   * role name as a button that copies it; leave it out to show the role
+   * name alone.
    */
   hex?: string;
 };
@@ -22,8 +26,16 @@ type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
  * on the same baseline, in Text Preset 9 (Hex) (the same type with
  * letter-spacing 0) in the text colour (#1B1F24 in light mode), so it
  * stands out from the muted role name.
+ *
+ * The hex is a button that copies it to the clipboard. Hover: a 1px
+ * underline in the text colour, 1px below the baseline; nothing moves.
+ * Only on devices that can hover. There's no copied look; a status
+ * message announces "Copied #EEE8DF" to screen readers. Its accessible
+ * name is "Copy #EEE8DF".
  */
 export function RoleLabel({ name, hex, className, ...props }: RoleLabelProps) {
+  const { copied, copy } = useCopy();
+
   return (
     <span
       className={["inline-flex items-baseline gap-paintbox-050 whitespace-nowrap", className]
@@ -32,7 +44,22 @@ export function RoleLabel({ name, hex, className, ...props }: RoleLabelProps) {
       {...props}
     >
       <span className="text-preset-9 text-text-muted">{name}</span>
-      {hex ? <span className="text-preset-9-hex text-text">{hex}</span> : null}
+      {hex ? (
+        <>
+          <button
+            type="button"
+            className="cursor-pointer text-preset-9-hex text-text decoration-1 underline-offset-1 enabled:hover:underline"
+            onClick={() => copy(hex)}
+          >
+            <span className="sr-only">Copy </span>
+            {hex}
+          </button>
+          {/* Outside the button, so it isn't part of the button's name. */}
+          <span role="status" className="sr-only">
+            {copied ? `Copied ${hex}` : ""}
+          </span>
+        </>
+      ) : null}
     </span>
   );
 }

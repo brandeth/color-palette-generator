@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, type ComponentProps, type MouseEvent } from "react";
+import type { ComponentProps, MouseEvent } from "react";
 import { IconCheck, IconCopy } from "./icons";
+import { useCopy } from "./use-copy";
 
 type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
   /** The colour's hex code as shown, e.g. "#EEE8DF". */
@@ -20,9 +21,6 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
   /** Show the copied look (the checkmark) regardless of clicks, e.g. in examples. */
   copied?: boolean;
 };
-
-// How long the checkmark shows after a copy.
-const COPIED_MS = 2000;
 
 // The code's box is at least as wide as the code, so the button keeps
 // its width as the colour changes (hex codes differ by a few px).
@@ -104,25 +102,12 @@ export function CopyHex({
 }: CopyHexProps) {
   const colors = colorClasses[swatch];
   const sizes = sizeClasses[size];
-  // When the last copy happened; null when the checkmark isn't showing.
-  const [copiedAt, setCopiedAt] = useState<number | null>(null);
-  const copied = forceCopied || copiedAt !== null;
+  const { copied: justCopied, copy } = useCopy();
+  const copied = forceCopied || justCopied;
 
-  useEffect(() => {
-    if (copiedAt === null) return;
-    const timer = setTimeout(() => setCopiedAt(null), COPIED_MS);
-    return () => clearTimeout(timer);
-  }, [copiedAt]);
-
-  async function copy(event: MouseEvent<HTMLButtonElement>) {
+  function handleClick(event: MouseEvent<HTMLButtonElement>) {
     onClick?.(event);
-    if (event.defaultPrevented) return;
-    try {
-      await navigator.clipboard.writeText(hex);
-      setCopiedAt(Date.now());
-    } catch {
-      // Clipboard unavailable or refused: leave the button as it was.
-    }
+    if (!event.defaultPrevented) copy(hex);
   }
 
   return (
@@ -141,7 +126,7 @@ export function CopyHex({
         ]
           .filter(Boolean)
           .join(" ")}
-        onClick={copy}
+        onClick={handleClick}
         {...props}
       >
         <span className="sr-only">Copy </span>
@@ -155,7 +140,7 @@ export function CopyHex({
       </button>
       {/* Outside the button, so it isn't part of the button's name. */}
       <span role="status" className="sr-only">
-        {copiedAt !== null ? `Copied ${hex}` : ""}
+        {justCopied ? `Copied ${hex}` : ""}
       </span>
     </>
   );
