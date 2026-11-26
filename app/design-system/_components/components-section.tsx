@@ -933,7 +933,8 @@ export function ComponentsSection() {
           One colour of the palette, with its Lock button and copyable hex code, all in one ink: #1B1F24 or white,
           whichever has more contrast with the colour (or set <Code>ink</Code>). 12px corners and a 2px inset border
           in <Code>paintbox-neutral-alpha-14</Code>. Column: contents at the bottom left, padding 16 16 16 8, gap 8,
-          Lock 16px in.
+          Lock 16px in. Row (<Code>layout=&quot;row&quot;</Code>): the hex on the left, the round Lock on the right,
+          padding 12 12 12 4.
         </p>
 
         <div className="flex flex-wrap gap-paintbox-300">
@@ -946,7 +947,17 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Meta>Row, Row Compact, Strip, Strip Icon and Strip Compact: not built yet.</Meta>
+        <div className="flex flex-wrap gap-paintbox-300">
+          <Demo label="Row: default (light colour)" note='layout="row" at the design&apos;s 343 × 64. Copy Hex on the left, the 40px round Lock on the right; padding 12 12 12 4.'>
+            <SwatchDemo hex="#EEE8DF" layout="row" className="h-paintbox-800 w-[21.4375rem]" />
+          </Demo>
+
+          <Demo label="Row: default (dark colour)" note="#B6363F, so white ink. The same layout.">
+            <SwatchDemo hex="#B6363F" layout="row" className="h-paintbox-800 w-[21.4375rem]" />
+          </Demo>
+        </div>
+
+        <Meta>Row Compact, Strip, Strip Icon and Strip Compact: not built yet.</Meta>
       </Group>
     </Section>
   );
