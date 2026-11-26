@@ -782,7 +782,8 @@ export function ComponentsSection() {
           Copies a colour&apos;s hex code. It sits on the colour&apos;s swatch, so its ink follows the swatch
           (<Code>swatch=&quot;light&quot;</Code>: #1B1F24, <Code>swatch=&quot;dark&quot;</Code>: white), not the page
           theme. Large: 40px tall, padding 8, gap 4, the code in Text Preset 4, then the 20px copy icon in a 36px
-          circle.
+          circle. Small (<Code>size=&quot;small&quot;</Code>): the same height and states, the code in Text Preset 5
+          and the icon in a 28px circle, 145px wide.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
@@ -835,7 +836,57 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Meta>The small size: not built yet.</Meta>
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Small: default (light swatch)" note="On #EEE8DF. 145px wide: padding 8 on the left, 4 on the right.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" size="small" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: default (dark swatch)" note="On #561A45. Same, with white ink.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" size="small" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: hover (light swatch)" note="2px underline, 2px below the baseline; the 28px circle fills with the ink at 15%. Shown forced on.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" size="small" className="[&>.text-preset-5]:underline [&>span:last-child]:bg-on-swatch-dark-hover" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: hover (dark swatch)" note="White underline; white at 15% in the circle. Shown forced on.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" size="small" className="[&>.text-preset-5]:underline [&>span:last-child]:bg-on-swatch-light-hover" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: focus (light swatch)" note="The same dark / white / dark ring as the large size. Shown forced on.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" size="small" className="ring-7 ring-on-swatch-dark outline-3 outline-offset-2 outline-on-swatch-light" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: focus (dark swatch)" note="The same ring; the code and icon stay white. Shown forced on.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" size="small" className="ring-7 ring-on-swatch-dark outline-3 outline-offset-2 outline-on-swatch-light" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: copied (light swatch)" note="The checkmark for 2s after a click. Shown forced on (copied).">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" size="small" copied />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Small: copied (dark swatch)" note="The same, with a white checkmark.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" size="small" copied />
+            </SwatchSample>
+          </Demo>
+        </div>
+
+        <Meta>Every CopyHex size and state is built.</Meta>
       </Group>
     </Section>
   );
