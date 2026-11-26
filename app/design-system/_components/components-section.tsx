@@ -821,9 +821,21 @@ export function ComponentsSection() {
               <CopyHex hex="#561A45" swatch="dark" className="ring-7 ring-on-swatch-dark outline-3 outline-offset-2 outline-on-swatch-light" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Large: copied (light swatch)" note="The copy icon turns into a checkmark for 2s after a click; nothing else changes. Shown forced on (copied). Click the defaults above to copy for real.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" copied />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Large: copied (dark swatch)" note="The same, with a white checkmark.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" copied />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>Copied and the small size: not built yet.</Meta>
+        <Meta>The small size: not built yet.</Meta>
       </Group>
     </Section>
   );
