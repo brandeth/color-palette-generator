@@ -8,6 +8,7 @@ import { PaletteTypeButton } from "../../components/palette-type-button";
 import { PaletteTypeMenu } from "../../components/palette-type-menu";
 import { PaletteTypeTrigger } from "../../components/palette-type-trigger";
 import { IconButton } from "../../components/icon-button";
+import { CopyHex } from "../../components/copy-hex";
 import { LockButton } from "../../components/lock-button";
 import { LockButtonDemo } from "./lock-button-demo";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
@@ -774,6 +775,31 @@ export function ComponentsSection() {
         </div>
 
         <Meta>Every LockButton variant and state is built.</Meta>
+      </Group>
+
+      <Group title="Copy hex">
+        <p className="text-preset-8 text-text-muted">
+          Copies a colour&apos;s hex code. It sits on the colour&apos;s swatch, so its ink follows the swatch
+          (<Code>swatch=&quot;light&quot;</Code>: #1B1F24, <Code>swatch=&quot;dark&quot;</Code>: white), not the page
+          theme. Large: 40px tall, padding 8, gap 4, the code in Text Preset 4, then the 20px copy icon in a 36px
+          circle.
+        </p>
+
+        <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
+          <Demo label="Large: default (light swatch)" note="On #EEE8DF. 186px wide, no border or background.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Large: default (dark swatch)" note="On #561A45. Same, with white ink.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" />
+            </SwatchSample>
+          </Demo>
+        </div>
+
+        <Meta>Hover, focus, copied and the small size: not built yet.</Meta>
       </Group>
     </Section>
   );
