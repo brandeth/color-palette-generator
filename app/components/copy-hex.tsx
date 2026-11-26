@@ -36,6 +36,12 @@ const colorClasses = {
  * #EEE8DF, #6F3C61 on #561A45. Nothing moves. Only on enabled buttons,
  * and only on devices that can hover.
  *
+ * Focus (keyboard only, :focus-visible): a dark / white / dark ring
+ * round the pill that reads on any swatch, so it ignores `swatch`: 2px
+ * dark (on-swatch-dark), 3px white (on-swatch-light), 2px dark, all
+ * outside the button (200 × 54 with the ring). Drawn with box-shadow and
+ * outline, so nothing moves. The code and icon keep the swatch's ink.
+ *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
  * code says what it does.
  */
@@ -49,6 +55,9 @@ export function CopyHex({ hex, swatch = "light", className, ...props }: CopyHexP
         "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
         "rounded-paintbox-full px-paintbox-100",
         colors.ink,
+        // Dark 7px ring with a white 3px outline 2px out: dark/white/dark.
+        "focus-visible:ring-7 focus-visible:ring-on-swatch-dark",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-on-swatch-light",
         className,
       ]
         .filter(Boolean)
