@@ -14,20 +14,30 @@ type LockButtonProps = Omit<ComponentProps<"button">, "children" | "aria-pressed
   /**
    * "labelled" (default): 121px pill with "Lock" / "Locked".
    * "icon": 40px circle with just the padlock, for tight layouts.
-   * "icon-small": just the padlock in a 64 × 56 tap area, no border; a
-   * 32px ink circle when locked. For the tightest layouts.
+   * "icon-small": just the 20px padlock in a 64 × 56 tap area, no
+   * border; a 32px ink circle when locked. For the tightest layouts.
+   * "icon-xsmall": the same tap area with a 16px padlock and a 20px
+   * circle when locked.
    * The icon variants' accessible name is "Lock" (pass an aria-label to
    * name the colour).
    */
-  variant?: "labelled" | "icon" | "icon-small";
+  variant?: "labelled" | "icon" | "icon-small" | "icon-xsmall";
 };
 
-// Size and shape. Every variant has a 2px border (transparent on
-// icon-small) so the focus ring can turn it dark.
+// The borderless sizes: one 64 × 56 tap area, different insides.
+const tapArea = "h-[3.5rem] w-paintbox-800 rounded-paintbox-12"; // 64 × 56
+const borderless = {
+  "icon-small": { circle: "size-paintbox-400", icon: "" }, // 32px circle, 20px padlock
+  "icon-xsmall": { circle: "size-paintbox-250", icon: "size-paintbox-200" }, // 20px circle, 16px padlock
+};
+
+// Size and shape. Every variant has a 2px border (transparent on the
+// borderless sizes) so the focus ring can turn it dark.
 const variantClasses = {
   labelled: "h-paintbox-500 min-w-[7.5625rem] gap-paintbox-100 rounded-paintbox-full px-paintbox-150", // 121px
   icon: "size-paintbox-500 rounded-paintbox-full", // 40px circle
-  "icon-small": "h-[3.5rem] w-paintbox-800 rounded-paintbox-12", // 64 × 56
+  "icon-small": tapArea,
+  "icon-xsmall": tapArea,
 };
 
 // Lock off: ink border and content, plus the hover fill (that ink at 15%,
@@ -44,8 +54,8 @@ const colorClasses = {
   },
 };
 
-// icon-small: no visible border. Lock off is just the padlock (the hover
-// fills the whole tap area); locked fills only the circle around it.
+// The borderless sizes. Lock off is just the padlock (the hover fills the
+// whole tap area); locked fills only the circle around it.
 const smallColorClasses = {
   light: {
     off: "border-transparent text-on-swatch-dark hover:enabled:bg-on-swatch-dark-hover",
@@ -106,6 +116,10 @@ const previewIcon = "hidden group-enabled:group-hover:block";
  * turns the other ink; hover only swaps the padlock. Focus is the same
  * ring around the tap area: the transparent border turns dark.
  *
+ * Icon-xsmall variant: icon-small with a smaller inside: a 16px padlock
+ * and, when locked, a 20px circle. Same tap area, hover and focus, so
+ * it's just as easy to hit.
+ *
  * It's a toggle button (aria-pressed), so screen readers announce
  * "Locked, toggle button, pressed" ("Lock, toggle button, pressed" for
  * the icon variants). Pass an aria-label that names the colour when
@@ -118,18 +132,20 @@ export function LockButton({
   className,
   ...props
 }: LockButtonProps) {
-  const small = variant === "icon-small";
-  const colors = small ? smallColorClasses[swatch] : colorClasses[swatch];
+  const inside = variant === "icon-small" || variant === "icon-xsmall" ? borderless[variant] : null;
+  const colors = inside ? smallColorClasses[swatch] : colorClasses[swatch];
+  const resting = [restingIcon, inside?.icon].filter(Boolean).join(" ");
+  const preview = [previewIcon, inside?.icon].filter(Boolean).join(" ");
 
   const icons = locked ? (
     <>
-      <IconLockClosed className={restingIcon} />
-      <IconLockOpen className={previewIcon} />
+      <IconLockClosed className={resting} />
+      <IconLockOpen className={preview} />
     </>
   ) : (
     <>
-      <IconLockOpen className={restingIcon} />
-      <IconLockClosed className={previewIcon} />
+      <IconLockOpen className={resting} />
+      <IconLockClosed className={preview} />
     </>
   );
 
@@ -152,11 +168,12 @@ export function LockButton({
         .join(" ")}
       {...props}
     >
-      {small ? (
-        // 32px circle, filled with the ink when locked.
+      {inside ? (
+        // The circle, filled with the ink when locked.
         <span
           className={[
-            "flex size-paintbox-400 items-center justify-center rounded-paintbox-full",
+            "flex items-center justify-center rounded-paintbox-full",
+            inside.circle,
             locked ? smallColorClasses[swatch].circle : "",
           ].join(" ")}
         >
