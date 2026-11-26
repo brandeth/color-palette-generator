@@ -893,16 +893,21 @@ export function ComponentsSection() {
       <Group title="Role label">
         <p className="text-preset-8 text-text-muted">
           Names the role a colour plays in the palette. It sits on the page background, so it follows the page
-          theme. Default: the role name in Text Preset 9 (Hex), in <Code>text-muted</Code>.
+          theme. Default: the role name in Text Preset 9, in <Code>text-muted</Code>. With <Code>hex</Code>, the hex code
+          follows 4px after it in Text Preset 9 (Hex), in <Code>text</Code>.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
-          <Demo label="Default" note="Text Preset 9 (Hex): Funnel Sans Bold 13px, letter-spacing 0, in text-muted (#545B63).">
+          <Demo label="Default" note="Text Preset 9: Funnel Sans Bold 13px, letter-spacing 2%, in text-muted (#545B63).">
             <RoleLabel name="Page" />
+          </Demo>
+
+          <Demo label="Hex shown" note="The hex follows 4px after the role, on the same baseline: Text Preset 9 (Hex), letter-spacing 0, in text (#1B1F24).">
+            <RoleLabel name="Page" hex="#EEE8DF" />
           </Demo>
         </div>
 
-        <Meta>Showing the hex, its hover and focus, and the dark label: not built yet.</Meta>
+        <Meta>The hex&apos;s hover and focus, and the dark label: not built yet.</Meta>
       </Group>
     </Section>
   );
