@@ -797,9 +797,21 @@ export function ComponentsSection() {
               <CopyHex hex="#561A45" swatch="dark" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Large: hover (light swatch)" note="2px underline under the code; the icon's circle fills with the ink at 15% (#CECAC3 here). Shown forced on; hover the default for the real thing.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" className="[&>.text-preset-4]:underline [&>span:last-child]:bg-on-swatch-dark-hover" />
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Large: hover (dark swatch)" note="White underline; white at 15% in the circle (#6F3C61 here). Shown forced on.">
+            <SwatchSample color="#561A45">
+              <CopyHex hex="#561A45" swatch="dark" className="[&>.text-preset-4]:underline [&>span:last-child]:bg-on-swatch-light-hover" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>Hover, focus, copied and the small size: not built yet.</Meta>
+        <Meta>Focus, copied and the small size: not built yet.</Meta>
       </Group>
     </Section>
   );
