@@ -12,6 +12,20 @@ type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
    * name alone.
    */
   hex?: string;
+  /**
+   * "inline" (default): left-aligned, the role name muted.
+   * "centered": centred, with 4px above, the role name in the text colour.
+   * "stacked": the role name in the text colour, the hex below it.
+   */
+  variant?: "inline" | "centered" | "stacked";
+};
+
+const variantClasses = {
+  inline: { label: "items-baseline", name: "text-text-muted" },
+  // 4 + 16.9 line: the design's 21px frame with the baseline 17px down.
+  centered: { label: "items-baseline justify-center pt-paintbox-050 text-center", name: "text-text" },
+  // Just the 16.9px line: the design's 17px frame with the baseline 13px down.
+  stacked: { label: "flex-col items-start", name: "text-text" },
 };
 
 /*
@@ -38,18 +52,28 @@ type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
  * outside): about 63 × 34 around "#EEE8DF". The button has 3.5px of
  * padding above and below, taken back by negative margins, so the ring
  * is that tall without moving anything (and the target is 24px tall).
+ *
+ * Centered variant, default state: the role name centred, in the text
+ * colour (#1B1F24 in light mode) instead of muted, with 4px above it:
+ * 21px tall (4 + the 16.9px line), baseline 17px down, and as wide as the
+ * text (31px for "Page").
+ *
+ * Stacked variant, default state: the role name in the text colour, with
+ * nothing above it: 17px tall (the 16.9px line), baseline 13px down, as
+ * wide as the text. The hex, when shown, goes below it.
  */
-export function RoleLabel({ name, hex, className, ...props }: RoleLabelProps) {
+export function RoleLabel({ name, hex, variant = "inline", className, ...props }: RoleLabelProps) {
   const { copied, copy } = useCopy();
+  const variantClass = variantClasses[variant];
 
   return (
     <span
-      className={["inline-flex items-baseline gap-paintbox-050 whitespace-nowrap", className]
+      className={["inline-flex gap-paintbox-050 whitespace-nowrap", variantClass.label, className]
         .filter(Boolean)
         .join(" ")}
       {...props}
     >
-      <span className="text-preset-9 text-text-muted">{name}</span>
+      <span className={["text-preset-9", variantClass.name].join(" ")}>{name}</span>
       {hex ? (
         <>
           <button
