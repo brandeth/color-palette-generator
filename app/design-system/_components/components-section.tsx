@@ -940,9 +940,13 @@ export function ComponentsSection() {
           <Demo label="Column: default (light colour)" note="#EEE8DF at the design's 259 × 703, so dark ink. Lock and copy work.">
             <SwatchDemo hex="#EEE8DF" className="h-[43.9375rem] w-[16.1875rem]" />
           </Demo>
+
+          <Demo label="Column: default (dark colour)" note="#B6363F, so white ink, picked by contrast. The same layout; Copy Hex is 183px, as it follows the code.">
+            <SwatchDemo hex="#B6363F" className="h-[43.9375rem] w-[16.1875rem]" />
+          </Demo>
         </div>
 
-        <Meta>The dark colour, Row, Row Compact, Strip, Strip Icon and Strip Compact: not built yet.</Meta>
+        <Meta>Row, Row Compact, Strip, Strip Icon and Strip Compact: not built yet.</Meta>
       </Group>
     </Section>
   );
