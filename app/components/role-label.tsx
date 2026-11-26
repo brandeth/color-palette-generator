@@ -32,6 +32,12 @@ type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
  * Only on devices that can hover. There's no copied look; a status
  * message announces "Copied #EEE8DF" to screen readers. Its accessible
  * name is "Copy #EEE8DF".
+ *
+ * Focus (keyboard only, :focus-visible): a 3px ring in the focus colour
+ * (violet), 2px outside the hex, with rounded corners (8px inside, 11px
+ * outside): about 63 × 34 around "#EEE8DF". The button has 3.5px of
+ * padding above and below, taken back by negative margins, so the ring
+ * is that tall without moving anything (and the target is 24px tall).
  */
 export function RoleLabel({ name, hex, className, ...props }: RoleLabelProps) {
   const { copied, copy } = useCopy();
@@ -48,7 +54,14 @@ export function RoleLabel({ name, hex, className, ...props }: RoleLabelProps) {
         <>
           <button
             type="button"
-            className="cursor-pointer text-preset-9-hex text-text decoration-1 underline-offset-1 enabled:hover:underline"
+            className={[
+              "cursor-pointer text-preset-9-hex text-text decoration-1 underline-offset-1 enabled:hover:underline",
+              // 3.5px above and below, taken back by the margins: a 24px
+              // tall target and ring that don't move anything.
+              "-my-[3.5px] py-[3.5px] rounded-[6px]",
+              // Ring radius 6 + 2 = 8 inside, 11 outside, as in the design.
+              "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
+            ].join(" ")}
             onClick={() => copy(hex)}
           >
             <span className="sr-only">Copy </span>
