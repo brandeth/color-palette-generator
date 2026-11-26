@@ -12,6 +12,7 @@ import { CopyHex } from "../../components/copy-hex";
 import { LockButton } from "../../components/lock-button";
 import { RoleLabel } from "../../components/role-label";
 import { LockButtonDemo } from "./lock-button-demo";
+import { SwatchDemo } from "./swatch-demo";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { ButtonMenuDemo } from "./button-demo";
@@ -925,6 +926,23 @@ export function ComponentsSection() {
         </div>
 
         <Meta>The centered and stacked variants with the hex: not built yet.</Meta>
+      </Group>
+
+      <Group title="Swatch">
+        <p className="text-preset-8 text-text-muted">
+          One colour of the palette, with its Lock button and copyable hex code, all in one ink: #1B1F24 or white,
+          whichever has more contrast with the colour (or set <Code>ink</Code>). 12px corners and a 2px inset border
+          in <Code>paintbox-neutral-alpha-14</Code>. Column: contents at the bottom left, padding 16 16 16 8, gap 8,
+          Lock 16px in.
+        </p>
+
+        <div className="flex flex-wrap gap-paintbox-300">
+          <Demo label="Column: default (light colour)" note="#EEE8DF at the design's 259 × 703, so dark ink. Lock and copy work.">
+            <SwatchDemo hex="#EEE8DF" className="h-[43.9375rem] w-[16.1875rem]" />
+          </Demo>
+        </div>
+
+        <Meta>The dark colour, Row, Row Compact, Strip, Strip Icon and Strip Compact: not built yet.</Meta>
       </Group>
     </Section>
   );
