@@ -14,27 +14,28 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
    */
   swatch?: "light" | "dark";
   /**
-   * "large" (default): the code in Text Preset 4 (28px), 186px wide.
-   * "small": the code in Text Preset 5 (22px), 145px wide. Both 40px tall.
+   * "large" (default): the code in Text Preset 4 (28px), 186px wide on #EEE8DF.
+   * "small": the code in Text Preset 5 (22px), 145px wide on #EEE8DF.
+   * Both 40px tall; the width follows the code, as in the design.
    */
   size?: "large" | "small";
   /** Show the copied look (the checkmark) regardless of clicks, e.g. in examples. */
   copied?: boolean;
 };
 
-// The code's box is at least as wide as the code, so the button keeps
-// its width as the colour changes (hex codes differ by a few px).
+// As in the design: the code sits in a box with 4px either side that
+// hugs it, so the button is as wide as the code needs.
 const sizeClasses = {
-  // 8 + 130 + 4 + 36 + 8 = 186
+  // 8 + (4 + 122 + 4) + 4 + 36 + 8 = 186 for #EEE8DF; 183 for #B6363F.
   large: {
     button: "px-paintbox-100",
-    code: "min-w-[8.125rem] text-preset-4 underline-offset-1",
+    code: "px-paintbox-050 text-preset-4 underline-offset-1",
     circle: "size-[2.25rem]",
   },
-  // 8 + 101 + 4 + 28 + 4 = 145: the design has 4 to the circle's right.
+  // 4 + (4 + 97 + 4) + 4 + 28 + 4 = 145 for #EEE8DF; 142 for #B6363F.
   small: {
-    button: "pl-paintbox-100 pr-paintbox-050",
-    code: "min-w-[6.3125rem] text-preset-5 underline-offset-2",
+    button: "px-paintbox-050",
+    code: "px-paintbox-050 text-preset-5 underline-offset-2",
     circle: "size-[1.75rem]",
   },
 };
@@ -57,11 +58,11 @@ const colorClasses = {
  *
  * Large size, default state: 40px tall, padding 8 at the sides, gap 4.
  * The hex code in Text Preset 4 (Funnel Display SemiBold 28px,
- * uppercase) in a box at least 130px wide, then the 20px copy icon
- * centred in a 36px circle (the circle shows on hover): 186px wide
- * (8 + 130 + 4 + 36 + 8), whatever the colour, so it doesn't shift when
- * the colour changes. No border or background, so the swatch shows
- * through; both in the ink colour. Pill-shaped, for the focus ring.
+ * uppercase) with 4px either side, then the 20px copy icon centred in a
+ * 36px circle (the circle shows on hover). The width follows the code:
+ * 186px for #EEE8DF (8 + 4 + 122 + 4 + 4 + 36 + 8), 183px for #B6363F.
+ * No border or background, so the swatch shows through; both in the
+ * ink colour. Pill-shaped, for the focus ring.
  *
  * Hover (anywhere on the button): the code gets a 2px underline in the
  * ink, 1px below the baseline, and the icon's circle fills with the ink
@@ -82,10 +83,10 @@ const colorClasses = {
  * changes. `copied` forces the look.
  *
  * Small size: the same 40px height, states and focus ring, with the code
- * in Text Preset 5 (Funnel Display Bold 22px, uppercase) in a box at least
- * 101px wide and the same 20px icon in a 28px circle: padding 8 on the
- * left, 4 on the right, gap 4, 145px wide. The hover underline is 2px,
- * 2px below the baseline.
+ * in Text Preset 5 (Funnel Display Bold 22px, uppercase) with 4px either
+ * side and the same 20px icon in a 28px circle: padding 4 at the sides,
+ * gap 4, 145px wide for #EEE8DF (4 + 4 + 97 + 4 + 4 + 28 + 4). The hover
+ * underline is 2px, 2px below the baseline.
  *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
  * code says what it does. After a copy, a status message outside the

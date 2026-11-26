@@ -12,7 +12,7 @@ type LockButtonProps = Omit<ComponentProps<"button">, "children" | "aria-pressed
   /** Whether the colour is locked. Fills the button (or its circle) with the ink; sets aria-pressed. */
   locked?: boolean;
   /**
-   * "labelled" (default): 121px pill with "Lock" / "Locked".
+   * "labelled" (default): 122px pill with "Lock" / "Locked".
    * "icon": 40px circle with just the padlock, for tight layouts.
    * "icon-small": just the 20px padlock in a 64 × 56 tap area, no
    * border; a 32px ink circle when locked. For the tightest layouts.
@@ -34,7 +34,7 @@ const borderless = {
 // Size and shape. Every variant has a 2px border (transparent on the
 // borderless sizes) so the focus ring can turn it dark.
 const variantClasses = {
-  labelled: "h-paintbox-500 min-w-[7.5625rem] gap-paintbox-100 rounded-paintbox-full px-paintbox-150", // 121px
+  labelled: "h-paintbox-500 min-w-[7.625rem] gap-paintbox-100 rounded-paintbox-full px-paintbox-150", // 122px
   icon: "size-paintbox-500 rounded-paintbox-full", // 40px circle
   "icon-small": tapArea,
   "icon-xsmall": tapArea,
@@ -79,12 +79,12 @@ const previewIcon = "hidden group-enabled:group-hover:block";
  *
  * Labelled variant, lock off, default state: 40px tall pill with a 2px
  * border in the ink colour and a transparent background, so the swatch
- * shows through. 121px wide with the content centred: a 20px open
- * padlock, gap 8, then "Lock" in Text Preset 6 Bold (19px), both in the
- * ink colour (2 + 24 + 20 + 8 + 41 + 24 + 2). At least 12px padding, so
- * a longer label grows the pill instead of touching the border.
+ * shows through. 122px wide, as in the design, with the content
+ * centred: a 20px open padlock, gap 8, then "Lock" in Text Preset 6 Bold
+ * (19px), both in the ink colour. At least 12px padding, so a longer
+ * label grows the pill instead of touching the border.
  *
- * Locked, default state: the same 121px pill filled with the ink
+ * Locked, default state: the same 122px pill filled with the ink
  * (#1B1F24 on a light swatch, white on a dark one), with a closed padlock
  * and "Locked" in the other ink. Same width, so locking doesn't move
  * anything.

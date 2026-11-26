@@ -602,7 +602,7 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           Locks a colour so Generate keeps it. It sits on the colour&apos;s swatch, so its ink follows the swatch
           (<Code>swatch=&quot;light&quot;</Code>: #1B1F24, <Code>swatch=&quot;dark&quot;</Code>: white), not the page
-          theme. Labelled: 40 × 121px pill, 2px border, content centred, gap 8, 20px padlock, &quot;Lock&quot; or
+          theme. Labelled: 40 × 122px pill, 2px border, content centred, gap 8, 20px padlock, &quot;Lock&quot; or
           &quot;Locked&quot; in Text Preset 6 Bold. A toggle (aria-pressed).
         </p>
 
@@ -643,7 +643,7 @@ export function ComponentsSection() {
             </SwatchSample>
           </Demo>
 
-          <Demo label="Labelled, locked: default (light swatch)" note="Filled with the ink (#1B1F24), closed padlock, &quot;Locked&quot; in white. Same 121px width as Lock. Hover keeps the fill and shows the open padlock.">
+          <Demo label="Labelled, locked: default (light swatch)" note="Filled with the ink (#1B1F24), closed padlock, &quot;Locked&quot; in white. Same 122px width as Lock. Hover keeps the fill and shows the open padlock.">
             <SwatchSample color="#EEE8DF">
               <LockButton locked />
             </SwatchSample>
@@ -782,13 +782,14 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           Copies a colour&apos;s hex code. It sits on the colour&apos;s swatch, so its ink follows the swatch
           (<Code>swatch=&quot;light&quot;</Code>: #1B1F24, <Code>swatch=&quot;dark&quot;</Code>: white), not the page
-          theme. Large: 40px tall, padding 8, gap 4, the code in Text Preset 4, then the 20px copy icon in a 36px
-          circle. Small (<Code>size=&quot;small&quot;</Code>): the same height and states, the code in Text Preset 5
-          and the icon in a 28px circle, 145px wide.
+          theme. Large: 40px tall, padding 8, gap 4, the code in Text Preset 4 with 4px either side, then the 20px
+          copy icon in a 36px circle. Small (<Code>size=&quot;small&quot;</Code>): the same height and states,
+          padding 4, the code in Text Preset 5 with 4px either side, and the icon in a 28px circle. The width
+          follows the code.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
-          <Demo label="Large: default (light swatch)" note="On #EEE8DF. 186px wide, no border or background.">
+          <Demo label="Large: default (light swatch)" note="On #EEE8DF: 186px wide (8 + 4 + code + 4 + 4 + 36 + 8). No border or background.">
             <SwatchSample color="#EEE8DF">
               <CopyHex hex="#EEE8DF" />
             </SwatchSample>
@@ -838,7 +839,7 @@ export function ComponentsSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
-          <Demo label="Small: default (light swatch)" note="On #EEE8DF. 145px wide: padding 8 on the left, 4 on the right.">
+          <Demo label="Small: default (light swatch)" note="On #EEE8DF: 145px wide (4 + 4 + code + 4 + 4 + 28 + 4).">
             <SwatchSample color="#EEE8DF">
               <CopyHex hex="#EEE8DF" size="small" />
             </SwatchSample>
@@ -913,9 +914,17 @@ export function ComponentsSection() {
           <Demo label="Hex focus" note="Keyboard only. A 3px violet ring (focus), 2px outside the hex; nothing moves. Shown forced on; press Tab to the hex above for the real thing.">
             <RoleLabel name="Page" hex="#EEE8DF" className="[&>button]:outline-3 [&>button]:outline-offset-2 [&>button]:outline-focus" />
           </Demo>
+
+          <Demo label="Centered: default" note='variant="centered". The role name centred, in text (#1B1F24) instead of muted, with 4px above: 31 × 21, baseline 17px down.'>
+            <RoleLabel name="Page" variant="centered" />
+          </Demo>
+
+          <Demo label="Stacked: default" note='variant="stacked". The role name in text (#1B1F24), nothing above: 31 × 17, baseline 13px down. The hex goes below it.'>
+            <RoleLabel name="Page" variant="stacked" />
+          </Demo>
         </div>
 
-        <Meta>The dark label: not built yet.</Meta>
+        <Meta>The centered and stacked variants with the hex: not built yet.</Meta>
       </Group>
     </Section>
   );
