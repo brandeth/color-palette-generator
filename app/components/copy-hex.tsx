@@ -12,9 +12,10 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
   swatch?: "light" | "dark";
 };
 
-const inkBySwatch = {
-  light: "text-on-swatch-dark",
-  dark: "text-on-swatch-light",
+// Ink, plus the circle's hover fill: that ink at 15%, so it tints the swatch.
+const colorClasses = {
+  light: { ink: "text-on-swatch-dark", circle: "group-enabled:group-hover:bg-on-swatch-dark-hover" },
+  dark: { ink: "text-on-swatch-light", circle: "group-enabled:group-hover:bg-on-swatch-light-hover" },
 };
 
 /*
@@ -29,17 +30,25 @@ const inkBySwatch = {
  * the colour changes. No border or background, so the swatch shows
  * through; both in the ink colour. Pill-shaped, for the focus ring.
  *
+ * Hover (anywhere on the button): the code gets a 2px underline in the
+ * ink, 1px below the baseline, and the icon's circle fills with the ink
+ * at 15% (on-swatch-dark-hover or on-swatch-light-hover): #CECAC3 on
+ * #EEE8DF, #6F3C61 on #561A45. Nothing moves. Only on enabled buttons,
+ * and only on devices that can hover.
+ *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
  * code says what it does.
  */
 export function CopyHex({ hex, swatch = "light", className, ...props }: CopyHexProps) {
+  const colors = colorClasses[swatch];
+
   return (
     <button
       type="button"
       className={[
-        "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
+        "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
         "rounded-paintbox-full px-paintbox-100",
-        inkBySwatch[swatch],
+        colors.ink,
         className,
       ]
         .filter(Boolean)
@@ -49,9 +58,13 @@ export function CopyHex({ hex, swatch = "light", className, ...props }: CopyHexP
       <span className="sr-only">Copy </span>
       {/* At least 130px, so the button stays 186px as the colour changes
           (hex codes differ in width by a few px). */}
-      <span className="min-w-[8.125rem] text-preset-4">{hex}</span>
+      <span className="min-w-[8.125rem] text-preset-4 decoration-2 underline-offset-1 group-enabled:group-hover:underline">
+        {hex}
+      </span>
       {/* 36px circle around the icon; filled on hover. */}
-      <span className="flex size-[2.25rem] items-center justify-center rounded-paintbox-full">
+      <span
+        className={["flex size-[2.25rem] items-center justify-center rounded-paintbox-full", colors.circle].join(" ")}
+      >
         <IconCopy />
       </span>
     </button>
