@@ -12,12 +12,34 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
    * (on-swatch-light) for dark colours. The same in both page themes.
    */
   swatch?: "light" | "dark";
+  /**
+   * "large" (default): the code in Text Preset 4 (28px), 186px wide.
+   * "small": the code in Text Preset 5 (22px), 145px wide. Both 40px tall.
+   */
+  size?: "large" | "small";
   /** Show the copied look (the checkmark) regardless of clicks, e.g. in examples. */
   copied?: boolean;
 };
 
 // How long the checkmark shows after a copy.
 const COPIED_MS = 2000;
+
+// The code's box is at least as wide as the code, so the button keeps
+// its width as the colour changes (hex codes differ by a few px).
+const sizeClasses = {
+  // 8 + 130 + 4 + 36 + 8 = 186
+  large: {
+    button: "px-paintbox-100",
+    code: "min-w-[8.125rem] text-preset-4 underline-offset-1",
+    circle: "size-[2.25rem]",
+  },
+  // 8 + 101 + 4 + 28 + 4 = 145: the design has 4 to the circle's right.
+  small: {
+    button: "pl-paintbox-100 pr-paintbox-050",
+    code: "min-w-[6.3125rem] text-preset-5 underline-offset-2",
+    circle: "size-[1.75rem]",
+  },
+};
 
 // Ink, plus the circle's hover fill: that ink at 15%, so it tints the swatch.
 const colorClasses = {
@@ -61,6 +83,12 @@ const colorClasses = {
  * copies again and restarts the 2s. If the clipboard refuses, nothing
  * changes. `copied` forces the look.
  *
+ * Small size: the same 40px height, states and focus ring, with the code
+ * in Text Preset 5 (Funnel Display Bold 22px, uppercase) in a box at least
+ * 101px wide and the same 20px icon in a 28px circle: padding 8 on the
+ * left, 4 on the right, gap 4, 145px wide. The hover underline is 2px,
+ * 2px below the baseline.
+ *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
  * code says what it does. After a copy, a status message outside the
  * button announces "Copied #EEE8DF" to screen readers.
@@ -68,12 +96,14 @@ const colorClasses = {
 export function CopyHex({
   hex,
   swatch = "light",
+  size = "large",
   copied: forceCopied = false,
   className,
   onClick,
   ...props
 }: CopyHexProps) {
   const colors = colorClasses[swatch];
+  const sizes = sizeClasses[size];
   // When the last copy happened; null when the checkmark isn't showing.
   const [copiedAt, setCopiedAt] = useState<number | null>(null);
   const copied = forceCopied || copiedAt !== null;
@@ -101,7 +131,8 @@ export function CopyHex({
         type="button"
         className={[
           "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
-          "rounded-paintbox-full px-paintbox-100",
+          "rounded-paintbox-full",
+          sizes.button,
           colors.ink,
           // Dark 7px ring with a white 3px outline 2px out: dark/white/dark.
           "focus-visible:ring-7 focus-visible:ring-on-swatch-dark",
@@ -114,17 +145,10 @@ export function CopyHex({
         {...props}
       >
         <span className="sr-only">Copy </span>
-        {/* At least 130px, so the button stays 186px as the colour changes
-            (hex codes differ in width by a few px). */}
-        <span className="min-w-[8.125rem] text-preset-4 decoration-2 underline-offset-1 group-enabled:group-hover:underline">
-          {hex}
-        </span>
-        {/* 36px circle around the icon; filled on hover. */}
+        <span className={[sizes.code, "decoration-2 group-enabled:group-hover:underline"].join(" ")}>{hex}</span>
+        {/* Circle around the icon; filled on hover. */}
         <span
-          className={[
-            "flex size-[2.25rem] items-center justify-center rounded-paintbox-full",
-            colors.circle,
-          ].join(" ")}
+          className={["flex items-center justify-center rounded-paintbox-full", sizes.circle, colors.circle].join(" ")}
         >
           {copied ? <IconCheck /> : <IconCopy />}
         </span>
