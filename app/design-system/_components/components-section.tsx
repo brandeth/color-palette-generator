@@ -706,9 +706,42 @@ export function ComponentsSection() {
               <LockButtonDemo variant="icon" swatch="dark" aria-label="Lock colour 4" />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Icon small: every state (light swatch)" note="variant=&quot;icon-small&quot;: 20px padlock in a 64 × 56 tap area, radius 12, no border. Lock off, hover, focus, then locked (32px circle), locked focus. Hover and focus shown forced on.">
+            <SwatchSample color="#EEE8DF">
+              <div className="flex flex-wrap items-center gap-paintbox-200">
+                <LockButton variant="icon-small" />
+                <LockButton variant="icon-small" className="bg-on-swatch-dark-hover" />
+                <LockButton variant="icon-small" className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+                <LockButton variant="icon-small" locked />
+                <LockButton variant="icon-small" locked className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+              </div>
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Icon small: every state (dark swatch)" note="The same five, with white ink: #6F3D62 hover, a white circle when locked.">
+            <SwatchSample color="#561A45">
+              <div className="flex flex-wrap items-center gap-paintbox-200">
+                <LockButton variant="icon-small" swatch="dark" />
+                <LockButton variant="icon-small" swatch="dark" className="bg-on-swatch-light-hover" />
+                <LockButton variant="icon-small" swatch="dark" className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+                <LockButton variant="icon-small" swatch="dark" locked />
+                <LockButton variant="icon-small" swatch="dark" locked className="border-on-swatch-dark! outline-4 outline-offset-0 outline-on-swatch-light ring-6 ring-on-swatch-dark" />
+              </div>
+            </SwatchSample>
+          </Demo>
+
+          <Demo label="Icon small (live example)" note="Click, or Tab and press Space, to lock and unlock. Hover tints the tap area when unlocked and only swaps the padlock when locked.">
+            <SwatchSample color="#EEE8DF">
+              <LockButtonDemo variant="icon-small" aria-label="Lock colour 5" />
+            </SwatchSample>
+            <SwatchSample color="#561A45">
+              <LockButtonDemo variant="icon-small" swatch="dark" aria-label="Lock colour 6" />
+            </SwatchSample>
+          </Demo>
         </div>
 
-        <Meta>The small and extra-small icon sizes: not built yet.</Meta>
+        <Meta>The extra-small icon size: not built yet.</Meta>
       </Group>
     </Section>
   );
