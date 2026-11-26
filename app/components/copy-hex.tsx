@@ -19,6 +19,11 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
    * Both 40px tall; the width follows the code, as in the design.
    */
   size?: "large" | "small";
+  /**
+   * Show the copy icon (default). false: just the code, for tight spots
+   * such as the Strip swatch; the button still copies, and announces it.
+   */
+  icon?: boolean;
   /** Show the copied look (the checkmark) regardless of clicks, e.g. in examples. */
   copied?: boolean;
 };
@@ -88,6 +93,11 @@ const colorClasses = {
  * gap 4, 145px wide for #EEE8DF (4 + 4 + 97 + 4 + 4 + 28 + 4). The hover
  * underline is 2px, 2px below the baseline.
  *
+ * Without the icon (`icon={false}`): just the code with its padding,
+ * e.g. 113px for #EEE8DF at the small size (4 + 4 + 97 + 4 + 4). Hover
+ * underlines the code; there's no visible copied look, only the
+ * announcement.
+ *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
  * code says what it does. After a copy, a status message outside the
  * button announces "Copied #EEE8DF" to screen readers.
@@ -96,6 +106,7 @@ export function CopyHex({
   hex,
   swatch = "light",
   size = "large",
+  icon = true,
   copied: forceCopied = false,
   className,
   onClick,
@@ -132,12 +143,16 @@ export function CopyHex({
       >
         <span className="sr-only">Copy </span>
         <span className={[sizes.code, "decoration-2 group-enabled:group-hover:underline"].join(" ")}>{hex}</span>
-        {/* Circle around the icon; filled on hover. */}
-        <span
-          className={["flex items-center justify-center rounded-paintbox-full", sizes.circle, colors.circle].join(" ")}
-        >
-          {copied ? <IconCheck /> : <IconCopy />}
-        </span>
+        {icon ? (
+          // Circle around the icon; filled on hover.
+          <span
+            className={["flex items-center justify-center rounded-paintbox-full", sizes.circle, colors.circle].join(
+              " ",
+            )}
+          >
+            {copied ? <IconCheck /> : <IconCopy />}
+          </span>
+        ) : null}
       </button>
       {/* Outside the button, so it isn't part of the button's name. */}
       <span role="status" className="sr-only">
