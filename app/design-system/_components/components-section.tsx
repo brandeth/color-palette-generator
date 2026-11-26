@@ -894,7 +894,7 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           Names the role a colour plays in the palette. It sits on the page background, so it follows the page
           theme. Default: the role name in Text Preset 9, in <Code>text-muted</Code>. With <Code>hex</Code>, the hex code
-          follows 4px after it in Text Preset 9 (Hex), in <Code>text</Code>.
+          follows 4px after it in Text Preset 9 (Hex), in <Code>text</Code>, as a button that copies it.
         </p>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
@@ -905,9 +905,13 @@ export function ComponentsSection() {
           <Demo label="Hex shown" note="The hex follows 4px after the role, on the same baseline: Text Preset 9 (Hex), letter-spacing 0, in text (#1B1F24).">
             <RoleLabel name="Page" hex="#EEE8DF" />
           </Demo>
+
+          <Demo label="Hex hover" note="A 1px underline under the hex, 1px below the baseline. Shown forced on; hover the hex above for the real thing, or click it to copy.">
+            <RoleLabel name="Page" hex="#EEE8DF" className="[&>button]:underline" />
+          </Demo>
         </div>
 
-        <Meta>The hex&apos;s hover and focus, and the dark label: not built yet.</Meta>
+        <Meta>The hex&apos;s focus, and the dark label: not built yet.</Meta>
       </Group>
     </Section>
   );
