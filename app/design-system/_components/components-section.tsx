@@ -26,6 +26,7 @@ import { PaletteTypeMenuDemo } from "./palette-type-menu-demo";
 import { paletteTypes } from "./palette-types";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
+import { ToastDemo } from "./toast-demo";
 
 /** A labelled demo cell. */
 function Demo({ label, note, children }: { label: string; note?: ReactNode; children: ReactNode }) {
@@ -1128,6 +1129,13 @@ export function ComponentsSection() {
             </ToastSample>
           </Demo>
         </div>
+
+        <p className="text-preset-8 text-text-muted">
+          Showing one: <Code>useToast().show(message)</Code> from anywhere in the app. It shows at the bottom centre (a Hug
+          pill on desktop, Full width inside the page margins on tablets and phones), fades in rising 8px, stays 3s (5s for a
+          failure, and while hovered), then fades out. A new one replaces the one showing.
+        </p>
+        <ToastDemo />
       </Group>
     </Section>
   );
