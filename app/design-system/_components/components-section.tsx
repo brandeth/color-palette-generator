@@ -1048,9 +1048,23 @@ export function ComponentsSection() {
               <Toast result="failure">Couldn&apos;t copy #B6363F. Try again.</Toast>
             </ToastSample>
           </Demo>
+
+          <Demo label="Success, Wide" note='width="wide": a fixed 313px pill for desktop, the content centred.'>
+            <ToastSample>
+              <Toast width="wide">Copied #B6363F</Toast>
+            </ToastSample>
+          </Demo>
+
+          <Demo label="Failure, Wide" note="The same 313px, with the alert icon.">
+            <ToastSample>
+              <Toast result="failure" width="wide">
+                Couldn&apos;t copy #B6363F. Try again.
+              </Toast>
+            </ToastSample>
+          </Demo>
         </div>
 
-        <Meta>The Wide and Full widths: not built yet.</Meta>
+        <Meta>The Full width: not built yet.</Meta>
       </Group>
     </Section>
   );
