@@ -16,6 +16,7 @@ import { SwatchDemo } from "./swatch-demo";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { Toast } from "../../components/toast";
+import { toastMessages } from "../../components/toast-messages";
 import { ButtonMenuDemo } from "./button-demo";
 import { copyFormats } from "./copy-formats";
 import { CopyMenuDemo } from "./copy-option-demo";
@@ -1083,6 +1084,28 @@ export function ComponentsSection() {
         </div>
 
         <Meta>Every Toast result and width is built.</Meta>
+
+        <p className="text-preset-8 text-text-muted">
+          Every message, from <Code>toastMessages</Code>, at Hug: callers pick one instead of writing the text, and it
+          brings its result (icon). Widening past the page&apos;s edges at 1440 comes later, with the page.
+        </p>
+        <ToastSample>
+          <div className="flex flex-col items-start gap-paintbox-200">
+            {[
+              toastMessages.copiedHex("#B6363F"),
+              toastMessages.copyHexFailed("#B6363F"),
+              toastMessages.allLocked(),
+              toastMessages.copiedCss(),
+              toastMessages.copiedHexCodes(),
+              toastMessages.copiedLink(),
+              toastMessages.copyPaletteFailed(),
+            ].map((message) => (
+              <Toast key={message.text} result={message.result}>
+                {message.text}
+              </Toast>
+            ))}
+          </div>
+        </ToastSample>
       </Group>
     </Section>
   );
