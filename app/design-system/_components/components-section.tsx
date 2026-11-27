@@ -50,6 +50,11 @@ function SwatchSample({ color, children }: { color: string; children: ReactNode 
   );
 }
 
+/** The page background behind a toast, so its white border shows as in the design. */
+function ToastSample({ children }: { children: ReactNode }) {
+  return <div className="flex items-center rounded-paintbox-12 bg-background p-paintbox-300">{children}</div>;
+}
+
 /** Every trigger state (columns) with waiting off and on (rows), as in the design. */
 function TriggerStateGrid({ size }: { size: "default" | "compact" }) {
   const states = ["Default", "Hover", "Focus", "Open"] as const;
@@ -1027,17 +1032,25 @@ export function ComponentsSection() {
 
       <Group title="Toast">
         <p className="text-preset-8 text-text-muted">
-          Confirms a copy. The same in both page themes: a 36px pill in #1B1F24 with a 2px white inset border,
+          Confirms a copy or says why it failed. The same in both page themes: a 36px pill in #1B1F24 with a 2px white border,
           <Code>shadow-paintbox-md</Code>, padding 16, gap 8, a 20px icon and the message in Text Preset 8 Bold, white.
         </p>
 
         <div className="flex flex-wrap gap-paintbox-300">
           <Demo label="Success, Hug" note="A checkmark and the message, as wide as it needs: 164px for &quot;Copied #B6363F&quot;.">
-            <Toast>Copied #B6363F</Toast>
+            <ToastSample>
+              <Toast>Copied #B6363F</Toast>
+            </ToastSample>
+          </Demo>
+
+          <Demo label="Failure, Hug" note='result="failure": the alert icon instead of the checkmark. 273px for &quot;Couldn&apos;t copy #B6363F. Try again.&quot;'>
+            <ToastSample>
+              <Toast result="failure">Couldn&apos;t copy #B6363F. Try again.</Toast>
+            </ToastSample>
           </Demo>
         </div>
 
-        <Meta>Failure, and the Wide and Full widths: not built yet.</Meta>
+        <Meta>The Wide and Full widths: not built yet.</Meta>
       </Group>
     </Section>
   );

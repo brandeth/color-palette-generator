@@ -100,6 +100,15 @@ export function IconCheck(props: IconProps) {
   );
 }
 
+/** app/assets/icon-alert.svg */
+export function IconAlert(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Zm0-11.25v4.583m0 2.917v.008" />
+    </svg>
+  );
+}
+
 /** app/assets/icon-chevron-up.svg */
 export function IconChevronUp(props: IconProps) {
   return (
