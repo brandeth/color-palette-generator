@@ -12,13 +12,16 @@ type ToastProps = Omit<ComponentProps<"div">, "children"> & {
   /**
    * "hug" (default): as wide as the message, on one line.
    * "wide": a fixed 313px pill with the content centred, for desktop.
+   * "full": as wide as its container, the content on the left, for
+   * tablets and phones.
    */
-  width?: "hug" | "wide";
+  width?: "hug" | "wide" | "full";
 };
 
 const widthClasses = {
-  hug: "",
-  wide: "w-[19.5625rem]", // 313px
+  hug: "inline-flex justify-center",
+  wide: "inline-flex w-[19.5625rem] justify-center", // 313px
+  full: "flex w-full",
 };
 
 /*
@@ -42,6 +45,10 @@ const widthClasses = {
  * Wide width: the same pill at a fixed 313px, the icon and message
  * centred together, so desktop toasts are all one size.
  *
+ * Full width: as wide as its container (351px in the design), with the
+ * icon and message on the left, 16px in; the message takes the rest of
+ * the width.
+ *
  * It's a status message, so screen readers read it without moving focus.
  */
 export function Toast({ children, result = "success", width = "hug", className, ...props }: ToastProps) {
@@ -52,7 +59,7 @@ export function Toast({ children, result = "success", width = "hug", className, 
       data-width={width}
       className={[
         // 14px padding inside the 2px border: the content starts 16px in, as in the design.
-        "inline-flex h-[2.25rem] items-center justify-center gap-paintbox-100 whitespace-nowrap px-[0.875rem]",
+        "h-[2.25rem] items-center gap-paintbox-100 whitespace-nowrap px-[0.875rem]",
         "rounded-paintbox-20 bg-paintbox-neutral-900 text-paintbox-neutral-0 shadow-paintbox-md",
         // A real border, with the background kept inside it, so no dark
         // shows through the smoothed edge at the rounded ends.
@@ -65,7 +72,7 @@ export function Toast({ children, result = "success", width = "hug", className, 
       {...props}
     >
       {result === "failure" ? <IconAlert className="shrink-0" /> : <IconCheck className="shrink-0" />}
-      <span className="text-preset-8-bold">{children}</span>
+      <span className={["text-preset-8-bold", width === "full" ? "grow" : ""].join(" ")}>{children}</span>
     </div>
   );
 }

@@ -1062,9 +1062,27 @@ export function ComponentsSection() {
               </Toast>
             </ToastSample>
           </Demo>
+
+          <Demo label="Success, Full" note='width="full": as wide as its container (351px here, as in the design), the content on the left.'>
+            <ToastSample>
+              <div className="w-[21.9375rem]">
+                <Toast width="full">Copied #B6363F</Toast>
+              </div>
+            </ToastSample>
+          </Demo>
+
+          <Demo label="Failure, Full" note="The same, with the alert icon.">
+            <ToastSample>
+              <div className="w-[21.9375rem]">
+                <Toast result="failure" width="full">
+                  Couldn&apos;t copy #B6363F. Try again.
+                </Toast>
+              </div>
+            </ToastSample>
+          </Demo>
         </div>
 
-        <Meta>The Full width: not built yet.</Meta>
+        <Meta>Every Toast result and width is built.</Meta>
       </Group>
     </Section>
   );
