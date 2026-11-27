@@ -12,9 +12,10 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
    * left. "row": wide and short, the hex code on the left and the round
    * Lock on the right. "strip": like row but narrower, with the small hex
    * code (no copy icon). "strip-icon": just the round Lock, centred.
-   * The other layouts come later.
+   * "strip-compact": 64 × 56, the whole swatch is the Lock (phone
+   * preview strip). Row Compact comes later.
    */
-  layout?: "column" | "row" | "strip" | "strip-icon";
+  layout?: "column" | "row" | "strip" | "strip-icon" | "strip-compact";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -55,6 +56,8 @@ const layoutClasses = {
   strip: "flex-row items-center justify-between p-paintbox-100",
   // Just Lock, centred; padding 12.
   "strip-icon": "flex-row items-center justify-center p-paintbox-150",
+  // The Lock's tap area is the whole swatch; no padding.
+  "strip-compact": "flex-row items-center justify-center",
 };
 
 /** The ink with more contrast on `hex` ("#RRGGBB" or "#RGB"): #1B1F24 or white. */
@@ -102,6 +105,11 @@ export function inkFor(hex: string): Ink {
  * (icon, the 40px circle) in the middle; padding 12. The swatch is
  * still a group named after the code, so Lock says which colour it's on.
  *
+ * Strip Compact layout (the design's 64 × 56, for the phone preview
+ * strip): no padding; Lock (icon-small) is the whole swatch: its 64 × 56
+ * tap area with the 20px padlock in the middle, the 32px ink circle when
+ * locked, and the hover tint over the whole swatch.
+ *
  * It's a group named after the hex code, so screen readers announce
  * "#EEE8DF, group" before its "Lock" and "Copy #EEE8DF" buttons.
  */
@@ -145,6 +153,8 @@ export function Swatch({
         </>
       ) : layout === "strip-icon" ? (
         <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />
+      ) : layout === "strip-compact" ? (
+        <LockButton swatch={swatch} variant="icon-small" locked={locked} onClick={toggleLock} />
       ) : (
         <>
           {layout === "strip" ? (
