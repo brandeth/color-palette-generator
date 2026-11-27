@@ -953,7 +953,7 @@ export function ComponentsSection() {
         <p className="text-preset-8 text-text-muted">
           One colour of the palette, with its Lock button and copyable hex code, all in one ink: #1B1F24 or white,
           whichever has more contrast with the colour (or set <Code>ink</Code>). 12px corners and a 2px inset border
-          in <Code>paintbox-neutral-alpha-14</Code>. Column: contents at the bottom left, padding 16 16 16 8, gap 8,
+          in <Code>swatch-edge</Code> (dark 14% in the light theme, light 18% in the dark theme). Column: contents at the bottom left, padding 16 16 16 8, gap 8,
           Lock 16px in. Row (<Code>layout=&quot;row&quot;</Code>): the hex on the left, the round Lock on the right,
           padding 12 12 12 4. Row Compact (<Code>layout=&quot;row-compact&quot;</Code>): the same at 51px tall with a
           32px Lock, padding 4 12 4 4. Strip (<Code>layout=&quot;strip&quot;</Code>): the same with padding 8 and the small hex,
