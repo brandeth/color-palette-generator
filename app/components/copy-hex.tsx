@@ -24,6 +24,12 @@ type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
    * such as the Strip swatch; the button still copies, and announces it.
    */
   icon?: boolean;
+  /**
+   * 32px tall instead of 40, for the Row Compact swatch. Everything else
+   * stays the same size; the 36px circle overhangs by 2px top and bottom,
+   * as in the design.
+   */
+  compact?: boolean;
   /** Show the copied look (the checkmark) regardless of clicks, e.g. in examples. */
   copied?: boolean;
 };
@@ -98,6 +104,10 @@ const colorClasses = {
  * underlines the code; there's no visible copied look, only the
  * announcement.
  *
+ * Compact (`compact`): 32px tall instead of 40, for the Row Compact
+ * swatch. The code and circle keep their size, so the 36px circle
+ * overhangs the pill by 2px top and bottom, as in the design.
+ *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
  * code says what it does. After a copy, a status message outside the
  * button announces "Copied #EEE8DF" to screen readers.
@@ -107,6 +117,7 @@ export function CopyHex({
   swatch = "light",
   size = "large",
   icon = true,
+  compact = false,
   copied: forceCopied = false,
   className,
   onClick,
@@ -127,7 +138,8 @@ export function CopyHex({
       <button
         type="button"
         className={[
-          "group inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
+          "group inline-flex shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
+          compact ? "h-paintbox-400" : "h-paintbox-500",
           "rounded-paintbox-full",
           sizes.button,
           colors.ink,

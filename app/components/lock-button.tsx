@@ -14,6 +14,7 @@ type LockButtonProps = Omit<ComponentProps<"button">, "children" | "aria-pressed
   /**
    * "labelled" (default): 122px pill with "Lock" / "Locked".
    * "icon": 40px circle with just the padlock, for tight layouts.
+   * "icon-tight": the same at 32px, for the Row Compact swatch.
    * "icon-small": just the 20px padlock in a 64 × 56 tap area, no
    * border; a 32px ink circle when locked. For the tightest layouts.
    * "icon-xsmall": the same tap area with a 16px padlock and a 20px
@@ -21,7 +22,7 @@ type LockButtonProps = Omit<ComponentProps<"button">, "children" | "aria-pressed
    * The icon variants' accessible name is "Lock" (pass an aria-label to
    * name the colour).
    */
-  variant?: "labelled" | "icon" | "icon-small" | "icon-xsmall";
+  variant?: "labelled" | "icon" | "icon-tight" | "icon-small" | "icon-xsmall";
 };
 
 // The borderless sizes: one 64 × 56 tap area, different insides.
@@ -36,6 +37,7 @@ const borderless = {
 const variantClasses = {
   labelled: "h-paintbox-500 min-w-[7.625rem] gap-paintbox-100 rounded-paintbox-full px-paintbox-150", // 122px
   icon: "size-paintbox-500 rounded-paintbox-full", // 40px circle
+  "icon-tight": "size-paintbox-400 rounded-paintbox-full", // 32px circle
   "icon-small": tapArea,
   "icon-xsmall": tapArea,
 };
@@ -108,6 +110,9 @@ const previewIcon = "hidden group-enabled:group-hover:block";
  * padlock centred, no label. Every state matches the labelled one: the
  * ink fill when locked, the 15% hover tint, the padlock preview on hover,
  * and the same focus ring.
+ *
+ * Icon-tight variant: the icon variant at 32px (the 2px border and 20px
+ * padlock stay the same size), for the Row Compact swatch. Same states.
  *
  * Icon-small variant: a 64 × 56 tap area with radius 12 and the 20px
  * padlock centred. Lock off shows just the padlock (its border is

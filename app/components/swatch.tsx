@@ -13,9 +13,9 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
    * Lock on the right. "strip": like row but narrower, with the small hex
    * code (no copy icon). "strip-icon": just the round Lock, centred.
    * "strip-compact": 64 × 56, the whole swatch is the Lock (phone
-   * preview strip). Row Compact comes later.
+   * preview strip). "row-compact": row, shorter, with a 32px Lock.
    */
-  layout?: "column" | "row" | "strip" | "strip-icon" | "strip-compact";
+  layout?: "column" | "row" | "row-compact" | "strip" | "strip-icon" | "strip-compact";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -52,6 +52,8 @@ const layoutClasses = {
   column: "flex-col items-start justify-end pt-paintbox-200 pr-paintbox-200 pb-paintbox-200 pl-paintbox-100",
   // Hex on the left, Lock on the right, centred; padding 12 12 12 4, gap 8.
   row: "flex-row items-center justify-between py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
+  // The same, padding 4 12 4 4.
+  "row-compact": "flex-row items-center justify-between py-paintbox-050 pr-paintbox-150 pl-paintbox-050",
   // The same, padding 8 all round.
   strip: "flex-row items-center justify-between p-paintbox-100",
   // Just Lock, centred; padding 12.
@@ -95,6 +97,10 @@ export function inkFor(hex: string): Ink {
  * far apart as the width allows. Padding 12 at the top, right and bottom
  * and 4 on the left, gap 8: the code starts 16px in (4 + 12) and the
  * circle ends 12px from the right.
+ *
+ * Row Compact layout (the design's 343 × 51): Row with padding 4 at the
+ * top, bottom and left and 12 on the right, Copy Hex (large) at 32px
+ * tall, and Lock as the 32px circle (icon-tight), 12px from the right.
  *
  * Strip layout (the design's 259 × 64): the same arrangement with
  * padding 8 all round, and Copy Hex small without its copy icon (113px
@@ -160,9 +166,14 @@ export function Swatch({
           {layout === "strip" ? (
             <CopyHex hex={hex} swatch={swatch} size="small" icon={false} />
           ) : (
-            <CopyHex hex={hex} swatch={swatch} />
+            <CopyHex hex={hex} swatch={swatch} compact={layout === "row-compact"} />
           )}
-          <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />
+          <LockButton
+            swatch={swatch}
+            variant={layout === "row-compact" ? "icon-tight" : "icon"}
+            locked={locked}
+            onClick={toggleLock}
+          />
         </>
       )}
     </div>
