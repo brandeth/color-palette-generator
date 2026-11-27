@@ -15,6 +15,7 @@ import { LockButtonDemo } from "./lock-button-demo";
 import { SwatchDemo } from "./swatch-demo";
 import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
+import { Toast } from "../../components/toast";
 import { ButtonMenuDemo } from "./button-demo";
 import { copyFormats } from "./copy-formats";
 import { CopyMenuDemo } from "./copy-option-demo";
@@ -1022,6 +1023,21 @@ export function ComponentsSection() {
         </div>
 
         <Meta>Every Swatch layout is built, on a light and a dark colour.</Meta>
+      </Group>
+
+      <Group title="Toast">
+        <p className="text-preset-8 text-text-muted">
+          Confirms a copy. The same in both page themes: a 36px pill in #1B1F24 with a 2px white inset border,
+          <Code>shadow-paintbox-md</Code>, padding 16, gap 8, a 20px icon and the message in Text Preset 8 Bold, white.
+        </p>
+
+        <div className="flex flex-wrap gap-paintbox-300">
+          <Demo label="Success, Hug" note="A checkmark and the message, as wide as it needs: 164px for &quot;Copied #B6363F&quot;.">
+            <Toast>Copied #B6363F</Toast>
+          </Demo>
+        </div>
+
+        <Meta>Failure, and the Wide and Full widths: not built yet.</Meta>
       </Group>
     </Section>
   );
