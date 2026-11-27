@@ -1106,6 +1106,28 @@ export function ComponentsSection() {
             ))}
           </div>
         </ToastSample>
+
+        <div className="flex flex-wrap gap-paintbox-300">
+          <Demo label="Phone (375): a long message wraps" note="Full width in a 351px container. The message breaks between its sentences and the padding becomes 16 all round: 72px tall.">
+            <ToastSample>
+              <div className="w-[21.9375rem]">
+                <Toast width="full" result={toastMessages.allLocked().result}>
+                  {toastMessages.allLocked().text}
+                </Toast>
+              </div>
+            </ToastSample>
+          </Demo>
+
+          <Demo label="Phone (375): a short message" note="The same width; one line, so it stays 36px tall.">
+            <ToastSample>
+              <div className="w-[21.9375rem]">
+                <Toast width="full" result={toastMessages.copyHexFailed("#B6363F").result}>
+                  {toastMessages.copyHexFailed("#B6363F").text}
+                </Toast>
+              </div>
+            </ToastSample>
+          </Demo>
+        </div>
       </Group>
     </Section>
   );
