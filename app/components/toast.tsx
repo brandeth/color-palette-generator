@@ -1,4 +1,6 @@
-import type { ComponentProps, ReactNode } from "react";
+"use client";
+
+import { Fragment, useLayoutEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { IconAlert, IconCheck } from "./icons";
 
 type ToastProps = Omit<ComponentProps<"div">, "children"> & {
@@ -13,16 +15,28 @@ type ToastProps = Omit<ComponentProps<"div">, "children"> & {
    * "hug" (default): as wide as the message, on one line.
    * "wide": a fixed 313px pill with the content centred, for desktop.
    * "full": as wide as its container, the content on the left, for
-   * tablets and phones.
+   * tablets and phones; a long message wraps between its sentences.
    */
   width?: "hug" | "wide" | "full";
 };
 
 const widthClasses = {
-  hug: "inline-flex justify-center",
-  wide: "inline-flex w-[19.5625rem] justify-center", // 313px
-  full: "flex w-full",
+  hug: "inline-flex h-[2.25rem] justify-center whitespace-nowrap",
+  wide: "inline-flex h-[2.25rem] w-[19.5625rem] justify-center whitespace-nowrap", // 313px
+  full: "flex min-h-[2.25rem] w-full",
 };
+
+// "A. B." → ["A.", "B."], so each sentence can stay on its own line.
+function sentences(message: ReactNode): ReactNode {
+  if (typeof message !== "string") return message;
+  const parts = message.split(/(?<=[.!?])\s+/);
+  return parts.map((part, i) => (
+    <Fragment key={i}>
+      {i > 0 ? " " : null}
+      <span className="inline-block">{part}</span>
+    </Fragment>
+  ));
+}
 
 /*
  * Confirms a copy or says why it failed. The same in both page themes:
@@ -47,19 +61,42 @@ const widthClasses = {
  *
  * Full width: as wide as its container (351px in the design), with the
  * icon and message on the left, 16px in; the message takes the rest of
- * the width.
+ * the width. When the message doesn't fit on one line, it breaks between
+ * sentences ("All five colours are locked." / "Unlock one to get new
+ * colours.") and the padding becomes 16 all round: 72px tall for two
+ * lines, the icon centred, the corners still 20.
  *
  * It's a status message, so screen readers read it without moving focus.
  */
 export function Toast({ children, result = "success", width = "hug", className, ...props }: ToastProps) {
+  const messageRef = useRef<HTMLSpanElement>(null);
+  // Whether the Full toast's message runs over more than one line.
+  const [wrapped, setWrapped] = useState(false);
+
+  useLayoutEffect(() => {
+    const message = messageRef.current;
+    if (width !== "full" || !message) return;
+    const check = () => {
+      const lineHeight = parseFloat(getComputedStyle(message).lineHeight);
+      setWrapped(message.getBoundingClientRect().height > lineHeight * 1.5);
+    };
+    check();
+    const observer = new ResizeObserver(check);
+    observer.observe(message);
+    return () => observer.disconnect();
+  }, [width, children]);
+
   return (
     <div
       role="status"
       data-result={result}
       data-width={width}
+      data-wrapped={width === "full" && wrapped ? "" : undefined}
       className={[
         // 14px padding inside the 2px border: the content starts 16px in, as in the design.
-        "h-[2.25rem] items-center gap-paintbox-100 whitespace-nowrap px-[0.875rem]",
+        "items-center gap-paintbox-100 px-[0.875rem]",
+        // Two lines: 16px all round (14 + the border).
+        width === "full" && wrapped ? "py-[0.875rem]" : "",
         "rounded-paintbox-20 bg-paintbox-neutral-900 text-paintbox-neutral-0 shadow-paintbox-md",
         // A real border, with the background kept inside it, so no dark
         // shows through the smoothed edge at the rounded ends.
@@ -72,7 +109,13 @@ export function Toast({ children, result = "success", width = "hug", className, 
       {...props}
     >
       {result === "failure" ? <IconAlert className="shrink-0" /> : <IconCheck className="shrink-0" />}
-      <span className={["text-preset-8-bold", width === "full" ? "grow" : ""].join(" ")}>{children}</span>
+      {width === "full" ? (
+        <span ref={messageRef} className="min-w-0 grow text-preset-8-bold">
+          {sentences(children)}
+        </span>
+      ) : (
+        <span className="text-preset-8-bold">{children}</span>
+      )}
     </div>
   );
 }
