@@ -9,8 +9,16 @@ type ToastProps = Omit<ComponentProps<"div">, "children"> & {
    * "failure": it didn't; shows an alert (a circle with "!").
    */
   result?: "success" | "failure";
-  /** "hug" (default): as wide as the message, on one line. */
-  width?: "hug";
+  /**
+   * "hug" (default): as wide as the message, on one line.
+   * "wide": a fixed 313px pill with the content centred, for desktop.
+   */
+  width?: "hug" | "wide";
+};
+
+const widthClasses = {
+  hug: "",
+  wide: "w-[19.5625rem]", // 313px
 };
 
 /*
@@ -31,6 +39,9 @@ type ToastProps = Omit<ComponentProps<"div">, "children"> & {
  * place of the checkmark: 273px for "Couldn't copy #B6363F. Try again."
  * (16 + 20 + 8 + 213 + 16).
  *
+ * Wide width: the same pill at a fixed 313px, the icon and message
+ * centred together, so desktop toasts are all one size.
+ *
  * It's a status message, so screen readers read it without moving focus.
  */
 export function Toast({ children, result = "success", width = "hug", className, ...props }: ToastProps) {
@@ -46,6 +57,7 @@ export function Toast({ children, result = "success", width = "hug", className, 
         // A real border, with the background kept inside it, so no dark
         // shows through the smoothed edge at the rounded ends.
         "border-2 border-paintbox-neutral-0 bg-clip-padding",
+        widthClasses[width],
         className,
       ]
         .filter(Boolean)
