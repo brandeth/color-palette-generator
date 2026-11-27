@@ -82,9 +82,9 @@ export function inkFor(hex: string): Ink {
  * page theme.
  *
  * Every layout: 12px corners and a 2px border just inside the edge in
- * #1B1F24 at 14% (paintbox-neutral-alpha-14), so light colours keep an
- * edge on the page. The border is an inset ring, so it takes no space,
- * as in the design.
+ * swatch-edge (#1B1F24 at 14% in the light theme, a light 18% in the
+ * dark theme), so colours close to the page keep an edge. The border is
+ * an inset ring, so it takes no space, as in the design.
  *
  * Column layout (the design's 259 × 703; it fills whatever size it's
  * given): a column with its contents at the bottom left, padding 16 at
@@ -141,7 +141,7 @@ export function Swatch({
       className={[
         "flex gap-paintbox-100",
         layoutClasses[layout],
-        "rounded-paintbox-12 inset-ring-2 inset-ring-paintbox-neutral-alpha-14",
+        "rounded-paintbox-12 inset-ring-2 inset-ring-swatch-edge",
         className,
       ]
         .filter(Boolean)
