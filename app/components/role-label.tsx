@@ -1,6 +1,7 @@
 "use client";
 
 import type { ComponentProps } from "react";
+import { toastMessages } from "./toast-messages";
 import { useCopy } from "./use-copy";
 
 type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
@@ -23,7 +24,10 @@ type RoleLabelProps = Omit<ComponentProps<"span">, "children"> & {
 const variantClasses = {
   inline: { label: "items-baseline", name: "text-text-muted" },
   // 4 + 16.9 line: the design's 21px frame with the baseline 17px down.
-  centered: { label: "items-baseline justify-center pt-paintbox-050 text-center", name: "text-text" },
+  centered: {
+    label: "items-baseline justify-center pt-paintbox-050 text-center",
+    name: "text-text",
+  },
   // Just the 16.9px line: the design's 17px frame with the baseline 13px down.
   stacked: { label: "flex-col items-start", name: "text-text" },
 };
@@ -43,9 +47,10 @@ const variantClasses = {
  *
  * The hex is a button that copies it to the clipboard. Hover: a 1px
  * underline in the text colour, 1px below the baseline; nothing moves.
- * Only on devices that can hover. There's no copied look; a status
- * message announces "Copied #EEE8DF" to screen readers. Its accessible
- * name is "Copy #EEE8DF".
+ * Only on devices that can hover. There's no copied look on the label:
+ * the "Copied #EEE8DF" toast says it worked (or "Couldn't copy #EEE8DF.
+ * Try again." if the clipboard refuses), and screen readers read it.
+ * Its accessible name is "Copy #EEE8DF".
  *
  * Focus (keyboard only, :focus-visible): a 3px ring in the focus colour
  * (violet), 2px outside the hex, with rounded corners (8px inside, 11px
@@ -63,7 +68,7 @@ const variantClasses = {
  * wide as the text. The hex, when shown, goes below it.
  */
 export function RoleLabel({ name, hex, variant = "inline", className, ...props }: RoleLabelProps) {
-  const { copied, copy } = useCopy();
+  const { copy } = useCopy();
   const variantClass = variantClasses[variant];
 
   return (
@@ -75,27 +80,26 @@ export function RoleLabel({ name, hex, variant = "inline", className, ...props }
     >
       <span className={["text-preset-9", variantClass.name].join(" ")}>{name}</span>
       {hex ? (
-        <>
-          <button
-            type="button"
-            className={[
-              "cursor-pointer text-preset-9-hex text-text decoration-1 underline-offset-1 enabled:hover:underline",
-              // 3.5px above and below, taken back by the margins: a 24px
-              // tall target and ring that don't move anything.
-              "-my-[3.5px] py-[3.5px] rounded-[6px]",
-              // Ring radius 6 + 2 = 8 inside, 11 outside, as in the design.
-              "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
-            ].join(" ")}
-            onClick={() => copy(hex)}
-          >
-            <span className="sr-only">Copy </span>
-            {hex}
-          </button>
-          {/* Outside the button, so it isn't part of the button's name. */}
-          <span role="status" className="sr-only">
-            {copied ? `Copied ${hex}` : ""}
-          </span>
-        </>
+        <button
+          type="button"
+          className={[
+            "cursor-pointer text-preset-9-hex text-text decoration-1 underline-offset-1 enabled:hover:underline",
+            // 3.5px above and below, taken back by the margins: a 24px
+            // tall target and ring that don't move anything.
+            "-my-[3.5px] py-[3.5px] rounded-[6px]",
+            // Ring radius 6 + 2 = 8 inside, 11 outside, as in the design.
+            "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
+          ].join(" ")}
+          onClick={() =>
+            copy(hex, {
+              copied: toastMessages.copiedHex(hex),
+              failed: toastMessages.copyHexFailed(hex),
+            })
+          }
+        >
+          <span className="sr-only">Copy </span>
+          {hex}
+        </button>
       ) : null}
     </span>
   );

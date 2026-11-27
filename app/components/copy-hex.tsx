@@ -2,6 +2,7 @@
 
 import type { ComponentProps, MouseEvent } from "react";
 import { IconCheck, IconCopy } from "./icons";
+import { toastMessages } from "./toast-messages";
 import { useCopy } from "./use-copy";
 
 type CopyHexProps = Omit<ComponentProps<"button">, "children"> & {
@@ -87,11 +88,12 @@ const colorClasses = {
  * outside the button (200 × 54 with the ring). Drawn with box-shadow and
  * outline, so nothing moves. The code and icon keep the swatch's ink.
  *
- * Copied: clicking writes the code to the clipboard, then the copy icon
- * turns into a 20px checkmark (IconCheck) in the same spot for 2s.
- * Nothing else changes: no fill, the code stays put. Clicking again
- * copies again and restarts the 2s. If the clipboard refuses, nothing
- * changes. `copied` forces the look.
+ * Copied: clicking writes the code to the clipboard and shows the
+ * "Copied #EEE8DF" toast, and the copy icon turns into a 20px checkmark
+ * (IconCheck) in the same spot for 2s. Nothing else changes: no fill,
+ * the code stays put. Clicking again copies again and restarts the 2s.
+ * If the clipboard refuses, the "Couldn't copy #EEE8DF. Try again."
+ * toast shows and the icon stays as it was. `copied` forces the look.
  *
  * Small size: the same 40px height, states and focus ring, with the code
  * in Text Preset 5 (Funnel Display Bold 22px, uppercase) with 4px either
@@ -101,16 +103,16 @@ const colorClasses = {
  *
  * Without the icon (`icon={false}`): just the code with its padding,
  * e.g. 113px for #EEE8DF at the small size (4 + 4 + 97 + 4 + 4). Hover
- * underlines the code; there's no visible copied look, only the
- * announcement.
+ * underlines the code; there's no copied look on the button, only the
+ * toast.
  *
  * Compact (`compact`): 32px tall instead of 40, for the Row Compact
  * swatch. The code and circle keep their size, so the 36px circle
  * overhangs the pill by 2px top and bottom, as in the design.
  *
  * Its accessible name is "Copy #EEE8DF": a hidden "Copy" before the
- * code says what it does. After a copy, a status message outside the
- * button announces "Copied #EEE8DF" to screen readers.
+ * code says what it does. The toast is read out after a copy, so the
+ * button doesn't announce anything itself.
  */
 export function CopyHex({
   hex,
@@ -130,46 +132,43 @@ export function CopyHex({
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
     onClick?.(event);
-    if (!event.defaultPrevented) copy(hex);
+    if (!event.defaultPrevented) {
+      copy(hex, {
+        copied: toastMessages.copiedHex(hex),
+        failed: toastMessages.copyHexFailed(hex),
+      });
+    }
   }
 
   return (
-    <>
-      <button
-        type="button"
-        className={[
-          "group inline-flex shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
-          compact ? "h-paintbox-400" : "h-paintbox-500",
-          "rounded-paintbox-full",
-          sizes.button,
-          colors.ink,
-          // Dark 7px ring with a white 3px outline 2px out: dark/white/dark.
-          "focus-visible:ring-7 focus-visible:ring-on-swatch-dark",
-          "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-on-swatch-light",
-          className,
-        ]
-          .filter(Boolean)
-          .join(" ")}
-        onClick={handleClick}
-        {...props}
-      >
-        <span className="sr-only">Copy </span>
-        <span className={[sizes.code, "decoration-2 group-enabled:group-hover:underline"].join(" ")}>{hex}</span>
-        {icon ? (
-          // Circle around the icon; filled on hover.
-          <span
-            className={["flex items-center justify-center rounded-paintbox-full", sizes.circle, colors.circle].join(
-              " ",
-            )}
-          >
-            {copied ? <IconCheck /> : <IconCopy />}
-          </span>
-        ) : null}
-      </button>
-      {/* Outside the button, so it isn't part of the button's name. */}
-      <span role="status" className="sr-only">
-        {justCopied ? `Copied ${hex}` : ""}
-      </span>
-    </>
+    <button
+      type="button"
+      className={[
+        "group inline-flex shrink-0 cursor-pointer items-center gap-paintbox-050 whitespace-nowrap",
+        compact ? "h-paintbox-400" : "h-paintbox-500",
+        "rounded-paintbox-full",
+        sizes.button,
+        colors.ink,
+        // Dark 7px ring with a white 3px outline 2px out: dark/white/dark.
+        "focus-visible:ring-7 focus-visible:ring-on-swatch-dark",
+        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-on-swatch-light",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      onClick={handleClick}
+      {...props}
+    >
+      <span className="sr-only">Copy </span>
+      <span className={[sizes.code, "decoration-2 group-enabled:group-hover:underline"].join(" ")}>{hex}</span>
+      {icon ? (
+        // Circle around the icon; filled on hover.
+        <span
+          className={["flex items-center justify-center rounded-paintbox-full", sizes.circle, colors.circle].join(" ")}
+        >
+          {copied ? <IconCheck /> : <IconCopy />}
+        </span>
+      ) : null}
+    </button>
   );
 }
