@@ -701,6 +701,21 @@ export function ComponentsSection() {
             </SwatchSample>
           </Demo>
 
+          <Demo label="Icon-tight: lock off and locked" note="variant=&quot;icon-tight&quot;: the icon variant at 32px, for the Row Compact swatch. Same border, padlock and states.">
+            <SwatchSample color="#EEE8DF">
+              <div className="flex items-center gap-paintbox-300">
+                <LockButtonDemo variant="icon-tight" aria-label="Lock colour 1" />
+                <LockButton variant="icon-tight" locked />
+              </div>
+            </SwatchSample>
+            <SwatchSample color="#561A45">
+              <div className="flex items-center gap-paintbox-300">
+                <LockButtonDemo variant="icon-tight" swatch="dark" aria-label="Lock colour 2" />
+                <LockButton variant="icon-tight" swatch="dark" locked />
+              </div>
+            </SwatchSample>
+          </Demo>
+
           <Demo label="Icon (live example)" note="Click, or Tab and press Space, to lock and unlock. Its accessible name stays &quot;Lock colour 3&quot;; aria-pressed says whether it's locked.">
             <SwatchSample color="#EEE8DF">
               <LockButtonDemo variant="icon" aria-label="Lock colour 3" />
@@ -837,6 +852,12 @@ export function ComponentsSection() {
               <CopyHex hex="#561A45" swatch="dark" copied />
             </SwatchSample>
           </Demo>
+
+          <Demo label="Large, compact" note="compact: 32px tall instead of 40, for the Row Compact swatch. The 36px circle overhangs by 2px top and bottom.">
+            <SwatchSample color="#EEE8DF">
+              <CopyHex hex="#EEE8DF" compact />
+            </SwatchSample>
+          </Demo>
         </div>
 
         <div className="grid grid-cols-1 gap-paintbox-300 md:grid-cols-2 xl:grid-cols-3">
@@ -934,7 +955,8 @@ export function ComponentsSection() {
           whichever has more contrast with the colour (or set <Code>ink</Code>). 12px corners and a 2px inset border
           in <Code>paintbox-neutral-alpha-14</Code>. Column: contents at the bottom left, padding 16 16 16 8, gap 8,
           Lock 16px in. Row (<Code>layout=&quot;row&quot;</Code>): the hex on the left, the round Lock on the right,
-          padding 12 12 12 4. Strip (<Code>layout=&quot;strip&quot;</Code>): the same with padding 8 and the small hex,
+          padding 12 12 12 4. Row Compact (<Code>layout=&quot;row-compact&quot;</Code>): the same at 51px tall with a
+          32px Lock, padding 4 12 4 4. Strip (<Code>layout=&quot;strip&quot;</Code>): the same with padding 8 and the small hex,
           no copy icon. Strip Icon (<Code>layout=&quot;strip-icon&quot;</Code>): just the round Lock, centred. Strip Compact
           (<Code>layout=&quot;strip-compact&quot;</Code>): 64 × 56, the whole swatch is the Lock.
         </p>
@@ -956,6 +978,16 @@ export function ComponentsSection() {
 
           <Demo label="Row: default (dark colour)" note="#B6363F, so white ink. The same layout.">
             <SwatchDemo hex="#B6363F" layout="row" className="h-paintbox-800 w-[21.4375rem]" />
+          </Demo>
+        </div>
+
+        <div className="flex flex-wrap gap-paintbox-300">
+          <Demo label="Row Compact: default (light colour)" note='layout="row-compact" at the design&apos;s 343 × 51. Copy Hex 32px tall (compact), the 32px round Lock (icon-tight); padding 4 12 4 4.'>
+            <SwatchDemo hex="#EEE8DF" layout="row-compact" className="h-[3.1875rem] w-[21.4375rem]" />
+          </Demo>
+
+          <Demo label="Row Compact: default (dark colour)" note="#B6363F, so white ink. The same layout.">
+            <SwatchDemo hex="#B6363F" layout="row-compact" className="h-[3.1875rem] w-[21.4375rem]" />
           </Demo>
         </div>
 
@@ -989,7 +1021,7 @@ export function ComponentsSection() {
           </Demo>
         </div>
 
-        <Meta>Row Compact: not built yet.</Meta>
+        <Meta>Every Swatch layout is built, on a light and a dark colour.</Meta>
       </Group>
     </Section>
   );
