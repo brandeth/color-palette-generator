@@ -8,6 +8,7 @@ import { IconButton } from "./icon-button";
 import { IconPalette, IconPreview, IconRedo, IconUndo } from "./icons";
 import { PaintboxLogo } from "./paintbox-logo";
 import { PaletteTypeButton } from "./palette-type-button";
+import { PaletteTypePicker } from "./palette-type-picker";
 import { paletteTypes } from "./palette-types";
 import { SamplePage } from "./sample-page/sample-page";
 import { Swatch } from "./swatch";
@@ -48,11 +49,13 @@ const INTERACTIVE = "button, a, input, textarea, select, [contenteditable], [rol
 
 /*
  * The palette generator (the home page), filling the window. Desktop
- * (64rem up) is the design's 1440 × 900; tablet (below 64rem) its
- * 768 × 1024. The layouts switch in CSS, so nothing jumps on load.
+ * (64rem up) is the design's 1440 × 900; tablet (48 to 64rem) its
+ * 768 × 1024; phone (below 48rem) its 375 × 812. The layouts switch in
+ * CSS, so nothing jumps on load.
  *
  * Page: background colour, padding 32 48, three rows 24px apart.
- * Tablet: padding 20 32 12, rows 16px apart.
+ * Tablet: padding 20 32 12, rows 16px apart. Phone: padding 20 12 12,
+ * rows 12px apart.
  *
  * Header (40px): the logo with the palette's dots on the left, the
  * Palette / Preview tabs in the middle (4px apart), and Undo, Redo (4px
@@ -62,9 +65,14 @@ const INTERACTIVE = "button, a, input, textarea, select, [contenteditable], [rol
  * Tablet header: the same, with the 26px wordmark and Copy palette as a
  * 40px icon button (same name and menu).
  *
+ * Phone header (92px): two rows 12px apart. The 24px wordmark (no dots)
+ * with Undo, Redo and Copy palette on the right, 8px apart; then the
+ * tabs, sharing the full width (173.5px each).
+ *
  * Colours (the rest of the height): five Swatch columns, 12px apart, each
  * with its Lock and Copy hex. Tablet: five rows sharing the height, 12px
- * apart, each with the hex code and then Lock on the left. Preview shows
+ * apart, each with the hex code and then Lock on the left. Phone: the
+ * same rows, 8px apart, with the round 40px Lock. Preview shows
  * the sample page here instead, filled with the palette (Page, Cards,
  * Buttons, Footer, Text).
  *
@@ -74,6 +82,9 @@ const INTERACTIVE = "button, a, input, textarea, select, [contenteditable], [rol
  * Tablet (padding 8 0, rows 8px apart): the types as five equal cells
  * across the width (24px icons, 61px tall); below them the description
  * (14px) and Generate (medium: padding 20, no Space badge).
+ * Phone (64px, padding 8 0, 8px apart): the Palette type button, which
+ * opens the menu of types, filling the width beside Generate (medium).
+ * After you pick a type and before you generate, it says "Tap Generate".
  *
  * Generate (or Space, when focus isn't on a control) makes a new palette
  * of the chosen type, keeping locked colours; with all five locked it
@@ -86,6 +97,8 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   const palette = history.present;
   const [locked, setLocked] = useState(() => initialPalette.map(() => false));
   const [type, setType] = useState<PaletteTypeValue>("analogous");
+  // The type the current palette was made with: until you generate, a new pick is waiting.
+  const [generatedType, setGeneratedType] = useState<PaletteTypeValue>("analogous");
   const [view, setView] = useState<View>("palette");
   const toast = useToast();
   const id = useId();
@@ -98,6 +111,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
       return;
     }
     dispatch({ type: "set", palette: generatePalette(type, palette, locked) });
+    setGeneratedType(type);
   }, [locked, palette, toast, type]);
 
   // Space to generate; Ctrl/Cmd+Z to undo, Ctrl/Cmd+Shift+Z or Ctrl+Y to redo.
@@ -149,16 +163,17 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   return (
     <div
       className={[
-        "flex h-dvh min-h-[40rem] flex-col gap-paintbox-200 bg-background px-paintbox-400 pt-paintbox-250 pb-paintbox-150",
-        "lg:gap-paintbox-300 lg:px-paintbox-600 lg:py-paintbox-400",
+        "flex h-dvh min-h-[40rem] flex-col gap-paintbox-150 bg-background px-paintbox-150 pt-paintbox-250 pb-paintbox-150",
+        "md:gap-paintbox-200 md:px-paintbox-400 lg:gap-paintbox-300 lg:px-paintbox-600 lg:py-paintbox-400",
       ].join(" ")}
     >
-      <header className="flex items-center gap-paintbox-300">
+      {/* Phones: the logo and actions, then the tabs on their own row. */}
+      <header className="flex flex-wrap items-center gap-x-paintbox-100 gap-y-paintbox-150 md:flex-nowrap md:gap-paintbox-300">
         <div className="flex flex-1 items-center">
           <PaintboxLogo palette={palette} />
         </div>
 
-        <div role="tablist" aria-label="View" className="flex gap-paintbox-050">
+        <div role="tablist" aria-label="View" className="flex gap-paintbox-050 max-md:order-last max-md:w-full">
           {views.map(({ value, label, Icon }) => (
             <Tab
               key={value}
@@ -172,15 +187,15 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
               selected={view === value}
               onClick={() => setView(value)}
               onKeyDown={onTabKeyDown}
-              // 111px each, as in the design, with the content centred.
-              className="w-[6.9375rem] justify-center"
+              // 111px each, as in the design, with the content centred; phones share the width.
+              className="justify-center max-md:grow max-md:basis-0 md:w-[6.9375rem]"
             >
               {label}
             </Tab>
           ))}
         </div>
 
-        <div className="flex flex-1 items-center justify-end gap-paintbox-100">
+        <div className="flex items-center justify-end gap-paintbox-100 md:flex-1">
           <div className="flex gap-paintbox-050">
             <IconButton
               icon={<IconUndo />}
@@ -205,13 +220,13 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
         </div>
       </header>
 
-      <main className="flex min-h-0 flex-1 flex-col gap-paintbox-200 lg:gap-paintbox-300">
+      <main className="flex min-h-0 flex-1 flex-col gap-paintbox-150 md:gap-paintbox-200 lg:gap-paintbox-300">
         <div
           role="tabpanel"
           id={`${id}-palette-panel`}
           aria-labelledby={`${id}-palette-tab`}
           hidden={view !== "palette"}
-          className="flex min-h-0 flex-1 flex-col gap-paintbox-150 lg:grid lg:grid-cols-5"
+          className="flex min-h-0 flex-1 flex-col gap-paintbox-100 md:gap-paintbox-150 lg:grid lg:grid-cols-5"
         >
           {palette.map((hex, i) => (
             <Swatch
@@ -240,14 +255,15 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           />
         </div>
 
-        {/* Tablet: types across the top, then the description and Generate. Desktop: one row on the five columns. */}
+        {/* Phone: the Palette type button and Generate. Tablet: types across the top, then the
+            description and Generate. Desktop: one row on the five columns. */}
         <div className="grid grid-cols-[1fr_auto] items-center gap-paintbox-100 py-paintbox-100 lg:grid-cols-5 lg:gap-paintbox-150 lg:py-0">
           <div
             role="radiogroup"
             aria-label="Palette type"
             aria-describedby={`${id}-type-description`}
             onKeyDown={onTypeKeyDown}
-            className="col-span-2 flex gap-paintbox-050"
+            className="col-span-2 flex gap-paintbox-050 max-md:hidden"
           >
             {paletteTypes.map((option, i) => (
               <PaletteTypeButton
@@ -266,7 +282,16 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
               </PaletteTypeButton>
             ))}
           </div>
-          <p id={`${id}-type-description`} className="text-preset-8 text-text-muted lg:col-span-2 lg:text-preset-7">
+          <PaletteTypePicker
+            selected={type}
+            onSelect={setType}
+            waiting={type !== generatedType}
+            className="md:hidden"
+          />
+          <p
+            id={`${id}-type-description`}
+            className="text-preset-8 text-text-muted max-md:hidden lg:col-span-2 lg:text-preset-7"
+          >
             {description}
           </p>
           {/* Tablet: Medium, padding 20, without the Space badge (the key still works). */}

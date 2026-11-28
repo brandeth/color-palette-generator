@@ -15,8 +15,9 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
    * "strip-compact": 64 × 56, the whole swatch is the Lock (phone
    * preview strip). "row-compact": row, shorter, with a 32px Lock.
    * "row-labelled": the hex code with the labelled Lock right after it
-   * (tablet). "adaptive": Row Labelled below 64rem, Column from 64rem up,
-   * for the generator page.
+   * (tablet). "adaptive": for the generator page: on phones (below 48rem)
+   * Row Labelled with the round Lock, up to 64rem Row Labelled, and
+   * Column from 64rem up.
    */
   layout?: "column" | "row" | "row-compact" | "row-labelled" | "strip" | "strip-icon" | "strip-compact" | "adaptive";
   /**
@@ -119,7 +120,9 @@ export function inkFor(hex: string): Ink {
  * left, so the code starts 16px in.
  *
  * Adaptive layout (the generator page): Row Labelled below 64rem and
- * Column from 64rem up, switched in CSS so nothing jumps on load. Lock
+ * Column from 64rem up, switched in CSS so nothing jumps on load. On
+ * phones (below 48rem, the design's 351 × 114) Lock shows as the 40px
+ * circle with just the padlock; its name stays "Lock" for screen readers. Lock
  * comes first in the code, as in Column, so on tablets the keyboard
  * reaches Lock before the hex code, though it shows after it.
  *
@@ -174,7 +177,17 @@ export function Swatch({
         <>
           {/* 8px more on the left in Column, so Lock starts 16px in. */}
           <div className={layout === "column" ? "pl-paintbox-100" : "lg:pl-paintbox-100"}>
-            <LockButton swatch={swatch} locked={locked} onClick={toggleLock} />
+            <LockButton
+              swatch={swatch}
+              locked={locked}
+              onClick={toggleLock}
+              // Adaptive on phones: the 40px circle, the label kept for screen readers.
+              className={
+                layout === "adaptive"
+                  ? "max-md:size-paintbox-500 max-md:min-w-0 max-md:px-0 max-md:[&>span]:sr-only"
+                  : undefined
+              }
+            />
           </div>
           <CopyHex hex={hex} swatch={swatch} />
         </>
