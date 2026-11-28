@@ -13,13 +13,24 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
    * Lock on the right. "strip": like row but narrower, with the small hex
    * code (no copy icon). "strip-icon": just the round Lock, centred.
    * "strip-compact": 64 × 56, the whole swatch is the Lock (phone
-   * preview strip). "row-compact": row, shorter, with a 32px Lock.
+   * preview strip). "strip-compact-small": the same with the small Lock
+   * (16px padlock, 20px circle when locked), for the landscape rail.
+   * "row-compact": row, shorter, with a 32px Lock.
    * "row-labelled": the hex code with the labelled Lock right after it
    * (tablet). "adaptive": for the generator page: on phones (below 48rem)
    * Row Labelled with the round Lock, up to 64rem Row Labelled, and
    * Column from 64rem up.
    */
-  layout?: "column" | "row" | "row-compact" | "row-labelled" | "strip" | "strip-icon" | "strip-compact" | "adaptive";
+  layout?:
+    | "column"
+    | "row"
+    | "row-compact"
+    | "row-labelled"
+    | "strip"
+    | "strip-icon"
+    | "strip-compact"
+    | "strip-compact-small"
+    | "adaptive";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -65,6 +76,8 @@ const layoutClasses = {
   adaptive: [
     "flex-row-reverse items-center justify-end py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
     "lg:flex-col lg:items-start lg:justify-end lg:pt-paintbox-200 lg:pr-paintbox-200 lg:pb-paintbox-200 lg:pl-paintbox-100",
+    // A phone on its side: Row Compact, the hex on the left and Lock on the right; padding 4 12 4 4.
+    "paintbox-landscape:justify-between paintbox-landscape:py-paintbox-050",
   ].join(" "),
   // The same, padding 8 all round.
   strip: "flex-row items-center justify-between p-paintbox-100",
@@ -72,6 +85,7 @@ const layoutClasses = {
   "strip-icon": "flex-row items-center justify-center p-paintbox-150",
   // The Lock's tap area is the whole swatch; no padding.
   "strip-compact": "flex-row items-center justify-center",
+  "strip-compact-small": "flex-row items-center justify-center",
 };
 
 /** The ink with more contrast on `hex` ("#RRGGBB" or "#RGB"): #1B1F24 or white. */
@@ -122,7 +136,9 @@ export function inkFor(hex: string): Ink {
  * Adaptive layout (the generator page): Row Labelled below 64rem and
  * Column from 64rem up, switched in CSS so nothing jumps on load. On
  * phones (below 48rem, the design's 351 × 114) Lock shows as the 40px
- * circle with just the padlock; its name stays "Lock" for screen readers. Lock
+ * circle with just the padlock; its name stays "Lock" for screen readers.
+ * On a phone on its side (the design's 451 × 51) it's Row Compact: the
+ * compact hex on the left, the 32px circle on the right. Lock
  * comes first in the code, as in Column, so on tablets the keyboard
  * reaches Lock before the hex code, though it shows after it.
  *
@@ -139,6 +155,10 @@ export function inkFor(hex: string): Ink {
  * strip): no padding; Lock (icon-small) is the whole swatch: its 64 × 56
  * tap area with the 20px padlock in the middle, the 32px ink circle when
  * locked, and the hover tint over the whole swatch.
+ *
+ * Strip Compact Small layout (the design's 64 × 29.4, for the landscape
+ * Preview rail): the same, with Lock (icon-xsmall) filling whatever size
+ * the swatch is given: a 16px padlock, and a 20px circle when locked.
  *
  * It's a group named after the hex code, so screen readers announce
  * "#EEE8DF, group" before its "Lock" and "Copy #EEE8DF" buttons.
@@ -181,15 +201,25 @@ export function Swatch({
               swatch={swatch}
               locked={locked}
               onClick={toggleLock}
-              // Adaptive on phones: the 40px circle, the label kept for screen readers.
+              // Adaptive on phones: the 40px circle, the label kept for screen readers; on their
+              // side, the 32px circle.
               className={
                 layout === "adaptive"
-                  ? "max-md:size-paintbox-500 max-md:min-w-0 max-md:px-0 max-md:[&>span]:sr-only"
+                  ? [
+                      "max-md:size-paintbox-500 max-md:min-w-0 max-md:px-0 max-md:[&>span]:sr-only",
+                      "paintbox-landscape:size-paintbox-400 paintbox-landscape:min-w-0 paintbox-landscape:px-0",
+                      "paintbox-landscape:[&>span]:sr-only",
+                    ].join(" ")
                   : undefined
               }
             />
           </div>
-          <CopyHex hex={hex} swatch={swatch} />
+          {/* Adaptive on a phone on its side: compact, 32px tall. */}
+          <CopyHex
+            hex={hex}
+            swatch={swatch}
+            className={layout === "adaptive" ? "paintbox-landscape:h-paintbox-400" : undefined}
+          />
         </>
       ) : layout === "row-labelled" ? (
         <>
@@ -201,6 +231,9 @@ export function Swatch({
       ) : layout === "strip-compact" ? (
         // As wide as the swatch, which can be a little under 64 (63.8 in the phone strip).
         <LockButton swatch={swatch} variant="icon-small" locked={locked} onClick={toggleLock} className="w-full!" />
+      ) : layout === "strip-compact-small" ? (
+        // The whole swatch, whatever its size (64 × 29.4 in the landscape rail).
+        <LockButton swatch={swatch} variant="icon-xsmall" locked={locked} onClick={toggleLock} className="size-full!" />
       ) : (
         <>
           {layout === "strip" ? (
