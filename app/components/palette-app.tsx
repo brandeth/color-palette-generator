@@ -118,9 +118,9 @@ const INTERACTIVE =
  * get theirs below them, with their shortcuts);
  * pressed, the sample page shows its dark version (the darkest role as
  * the page, the lightest as its text; cards, pictures and footer as they
- * are). Tablet and phone, until their designs
- * come: Strip Icon swatches with the role and hex below (tablet), and
- * Strip Compact with the role name (phone).
+ * are). Tablet: Strip Icon swatches (131 × 64) with the role and its
+ * hex centred below, 28px (as in the design). Phone, until its design
+ * comes: Strip Compact with the role name.
  *
  * Generate (or Space, when focus isn't on a control) makes a new palette
  * of the chosen type, keeping locked colours; with all five locked it
@@ -316,18 +316,33 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           {(
             [
               // Desktop: Strip (small hex, round Lock), the role name under it.
-              { show: "hidden lg:grid lg:gap-x-paintbox-150", layout: "strip", swatch: "h-paintbox-800", hex: false },
+              {
+                show: "hidden lg:grid lg:gap-x-paintbox-150",
+                layout: "strip",
+                swatch: "h-paintbox-800",
+                hex: false,
+                // 8px above and at the sides, as the design's 4 + 4 above.
+                role: "px-paintbox-100 pt-paintbox-100",
+              },
               // Tablet: Strip Icon (just Lock), the role and its hex under it.
               {
                 show: "hidden md:grid md:gap-x-paintbox-150 lg:hidden",
                 layout: "strip-icon",
                 swatch: "h-paintbox-800",
                 hex: true,
+                // Centred under the swatch, 8px down; 3px below for the hex's 24px button: 28px in all.
+                role: "w-full justify-center pt-paintbox-100 pb-[0.1875rem]",
               },
               // Phone: Strip Compact (the whole swatch is Lock), the role name under it.
-              { show: "grid gap-x-paintbox-100 md:hidden", layout: "strip-compact", swatch: "h-[3.5rem]", hex: false },
+              {
+                show: "grid gap-x-paintbox-100 md:hidden",
+                layout: "strip-compact",
+                swatch: "h-[3.5rem]",
+                hex: false,
+                role: "px-paintbox-100 pt-paintbox-100",
+              },
             ] as const
-          ).map(({ show, layout, swatch, hex }) => (
+          ).map(({ show, layout, swatch, hex, role }) => (
             <ul key={layout} className={["grid-cols-5", show].join(" ")}>
               {palette.map((colour, i) => (
                 <li key={i} className="flex min-w-0 flex-col">
@@ -338,12 +353,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                     onLockedChange={(value) => setLocked((current) => current.map((v, j) => (j === i ? value : v)))}
                     className={swatch}
                   />
-                  {/* 8px above and at the sides, as the design's 4 + 4 above. */}
-                  <RoleLabel
-                    name={roleNames[i]}
-                    hex={hex ? colour : undefined}
-                    className="px-paintbox-100 pt-paintbox-100"
-                  />
+                  <RoleLabel name={roleNames[i]} hex={hex ? colour : undefined} className={role} />
                 </li>
               ))}
             </ul>
