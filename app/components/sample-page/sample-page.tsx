@@ -38,6 +38,12 @@ type SamplePageProps = Omit<ComponentProps<"div">, "children"> & {
    * landmarks to the page around it.
    */
   embedded?: boolean;
+  /**
+   * The dark version (Dark preview): the page in the darkest role and
+   * everything on it in the lightest. The cards, illustrations, Plan a
+   * walk and the footer keep their colours.
+   */
+  dark?: boolean;
 };
 
 /*
@@ -52,7 +58,7 @@ type SamplePageProps = Omit<ComponentProps<"div">, "children"> & {
 const inner = "mx-auto w-full max-w-[84rem]";
 
 // Keyboard focus: a 3px ring 2px out, in the text colour of where it sits.
-const focusOnPage = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--darkest)";
+const focusOnPage = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--ink)";
 const focusOnFooter = "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--lightest)";
 
 const navLinks = ["Routes", "Maps", "Journal"];
@@ -98,8 +104,16 @@ function PillLink({ className, children }: { className: string; children: ReactN
 /*
  * Fellside, a made-up walking site, coloured by the palette: the page the
  * Preview shows, so you can see the colours at work. Every colour comes
- * from one of the five roles (see `roles`); the text is always the
- * darkest role on the lightest, or the lightest on the dark footer.
+ * from one of the five roles (see `roles`). The page and the text on it
+ * are --page and --ink: the lightest and darkest roles, or the other way
+ * round in the dark version (see `dark`). The cards keep the darkest text
+ * on the light role, and the footer the lightest text on the dark role.
+ *
+ * Dark version: the page in the darkest role; its text, the nav links,
+ * the outline pills (Get the app, See the routes) and the logo's peak in
+ * the lightest. The hero picture gets a 2px edge in the lightest at 40%,
+ * so it stands off the dark page. The illustrations, walk cards, chips,
+ * Plan a walk and the footer stay as they are.
  *
  * From the top: a nav bar (the logo, Routes / Maps / Journal from tablet
  * up, and a Get the app outline pill); a hero with the headline, intro,
@@ -111,7 +125,7 @@ function PillLink({ className, children }: { className: string; children: ReactN
  *
  * The links go nowhere: it's a sample.
  */
-export function SamplePage({ roles, embedded = false, className, style, ...props }: SamplePageProps) {
+export function SamplePage({ roles, embedded = false, dark = false, className, style, ...props }: SamplePageProps) {
   const Header = embedded ? "div" : "header";
   const Main = embedded ? "div" : "main";
   const Footer = embedded ? "div" : "footer";
@@ -122,11 +136,15 @@ export function SamplePage({ roles, embedded = false, className, style, ...props
     "--mid": colours.mid,
     "--dark": colours.dark,
     "--darkest": colours.darkest,
+    // The page and the text on it; swapped in the dark version.
+    "--page": dark ? colours.darkest : colours.lightest,
+    "--ink": dark ? colours.lightest : colours.darkest,
   } as CSSProperties;
 
   return (
     <div
-      className={cx("@container flex flex-col bg-(--lightest) text-(--darkest)", className)}
+      data-dark={dark ? "" : undefined}
+      className={cx("@container flex flex-col bg-(--page) text-(--ink)", className)}
       style={{ ...roleVariables, ...style }}
       {...props}
     >
@@ -140,7 +158,7 @@ export function SamplePage({ roles, embedded = false, className, style, ...props
           "@min-[64rem]:px-paintbox-600 @min-[64rem]:py-paintbox-150",
         )}
       >
-        <Logo className={focusOnPage} />
+        <Logo className={cx("[--fellside-peak:var(--ink)]", focusOnPage)} />
         <div className="flex items-center gap-paintbox-400">
           <nav aria-label="Fellside" className="hidden @min-[44rem]:block">
             <ul className="flex gap-paintbox-300 text-preset-8-bold">
@@ -154,7 +172,7 @@ export function SamplePage({ roles, embedded = false, className, style, ...props
             </ul>
           </nav>
           {/* 36px tall: 14px padding inside the 2px border, as the design's inside stroke. */}
-          <PillLink className={cx("h-[2.25rem] border-2 border-(--darkest) px-[0.875rem] text-preset-8-bold", focusOnPage)}>
+          <PillLink className={cx("h-[2.25rem] border-2 border-(--ink) px-[0.875rem] text-preset-8-bold", focusOnPage)}>
             Get the app
           </PillLink>
         </div>
@@ -204,7 +222,7 @@ export function SamplePage({ roles, embedded = false, className, style, ...props
               <PillLink
                 className={cx(
                   // 20px in from the outer edge (18 + the 2px border); 24 on desktop.
-                  "h-paintbox-600 border-2 border-(--darkest) px-[1.125rem] text-preset-7-bold",
+                  "h-paintbox-600 border-2 border-(--ink) px-[1.125rem] text-preset-7-bold",
                   "@min-[64rem]:px-[1.375rem] @min-[64rem]:text-preset-6-bold",
                   focusOnPage,
                 )}
@@ -214,7 +232,13 @@ export function SamplePage({ roles, embedded = false, className, style, ...props
             </div>
           </div>
           {/* Above the text on phones; after it from landscape up. */}
-          <div className="-order-1 overflow-hidden rounded-paintbox-16 @min-[28rem]:order-none @min-[44rem]:min-w-0 @min-[44rem]:flex-1">
+          {/* Dark version: a 2px edge in the lightest at 40%, drawn over the picture. */}
+          <div
+            className={cx(
+              "-order-1 overflow-hidden rounded-paintbox-16 @min-[28rem]:order-none @min-[44rem]:min-w-0 @min-[44rem]:flex-1",
+              dark && "outline-2 -outline-offset-2 outline-(--lightest)/40",
+            )}
+          >
             <HeroLandscape className="block aspect-[311/160] w-full @min-[28rem]:aspect-[2/1] @min-[64rem]:aspect-[752/268.56]" />
           </div>
         </section>
@@ -247,7 +271,11 @@ export function SamplePage({ roles, embedded = false, className, style, ...props
 
           <ul className="grid gap-paintbox-150 @min-[44rem]:grid-cols-3 @min-[44rem]:gap-paintbox-200">
             {walks.map(({ name, details, tag, Art }) => (
-              <li key={name} className="flex flex-col gap-paintbox-150 rounded-paintbox-20 bg-(--light) p-paintbox-100">
+              <li
+                key={name}
+                // The darkest text on the light card, in both versions.
+                className="flex flex-col gap-paintbox-150 rounded-paintbox-20 bg-(--light) p-paintbox-100 text-(--darkest)"
+              >
                 <Art className="block aspect-[2/1] h-auto w-full rounded-paintbox-12" />
                 {/* The details fill the card, so the tags line up when the cards sit in a row. */}
                 <div className="flex grow flex-col items-start gap-paintbox-100 px-paintbox-150 pb-paintbox-150">
