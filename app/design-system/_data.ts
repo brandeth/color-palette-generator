@@ -74,6 +74,12 @@ export type TypePreset = { className: string; label: string; spec: string };
 export const typePresets: TypePreset[] = [
   { className: "text-preset-1", label: "Text Preset 1", spec: "Funnel Sans Bold · 28–44px fluid · 105% · −2%" },
   { className: "text-preset-2", label: "Text Preset 2", spec: "Funnel Sans Bold · 24–32px fluid · 115% · −2%" },
+  { className: "text-preset-1-desktop", label: "Text Preset 1 (Desktop)", spec: "Funnel Sans Bold · 42px · 105% · −2% · sample page" },
+  { className: "text-preset-1-tablet", label: "Text Preset 1 (Tablet)", spec: "Funnel Sans Bold · 32px · 105% · −2% · sample page" },
+  { className: "text-preset-1-mobile", label: "Text Preset 1 (Mobile)", spec: "Funnel Sans Bold · 28px · 105% · −2% · sample page" },
+  { className: "text-preset-2-desktop", label: "Text Preset 2 (Desktop)", spec: "Funnel Sans Bold · 32px · 115% · −2% · sample page" },
+  { className: "text-preset-2-tablet", label: "Text Preset 2 (Tablet)", spec: "Funnel Sans Bold · 27px · 115% · −2% · sample page" },
+  { className: "text-preset-2-mobile", label: "Text Preset 2 (Mobile)", spec: "Funnel Sans Bold · 24px · 115% · −2% · sample page" },
   { className: "text-preset-3", label: "Text Preset 3", spec: "Funnel Display SemiBold · 24–28px fluid · 120% · 0 · lowercase" },
   { className: "text-preset-4", label: "Text Preset 4", spec: "Funnel Display SemiBold · 28px · 100% · 2% · uppercase" },
   { className: "text-preset-5", label: "Text Preset 5", spec: "Funnel Display Bold · 22px · 100% · 2% · uppercase" },

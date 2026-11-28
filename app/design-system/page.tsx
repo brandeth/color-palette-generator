@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ButtonLink } from "../components/button";
+import { IconChevronUp } from "../components/icons";
 import { ColorsSection } from "./_components/colors-section";
 import { ComponentsSection } from "./_components/components-section";
 import { EffectsSection, RadiusSection, SpacingSection } from "./_components/layout-sections";
@@ -31,7 +33,13 @@ export default function DesignSystemPage() {
             <p className="text-preset-9 text-text-muted">paintbox</p>
             <h1 className="text-preset-6-tight">Design system</h1>
           </div>
-          <ThemeSwitcher />
+          <div className="flex flex-wrap items-center gap-paintbox-300">
+            {/* The chevron, turned to point forward, after the label. */}
+            <ButtonLink href="/sample" icon={<IconChevronUp className="rotate-90" />} className="flex-row-reverse">
+              Sample page
+            </ButtonLink>
+            <ThemeSwitcher />
+          </div>
         </div>
         <nav aria-label="Sections" className="container-paintbox overflow-x-auto pb-paintbox-150">
           <ul className="flex gap-paintbox-300 whitespace-nowrap">

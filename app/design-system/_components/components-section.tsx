@@ -1,5 +1,5 @@
 import { Fragment, type ComponentProps, type ReactNode } from "react";
-import { Button } from "../../components/button";
+import { Button, ButtonLink } from "../../components/button";
 import { CopyOption } from "../../components/copy-option";
 import { CopyPaletteMenu } from "../../components/copy-palette-menu";
 import { GenerateButton } from "../../components/generate-button";
@@ -13,7 +13,7 @@ import { LockButton } from "../../components/lock-button";
 import { RoleLabel } from "../../components/role-label";
 import { LockButtonDemo } from "./lock-button-demo";
 import { SwatchDemo } from "./swatch-demo";
-import { IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
+import { IconChevronUp, IconCopyAll, IconMoon, IconPalette, IconRedo, IconUndo } from "../../components/icons";
 import { Tab } from "../../components/tab";
 import { Toast } from "../../components/toast";
 import { toastMessages } from "../../components/toast-messages";
@@ -23,7 +23,8 @@ import { CopyMenuDemo } from "./copy-option-demo";
 import { IconButtonToggleDemo } from "./icon-button-demo";
 import { PaletteTypeGroupDemo } from "./palette-type-demo";
 import { PaletteTypeMenuDemo } from "./palette-type-menu-demo";
-import { paletteTypes } from "./palette-types";
+import { PreviewTabsDemo } from "./preview-tabs-demo";
+import { paletteTypes } from "../../components/palette-types";
 import { Code, Group, Meta, Section } from "./section";
 import { TabDemo } from "./tab-demo";
 import { ToastDemo } from "./toast-demo";
@@ -153,6 +154,12 @@ export function ComponentsSection() {
             <StatePair state="Focus" selected className="outline-3 outline-offset-2 outline-focus" />
           </Demo>
         </div>
+
+        <p className="text-preset-8 text-text-muted">
+          With their panels, on the sample palette: Palette shows the five role colours as swatches; Preview shows the
+          sample page filled with them, laid out for the panel&apos;s width. Left and Right switch tabs from the keyboard.
+        </p>
+        <PreviewTabsDemo />
       </Group>
 
       <Group title="Icon button">
@@ -239,6 +246,12 @@ export function ComponentsSection() {
 
           <Demo label="Default" note="No border, no background, text color icon and label.">
             <Button icon={<IconCopyAll />}>Copy palette</Button>
+          </Demo>
+
+          <Demo label="Link (ButtonLink)" note="The same look for a link to another page, e.g. back from the sample page. Hover and focus as Button; no pressed state.">
+            <ButtonLink href="/sample" icon={<IconChevronUp className="rotate-90" />} className="flex-row-reverse">
+              Sample page
+            </ButtonLink>
           </Demo>
 
           <Demo label="Hover" note="surface-alt background (#ECEFEC light), no border. Shown forced on here; hover the Default one for the real thing.">

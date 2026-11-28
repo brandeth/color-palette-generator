@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
 type ButtonProps = Omit<ComponentProps<"button">, "aria-pressed"> & {
@@ -38,19 +39,24 @@ type ButtonProps = Omit<ComponentProps<"button">, "aria-pressed"> & {
  *
  * Disabled state comes next.
  */
+// The look Button and ButtonLink share: everything but hover and pressed.
+const baseClasses = [
+  "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
+  "rounded-paintbox-full px-paintbox-150",
+  "text-preset-8-bold text-text",
+  "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
+];
+
 export function Button({ icon, pressed, className, children, ...props }: ButtonProps) {
   return (
     <button
       type="button"
       aria-pressed={pressed}
       className={[
-        "inline-flex h-paintbox-500 shrink-0 cursor-pointer items-center gap-paintbox-100 whitespace-nowrap",
-        "rounded-paintbox-full px-paintbox-150",
-        "text-preset-8-bold text-text",
+        ...baseClasses,
         "hover:enabled:bg-surface-alt",
         "aria-pressed:bg-surface-alt aria-pressed:inset-ring-2 aria-pressed:inset-ring-text-muted",
         "aria-expanded:bg-surface-alt aria-expanded:inset-ring-2 aria-expanded:inset-ring-text-muted",
-        "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
         className,
       ]
         .filter(Boolean)
@@ -62,5 +68,25 @@ export function Button({ icon, pressed, className, children, ...props }: ButtonP
           the letters up with the icon (see Tab). */}
       <span className="[text-box:trim-both_cap_alphabetic]">{children}</span>
     </button>
+  );
+}
+
+type ButtonLinkProps = ComponentProps<typeof Link> & {
+  /** Leading icon, e.g. <IconChevronUp className="-rotate-90" />. Rendered decoratively. */
+  icon?: ReactNode;
+};
+
+/*
+ * Button's look for a link to another page (next/link), e.g. "Design
+ * system" back from the sample page: the same 40px pill, padding 12, gap
+ * 8, Text Preset 8 (Bold), surface-alt on hover and the focus outline.
+ * No pressed state: a link isn't a toggle.
+ */
+export function ButtonLink({ icon, className, children, ...props }: ButtonLinkProps) {
+  return (
+    <Link className={[...baseClasses, "hover:bg-surface-alt", className].filter(Boolean).join(" ")} {...props}>
+      {icon}
+      <span className="[text-box:trim-both_cap_alphabetic]">{children}</span>
+    </Link>
   );
 }
