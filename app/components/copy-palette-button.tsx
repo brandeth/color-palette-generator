@@ -8,13 +8,26 @@ import { IconCopyAll } from "./icons";
 import { toastMessages } from "./toast-messages";
 import { useCopy } from "./use-copy";
 
-// Tablets (48 to 64rem) get the wide menu; it only shows after a click, so no server value is needed.
+// The menu's size by screen: phones (below 48rem), tablets (to 64rem), desktop. It only shows
+// after a click, so the server's value never shows.
+const PHONE = "(width < 48rem)";
 const TABLET = "(48rem <= width < 64rem)";
-function subscribeTablet(onChange: () => void) {
-  const query = window.matchMedia(TABLET);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
+function subscribeScreen(onChange: () => void) {
+  const queries = [window.matchMedia(PHONE), window.matchMedia(TABLET)];
+  queries.forEach((query) => query.addEventListener("change", onChange));
+  return () => queries.forEach((query) => query.removeEventListener("change", onChange));
 }
+function currentScreen() {
+  return window.matchMedia(PHONE).matches ? "phone" : window.matchMedia(TABLET).matches ? "tablet" : "desktop";
+}
+
+// The menu for each screen, and where it sits. Phones and tablets: the screen's width less 8px
+// (phone) or 28px (tablet) each side, its right edge 4px past the button's.
+const menuFor = {
+  phone: { variant: "phone", place: "-right-paintbox-050 w-[calc(100vw-1rem)]" },
+  tablet: { variant: "wide", place: "-right-paintbox-050 w-[calc(100vw-3.5rem)]" },
+  desktop: { variant: "default", place: "right-0" },
+} as const;
 
 // The toast for each format when the copy works.
 const copiedToast = {
@@ -30,7 +43,8 @@ const copiedToast = {
  * Click (or Enter / Space) opens the menu under the button, right-aligned,
  * 8px below, with focus on the first format. On tablets it's the wide
  * menu, 712px: the page's width less 28px each side, 4px past the page
- * margins (as in the design). No format shows a tick: the menu closes as
+ * margins; on phones the phone menu, 359px: 8px from each edge of the
+ * screen (as in the designs). No format shows a tick: the menu closes as
  * soon as you choose one, and the toast says what was copied.
  * Choosing a format copies, closes the menu, puts focus back on the
  * button and shows a toast ("Copied as CSS variables", or "Couldn't copy
@@ -40,7 +54,7 @@ const copiedToast = {
  */
 export function CopyPaletteButton({ palette, className }: { palette: Palette; className?: string }) {
   const [open, setOpen] = useState(false);
-  const tablet = useSyncExternalStore(subscribeTablet, () => window.matchMedia(TABLET).matches, () => false);
+  const menu = menuFor[useSyncExternalStore(subscribeScreen, currentScreen, () => "desktop" as const)];
   const { copy } = useCopy();
   const menuId = useId();
   const wrapper = useRef<HTMLDivElement>(null);
@@ -101,12 +115,11 @@ export function CopyPaletteButton({ palette, className }: { palette: Palette; cl
           id={menuId}
           heading={`Copy all ${palette.length === 5 ? "five" : palette.length} colours as`}
           formats={formats}
-          variant={tablet ? "wide" : "default"}
+          variant={menu.variant}
           onSelect={choose}
           className={[
             "absolute top-full z-20 mt-paintbox-100",
-            // Tablet: 712px wide, its right edge 4px past the button's (and the page margin).
-            tablet ? "-right-paintbox-050 w-[calc(100vw-3.5rem)]" : "right-0",
+            menu.place,
           ].join(" ")}
         />
       ) : null}
