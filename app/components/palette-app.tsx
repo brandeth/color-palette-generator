@@ -125,6 +125,19 @@ const INTERACTIVE =
  * 81px in all; the moon joins the top row, 8px before Undo, and the tabs
  * keep the full width below.
  *
+ * Phone on its side (paintbox-landscape: landscape, up to 30rem tall and
+ * under 64rem wide; the design's 667 × 375): padding 20 12 12, rows 16px
+ * apart, no minimum height. Header in one row, 12px apart: the 26px
+ * wordmark, the tabs (103.2px each) with room for the moon after them,
+ * then Undo, Redo and Copy palette. Below, the landscape grid: the five
+ * colours as Row Compact swatches (8px apart, sharing the height) beside
+ * the 176px rail, 16px away: the Palette type button, Generate and the
+ * description, 12px apart. Preview: the sample page fills the colours'
+ * place (451 × 287, its landscape layout), with the moon after the tabs;
+ * the rail keeps the Palette type button and Generate, then the colours
+ * in place of the description: each role with its small swatch (64 ×
+ * 29.4, a 16px Lock) on the right, 4px apart.
+ *
  * Generate (or Space, when focus isn't on a control) makes a new palette
  * of the chosen type, keeping locked colours; with all five locked it
  * says so in a toast instead. Undo and Redo step through the palettes
@@ -214,19 +227,39 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
       className={[
         "flex h-dvh min-h-[40rem] flex-col gap-paintbox-150 bg-background px-paintbox-150 pt-paintbox-250 pb-paintbox-150",
         "md:gap-paintbox-200 md:px-paintbox-400 lg:gap-paintbox-300 lg:px-paintbox-600 lg:py-paintbox-400",
+        // A phone on its side: the phone's padding, rows 16px apart, and no minimum height.
+        "paintbox-landscape:min-h-0 paintbox-landscape:gap-paintbox-200 paintbox-landscape:px-paintbox-150",
       ].join(" ")}
     >
-      {/* Phones: the logo and actions, then the tabs on their own row. */}
-      <header className="flex flex-wrap items-center gap-x-paintbox-100 gap-y-paintbox-150 md:flex-nowrap md:gap-paintbox-300">
+      {/* Phones: the logo and actions, then the tabs on their own row. On their side: one row, 12px apart. */}
+      <header
+        className={[
+          "flex flex-wrap items-center gap-x-paintbox-100 gap-y-paintbox-150 md:flex-nowrap md:gap-paintbox-300",
+          "paintbox-landscape:flex-nowrap paintbox-landscape:gap-paintbox-150",
+        ].join(" ")}
+      >
         <div className="flex flex-1 items-center">
           <PaintboxLogo palette={palette} />
         </div>
 
         {/* The tabs, and in Preview the moon 8px after them; it hangs outside so the tabs stay centred.
             Phones: the wrapper steps aside (contents), so the moon joins the top row, 8px before
-            Undo, and the tabs take the row below. */}
-        <div className="relative flex items-center gap-paintbox-100 max-md:contents">
-          <div role="tablist" aria-label="View" className="flex gap-paintbox-050 max-md:order-last max-md:w-full">
+            Undo, and the tabs take the row below. On their side: the tabs with room for the moon
+            after them (258.4px, as in the design), centred between the logo and the actions. */}
+        <div
+          className={[
+            "relative flex items-center gap-paintbox-100 max-md:contents",
+            "paintbox-landscape:flex paintbox-landscape:w-[16.15rem]",
+          ].join(" ")}
+        >
+          <div
+            role="tablist"
+            aria-label="View"
+            className={[
+              "flex gap-paintbox-050 max-md:order-last max-md:w-full",
+              "paintbox-landscape:order-none paintbox-landscape:w-auto",
+            ].join(" ")}
+          >
             {views.map(({ value, label, Icon }) => (
               <Tab
                 key={value}
@@ -240,8 +273,12 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                 selected={view === value}
                 onClick={() => setView(value)}
                 onKeyDown={onTabKeyDown}
-                // 111px each, as in the design, with the content centred; phones share the width.
-                className="justify-center max-md:grow max-md:basis-0 md:w-[6.9375rem]"
+                // 111px each, as in the design, with the content centred; phones share the width;
+                // on their side, 103.2px each.
+                className={[
+                  "justify-center max-md:grow max-md:basis-0 md:w-[6.9375rem]",
+                  "paintbox-landscape:w-[6.45rem] paintbox-landscape:grow-0 paintbox-landscape:basis-auto",
+                ].join(" ")}
               >
                 {label}
               </Tab>
@@ -249,7 +286,12 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           </div>
           {view === "preview" ? (
             // Its name in a tooltip 8px to its right on hover, as in the design.
-            <Tooltip label="Dark preview" side="right" className="md:absolute md:left-full md:ml-paintbox-100">
+            <Tooltip
+              label="Dark preview"
+              side="right"
+              // On their side, it sits in the row, in the room kept for it.
+              className="md:absolute md:left-full md:ml-paintbox-100 paintbox-landscape:static paintbox-landscape:ml-0"
+            >
               <IconButton
                 icon={<IconMoon />}
                 label="Dark preview"
@@ -260,7 +302,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           ) : null}
         </div>
 
-        <div className="flex items-center justify-end gap-paintbox-100 md:flex-1">
+        <div className="flex items-center justify-end gap-paintbox-100 md:flex-1 paintbox-landscape:flex-1">
           <div className="flex gap-paintbox-050">
             <Tooltip label="Undo" shortcut={mac ? "⌘Z" : "Ctrl Z"}>
               <IconButton
@@ -289,13 +331,19 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
         </div>
       </header>
 
-      <main className="flex min-h-0 flex-1 flex-col gap-paintbox-150 md:gap-paintbox-200 lg:gap-paintbox-300">
+      {/* On their side: the landscape grid, the colours beside the 176px rail of controls, 16px apart. */}
+      <main
+        className={[
+          "flex min-h-0 flex-1 flex-col gap-paintbox-150 md:gap-paintbox-200 lg:gap-paintbox-300",
+          "paintbox-landscape:grid-paintbox paintbox-landscape:grid-rows-[minmax(0,1fr)]",
+        ].join(" ")}
+      >
         <div
           role="tabpanel"
           id={`${id}-palette-panel`}
           aria-labelledby={`${id}-palette-tab`}
           hidden={view !== "palette"}
-          className="flex min-h-0 flex-1 flex-col gap-paintbox-100 md:gap-paintbox-150 lg:grid lg:grid-cols-5"
+          className="flex min-h-0 flex-1 flex-col gap-paintbox-100 md:gap-paintbox-150 lg:grid lg:grid-cols-5 paintbox-landscape:gap-paintbox-100"
         >
           {palette.map((hex, i) => (
             <Swatch
@@ -317,7 +365,8 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           hidden={view !== "preview"}
           className="flex min-h-0 flex-1 flex-col gap-paintbox-150 md:gap-paintbox-200 lg:gap-paintbox-300"
         >
-          {/* The colours as a strip, one per breakpoint (only one shows), each with its role below. */}
+          {/* The colours as a strip, one per breakpoint (only one shows), each with its role below.
+              A phone on its side has none: the colours go in the rail instead. */}
           {(
             [
               // Desktop: Strip (small hex, round Lock), the role name under it.
@@ -332,7 +381,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
               },
               // Tablet: Strip Icon (just Lock), the role and its hex under it.
               {
-                show: "hidden md:grid md:gap-x-paintbox-150 lg:hidden",
+                show: "hidden md:grid md:gap-x-paintbox-150 lg:hidden paintbox-landscape:hidden",
                 layout: "strip-icon",
                 swatch: "h-paintbox-800",
                 hex: true,
@@ -342,7 +391,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
               },
               // Phone: Strip Compact (the whole swatch is Lock), the role name centred under it.
               {
-                show: "grid gap-x-paintbox-100 md:hidden",
+                show: "grid gap-x-paintbox-100 md:hidden paintbox-landscape:hidden",
                 layout: "strip-compact",
                 swatch: "h-[3.5rem]",
                 hex: false,
@@ -399,14 +448,21 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
         </div>
 
         {/* Phone: the Palette type button and Generate. Tablet: types across the top, then the
-            description and Generate. Desktop: one row on the five columns. */}
-        <div className="grid grid-cols-[1fr_auto] items-center gap-paintbox-100 py-paintbox-100 lg:grid-cols-5 lg:gap-paintbox-150 lg:py-0">
+            description and Generate. Desktop: one row on the five columns. A phone on its side:
+            the rail, a column 12px apart: the Palette type button, Generate, then the description. */}
+        <div
+          className={[
+            "grid grid-cols-[1fr_auto] items-center gap-paintbox-100 py-paintbox-100 lg:grid-cols-5 lg:gap-paintbox-150 lg:py-0",
+            "paintbox-landscape:flex paintbox-landscape:flex-col paintbox-landscape:items-stretch",
+            "paintbox-landscape:gap-paintbox-150 paintbox-landscape:py-0",
+          ].join(" ")}
+        >
           <div
             role="radiogroup"
             aria-label="Palette type"
             aria-describedby={`${id}-type-description`}
             onKeyDown={onTypeKeyDown}
-            className="col-span-2 flex gap-paintbox-050 max-md:hidden"
+            className="col-span-2 flex gap-paintbox-050 max-md:hidden paintbox-landscape:hidden"
           >
             {paletteTypes.map((option, i) => (
               <PaletteTypeButton
@@ -432,12 +488,19 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
             selected={type}
             onSelect={setType}
             waiting={waiting}
-            className="md:hidden"
+            className="md:hidden paintbox-landscape:flex"
           />
           {/* The caption. Waiting (a type picked, not generated yet): a green "Press Generate to use
               it" above the description. It's the radio group's description, so it's read with it. */}
           {/* Hovering another type previews it: its name (bold, muted) above its description. */}
-          <p id={`${id}-type-description`} className="flex flex-col max-md:hidden lg:col-span-2">
+          <p
+            id={`${id}-type-description`}
+            className={[
+              "flex flex-col max-md:hidden lg:col-span-2 paintbox-landscape:order-last",
+              // On a phone on its side, Preview shows the colours in its place.
+              view === "preview" ? "paintbox-landscape:hidden" : "paintbox-landscape:flex",
+            ].join(" ")}
+          >
             {preview ? (
               <span className="text-preset-8-bold text-text-muted lg:text-preset-7-bold">{preview.name}</span>
             ) : waiting ? (
@@ -451,6 +514,25 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
             onClick={generate}
             className="justify-center max-lg:px-paintbox-250 max-lg:[&>kbd]:hidden lg:w-full"
           />
+          {/* Preview on a phone on its side: the colours under Generate, 4px down, sharing the
+              rest of the rail (29.4px each at 667 × 375), 4px apart: the role on the left, its
+              64px Strip Compact Small swatch on the right. */}
+          {view === "preview" ? (
+            <ul className="hidden min-h-0 flex-1 flex-col gap-paintbox-050 pt-paintbox-050 paintbox-landscape:flex">
+              {palette.map((colour, i) => (
+                <li key={i} className="flex min-h-0 flex-1 justify-between gap-paintbox-050">
+                  <RoleLabel name={roleNames[i]} variant="stacked" className="self-center" />
+                  <Swatch
+                    hex={colour}
+                    layout="strip-compact-small"
+                    locked={locked[i]}
+                    onLockedChange={(value) => setLocked((current) => current.map((v, j) => (j === i ? value : v)))}
+                    className="w-paintbox-800 shrink-0"
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
       </main>
     </div>
