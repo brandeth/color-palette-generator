@@ -1145,8 +1145,8 @@ export function ComponentsSection() {
 
         <p className="text-preset-8 text-text-muted">
           Showing one: <Code>useToast().show(message)</Code> from anywhere in the app. On desktop it&apos;s a Hug pill at the
-          top centre, 112px down (over the generator&apos;s colours); on tablets and phones, Full width at the bottom, inside the
-          page margins. It fades in moving 8px into place, stays 3s (5s for a failure, and while hovered), then fades out. A
+          top centre, 112px down (over the generator&apos;s colours); on tablets, Full width at the top, 20px down (over the
+          header); on phones, Full width at the bottom. Full width stays inside the page margins. It fades in moving 8px into place, stays 3s (5s for a failure, and while hovered), then fades out. A
           new one replaces the one showing.
         </p>
         <ToastDemo />

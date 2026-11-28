@@ -53,12 +53,12 @@ function subscribeDesktop(onChange: () => void) {
  * Holds the one toast on screen and the place it shows. Wraps the app in
  * the root layout; components call useToast().show(message).
  *
- * Placement, fixed over the page. Desktop (64rem and up): a Hug pill,
- * top centre, 112px from the top of the window: 16px into the generator's
- * colours, over the swatches, as in the design's Copied state. Tablet and
- * phone: bottom centre, Full width inside the page margins (12px on
- * phones, 32 on tablets), 16px above the bottom (24 on tablets), with the
- * home-indicator area on phones added.
+ * Placement, fixed over the page, as in the designs' Copied states.
+ * Desktop (64rem and up): a Hug pill, top centre, 112px from the top of
+ * the window (16px into the generator's colours, over the swatches).
+ * Tablet (48rem up): Full width inside the 32px page margins, 20px from
+ * the top, over the header. Phone: Full width inside the 12px margins,
+ * 16px above the bottom, with the home-indicator area added.
  *
  * Timing: it fades in while moving 8px into place (200ms): down from
  * above at the top, up from below at the bottom. It stays 3s (5s for a
@@ -131,9 +131,10 @@ export function Toaster({ children }: { children: ReactNode }) {
           // Over the page, clicks pass through except on the toast itself.
           "pointer-events-none fixed inset-x-0 z-50 flex justify-center",
           "bottom-[calc(var(--spacing-paintbox-200)+env(safe-area-inset-bottom))] px-(--grid-paintbox-margin)",
-          "md:bottom-[calc(var(--spacing-paintbox-300)+env(safe-area-inset-bottom))]",
+          // Tablet: at the top, 20px down, over the header.
+          "md:top-paintbox-250 md:bottom-auto",
           // Desktop: top centre, 112px down (32 page padding + 40 header + 24 gap + 16).
-          "lg:top-[7rem] lg:bottom-auto",
+          "lg:top-[7rem]",
         ].join(" ")}
       >
         {current ? (
@@ -150,11 +151,11 @@ export function Toaster({ children }: { children: ReactNode }) {
               "pointer-events-auto transition-[opacity,translate] duration-200 ease-out",
               // Enter: from transparent and 8px lower (just the fade with reduced motion).
               "starting:opacity-0 motion-safe:starting:translate-y-paintbox-100",
-              // At the top (desktop) it comes down from above instead.
-              "lg:motion-safe:starting:-translate-y-paintbox-100",
+              // At the top (tablet and desktop) it comes down from above instead.
+              "md:motion-safe:starting:-translate-y-paintbox-100",
               // Leave: back to transparent and lower, a little quicker.
               current.leaving
-                ? "opacity-0 duration-150 ease-in motion-safe:translate-y-paintbox-100 lg:motion-safe:-translate-y-paintbox-100"
+                ? "opacity-0 duration-150 ease-in motion-safe:translate-y-paintbox-100 md:motion-safe:-translate-y-paintbox-100"
                 : "",
             ]
               .filter(Boolean)
