@@ -199,7 +199,8 @@ export function Swatch({
       ) : layout === "strip-icon" ? (
         <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />
       ) : layout === "strip-compact" ? (
-        <LockButton swatch={swatch} variant="icon-small" locked={locked} onClick={toggleLock} />
+        // As wide as the swatch, which can be a little under 64 (63.8 in the phone strip).
+        <LockButton swatch={swatch} variant="icon-small" locked={locked} onClick={toggleLock} className="w-full!" />
       ) : (
         <>
           {layout === "strip" ? (
