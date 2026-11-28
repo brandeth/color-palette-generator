@@ -24,7 +24,7 @@ type PaletteTypeMenuProps = Omit<ComponentProps<"div">, "role" | "children" | "o
   onSelect?: (value: string) => void;
   /**
    * "one-column" (default): 358px wide, roomy 92px rows.
-   * "landscape": for a phone on its side: 459px wide, short 52px rows.
+   * "landscape": for a phone on its side: 459px wide, short 52.2px rows.
    */
   variant?: "one-column" | "landscape";
 };
@@ -33,7 +33,7 @@ type PaletteTypeMenuProps = Omit<ComponentProps<"div">, "role" | "children" | "o
 // padding, so the menu can set the height with the content centred.
 const variantClasses = {
   "one-column": "w-[22.375rem] [&>[role=radio]]:min-h-[5.75rem]", // 358px, rows ≥ 92px
-  landscape: "w-[28.6875rem] [&>[role=radio]]:min-h-[3.25rem] [&>[role=radio]]:py-0", // 459px, rows 52px
+  landscape: "w-[28.6875rem] [&>[role=radio]]:min-h-[3.2625rem] [&>[role=radio]]:py-0", // 459px, rows 52.2px
 };
 
 /*
@@ -48,9 +48,9 @@ const variantClasses = {
  * With five types it's 494px tall (1 + 8 + 5 × 92 + 4 × 4 + 8 + 1).
  *
  * Landscape variant: same box, padding, gap and keyboard, but 459px
- * wide with 52px rows (441px wide): the text is centred with no extra
+ * wide with 52.2px rows (441px wide): the text is centred with no extra
  * padding, and every description fits on one line. With five types it's
- * 294px tall (1 + 8 + 5 × 52 + 4 × 4 + 8 + 1).
+ * 295px tall (1 + 8 + 5 × 52.2 + 4 × 4 + 8 + 1).
  *
  * Only one type can be chosen, so it's a role="radiogroup" of radios,
  * like a native radio group: Tab lands on the selected type, and the

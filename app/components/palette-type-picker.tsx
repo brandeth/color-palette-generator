@@ -18,10 +18,11 @@ const isLandscape = () => window.matchMedia(LANDSCAPE).matches;
 
 // Where the menu opens. Upright: above the button, the screen's width less 8px each side (the
 // button sits 12px in, so 4px further left). On its side, there's no room above: the landscape
-// menu (459px) opens to the button's left, 8px away and level with its top, over the colours.
+// menu (459 × 295) opens over the colours, 12px left of the button and 4px above its top: at
+// 8, 72 on a 667 × 375 phone, 8px from the screen's left edge and bottom, as in the design.
 const menuPlace = {
   upright: "bottom-full -left-paintbox-050 mb-paintbox-100 w-[calc(100vw-1rem)]!",
-  landscape: "top-0 right-full mr-paintbox-100",
+  landscape: "-top-paintbox-050 right-full mr-paintbox-150",
 };
 
 type PaletteTypePickerProps = {
@@ -40,8 +41,8 @@ type PaletteTypePickerProps = {
  * wide as the screen less 8px each side (359px on a 375 phone, as in the
  * design), with focus on the chosen type. On a phone on its side the
  * button fills the 176px rail (12px in on the left, 8 on the right, 4
- * between) and the landscape menu (459 × 294) opens to its left, level
- * with its top. Arrow keys (and Home / End)
+ * between) and the landscape menu (459 × 295) opens over the colours,
+ * 12px to its left and 4px above its top. Arrow keys (and Home / End)
  * change the type as they move; clicking a type, or Enter / Space on it,
  * chooses it and closes the menu. Escape or a click outside closes it
  * too. Closing puts focus back on the button.
