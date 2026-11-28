@@ -111,6 +111,16 @@
   text-transform: lowercase;
 }
 
+/* Preset 3 (Tablet) — Funnel Display SemiBold, 26px, 120%, 0, lowercase: the wordmark on tablets */
+@utility text-preset-3-tablet {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.625rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: lowercase;
+}
+
 /* Preset 4 — Funnel Display SemiBold, 28px, 100%, 2%, uppercase */
 @utility text-preset-4 {
   font-family: var(--font-display);

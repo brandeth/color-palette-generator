@@ -81,6 +81,7 @@ export const typePresets: TypePreset[] = [
   { className: "text-preset-2-tablet", label: "Text Preset 2 (Tablet)", spec: "Funnel Sans Bold · 27px · 115% · −2% · sample page" },
   { className: "text-preset-2-mobile", label: "Text Preset 2 (Mobile)", spec: "Funnel Sans Bold · 24px · 115% · −2% · sample page" },
   { className: "text-preset-3", label: "Text Preset 3", spec: "Funnel Display SemiBold · 24–28px fluid · 120% · 0 · lowercase" },
+  { className: "text-preset-3-tablet", label: "Text Preset 3 (Tablet)", spec: "Funnel Display SemiBold · 26px · 120% · 0 · lowercase · the wordmark" },
   { className: "text-preset-4", label: "Text Preset 4", spec: "Funnel Display SemiBold · 28px · 100% · 2% · uppercase" },
   { className: "text-preset-5", label: "Text Preset 5", spec: "Funnel Display Bold · 22px · 100% · 2% · uppercase" },
   { className: "text-preset-6", label: "Text Preset 6", spec: "Funnel Sans Regular · 19px · 150% · 0" },

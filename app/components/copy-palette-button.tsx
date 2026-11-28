@@ -24,9 +24,10 @@ const copiedToast = {
  * Choosing a format copies, closes the menu, puts focus back on the
  * button and shows a toast ("Copied as CSS variables", or "Couldn't copy
  * the palette. Try again."). Escape or a click outside closes it too.
- * The button shows its pressed look while the menu is open.
+ * The button shows its pressed look while the menu is open. `className`
+ * goes on the button, e.g. to show it as an icon button on tablets.
  */
-export function CopyPaletteButton({ palette }: { palette: Palette }) {
+export function CopyPaletteButton({ palette, className }: { palette: Palette; className?: string }) {
   const [open, setOpen] = useState(false);
   const [format, setFormat] = useState<CopyFormatValue>("css");
   const { copy } = useCopy();
@@ -81,6 +82,7 @@ export function CopyPaletteButton({ palette }: { palette: Palette }) {
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         onClick={() => setOpen((isOpen) => !isOpen)}
+        className={className}
       >
         Copy palette
       </Button>
