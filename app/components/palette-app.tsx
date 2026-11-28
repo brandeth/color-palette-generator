@@ -119,8 +119,11 @@ const INTERACTIVE =
  * pressed, the sample page shows its dark version (the darkest role as
  * the page, the lightest as its text; cards, pictures and footer as they
  * are). Tablet: Strip Icon swatches (131 × 64) with the role and its
- * hex centred below, 28px (as in the design). Phone, until its design
- * comes: Strip Compact with the role name.
+ * hex centred below, 28px (as in the design). Phone (the design's
+ * Mobile Preview): Strip Compact swatches (63.8 × 56, 8px apart, the
+ * whole swatch is Lock) with the role centred below in the text colour,
+ * 81px in all; the moon joins the top row, 8px before Undo, and the tabs
+ * keep the full width below.
  *
  * Generate (or Space, when focus isn't on a control) makes a new palette
  * of the chosen type, keeping locked colours; with all five locked it
@@ -219,9 +222,11 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           <PaintboxLogo palette={palette} />
         </div>
 
-        {/* The tabs, and in Preview the moon 8px after them; it hangs outside so the tabs stay centred. */}
-        <div className="relative flex items-center gap-paintbox-100 max-md:order-last max-md:w-full">
-          <div role="tablist" aria-label="View" className="flex gap-paintbox-050 max-md:grow">
+        {/* The tabs, and in Preview the moon 8px after them; it hangs outside so the tabs stay centred.
+            Phones: the wrapper steps aside (contents), so the moon joins the top row, 8px before
+            Undo, and the tabs take the row below. */}
+        <div className="relative flex items-center gap-paintbox-100 max-md:contents">
+          <div role="tablist" aria-label="View" className="flex gap-paintbox-050 max-md:order-last max-md:w-full">
             {views.map(({ value, label, Icon }) => (
               <Tab
                 key={value}
@@ -321,6 +326,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                 layout: "strip",
                 swatch: "h-paintbox-800",
                 hex: false,
+                variant: "inline",
                 // 8px above and at the sides, as the design's 4 + 4 above.
                 role: "px-paintbox-100 pt-paintbox-100",
               },
@@ -330,19 +336,22 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                 layout: "strip-icon",
                 swatch: "h-paintbox-800",
                 hex: true,
+                variant: "inline",
                 // Centred under the swatch, 8px down; 3px below for the hex's 24px button: 28px in all.
                 role: "w-full justify-center pt-paintbox-100 pb-[0.1875rem]",
               },
-              // Phone: Strip Compact (the whole swatch is Lock), the role name under it.
+              // Phone: Strip Compact (the whole swatch is Lock), the role name centred under it.
               {
                 show: "grid gap-x-paintbox-100 md:hidden",
                 layout: "strip-compact",
                 swatch: "h-[3.5rem]",
                 hex: false,
-                role: "px-paintbox-100 pt-paintbox-100",
+                variant: "centered",
+                // 4px more above the label's own 4: 8 + the 17px line, 25px as in the design.
+                role: "mt-paintbox-050",
               },
             ] as const
-          ).map(({ show, layout, swatch, hex, role }) => (
+          ).map(({ show, layout, swatch, hex, variant, role }) => (
             <ul key={layout} className={["grid-cols-5", show].join(" ")}>
               {palette.map((colour, i) => (
                 <li key={i} className="flex min-w-0 flex-col">
@@ -353,7 +362,12 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                     onLockedChange={(value) => setLocked((current) => current.map((v, j) => (j === i ? value : v)))}
                     className={swatch}
                   />
-                  <RoleLabel name={roleNames[i]} hex={hex ? colour : undefined} className={role} />
+                  <RoleLabel
+                    name={roleNames[i]}
+                    hex={hex ? colour : undefined}
+                    variant={variant}
+                    className={role}
+                  />
                 </li>
               ))}
             </ul>
