@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- paintbox: the five default palette colours side by side, in role order (Page, Cards,
+       Buttons, Footer, Text), in a rounded square with the swatch edge so it reads on any tab. -->
+  <defs>
+    <clipPath id="box">
+      <rect width="32" height="32" rx="8" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#box)">
+    <rect x="0" width="6.4" height="32" fill="#EEE8DF" />
+    <rect x="6.4" width="6.4" height="32" fill="#D8A38C" />
+    <rect x="12.8" width="6.4" height="32" fill="#B6363F" />
+    <rect x="19.2" width="6.4" height="32" fill="#87294D" />
+    <rect x="25.6" width="6.4" height="32" fill="#551B45" />
+  </g>
+  <rect x="0.75" y="0.75" width="30.5" height="30.5" rx="7.25" fill="none" stroke="#1B1F24" stroke-opacity="0.14" stroke-width="1.5" />
+</svg>
