@@ -18,8 +18,9 @@ type PaletteTypePickerProps = {
  * The palette type on phones: the Palette type button (the current type's
  * diagram and name) opening the menu of all five, with their descriptions.
  *
- * The menu opens above the button (its chevron points up), from its left
- * edge, 8px up, with focus on the chosen type. Arrow keys (and Home / End)
+ * The menu opens above the button (its chevron points up), 8px up, as
+ * wide as the screen less 8px each side (359px on a 375 phone, as in the
+ * design), with focus on the chosen type. Arrow keys (and Home / End)
  * change the type as they move; clicking a type, or Enter / Space on it,
  * chooses it and closes the menu. Escape or a click outside closes it
  * too. Closing puts focus back on the button.
@@ -81,7 +82,8 @@ export function PaletteTypePicker({ selected, onSelect, waiting = false, classNa
               button.current?.focus();
             }
           }}
-          className="absolute bottom-full left-0 z-20 mb-paintbox-100 max-w-[calc(100vw-1.5rem)]"
+          // The screen's width less 8px each side; the button sits 12px in, so 4px further left.
+          className="absolute bottom-full -left-paintbox-050 z-20 mb-paintbox-100 w-[calc(100vw-1rem)]!"
         />
       ) : null}
     </div>
