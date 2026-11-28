@@ -8,25 +8,32 @@ import { IconCopyAll } from "./icons";
 import { toastMessages } from "./toast-messages";
 import { useCopy } from "./use-copy";
 
-// The menu's size by screen: phones (below 48rem), tablets (to 64rem), desktop. It only shows
-// after a click, so the server's value never shows.
+// The menu's size by screen: a phone on its side (as the paintbox-landscape variant), phones
+// (below 48rem), tablets (to 64rem), desktop. It only shows after a click, so the server's
+// value never shows.
+const LANDSCAPE = "(orientation: landscape) and (height <= 30rem) and (width < 64rem)";
 const PHONE = "(width < 48rem)";
 const TABLET = "(48rem <= width < 64rem)";
 function subscribeScreen(onChange: () => void) {
-  const queries = [window.matchMedia(PHONE), window.matchMedia(TABLET)];
+  const queries = [LANDSCAPE, PHONE, TABLET].map((query) => window.matchMedia(query));
   queries.forEach((query) => query.addEventListener("change", onChange));
   return () => queries.forEach((query) => query.removeEventListener("change", onChange));
 }
 function currentScreen() {
+  if (window.matchMedia(LANDSCAPE).matches) return "landscape";
   return window.matchMedia(PHONE).matches ? "phone" : window.matchMedia(TABLET).matches ? "tablet" : "desktop";
 }
 
-// The menu for each screen, and where it sits. Phones and tablets: the screen's width less 8px
-// (phone) or 28px (tablet) each side, its right edge 4px past the button's.
+// The menu for each screen, and where it sits. Phones and tablets: 8px below the button, the
+// screen's width less 8px (phone) or 28px (tablet) each side, its right edge 4px past the
+// button's. A phone on its side: 12px below, over the colours, where the palette type menu
+// opens: its right edge 12px short of the 176px rail (so 188px left of the button's), at 8, 72
+// on a 667 × 375 phone.
 const menuFor = {
-  phone: { variant: "phone", place: "-right-paintbox-050 w-[calc(100vw-1rem)]" },
-  tablet: { variant: "wide", place: "-right-paintbox-050 w-[calc(100vw-3.5rem)]" },
-  desktop: { variant: "default", place: "right-0" },
+  landscape: { variant: "landscape", place: "right-[11.75rem] mt-paintbox-150" },
+  phone: { variant: "phone", place: "-right-paintbox-050 mt-paintbox-100 w-[calc(100vw-1rem)]" },
+  tablet: { variant: "wide", place: "-right-paintbox-050 mt-paintbox-100 w-[calc(100vw-3.5rem)]" },
+  desktop: { variant: "default", place: "right-0 mt-paintbox-100" },
 } as const;
 
 // The toast for each format when the copy works.
@@ -44,7 +51,8 @@ const copiedToast = {
  * 8px below, with focus on the first format. On tablets it's the wide
  * menu, 712px: the page's width less 28px each side, 4px past the page
  * margins; on phones the phone menu, 359px: 8px from each edge of the
- * screen (as in the designs). No format shows a tick: the menu closes as
+ * screen; on a phone on its side the landscape menu, 459px, 12px below,
+ * over the colours (as in the designs). No format shows a tick: the menu closes as
  * soon as you choose one, and the toast says what was copied.
  * Choosing a format copies, closes the menu, puts focus back on the
  * button and shows a toast ("Copied as CSS variables", or "Couldn't copy
@@ -117,10 +125,7 @@ export function CopyPaletteButton({ palette, className }: { palette: Palette; cl
           formats={formats}
           variant={menu.variant}
           onSelect={choose}
-          className={[
-            "absolute top-full z-20 mt-paintbox-100",
-            menu.place,
-          ].join(" ")}
+          className={["absolute top-full z-20", menu.place].join(" ")}
         />
       ) : null}
     </div>

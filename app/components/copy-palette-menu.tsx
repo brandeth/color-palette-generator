@@ -28,7 +28,7 @@ type CopyPaletteMenuProps = Omit<ComponentProps<"div">, "children" | "onSelect">
    * "default": the dropdown under the button.
    * "sheet": the version that slides up on small screens: roomier, with
    * 72px options (bigger touch targets) and 16px corners.
-   * "landscape": the sheet for a phone on its side: same layout, 459px wide.
+   * "landscape": the phone menu for a phone on its side, 459px wide.
    * "wide": the dropdown on tablets: as wide as you make it (712px in the
    * design), 69px options with no gaps between them.
    * "phone": the dropdown on phones: as wide as you make it (359px in the
@@ -37,12 +37,13 @@ type CopyPaletteMenuProps = Omit<ComponentProps<"div">, "children" | "onSelect">
   variant?: "default" | "sheet" | "landscape" | "wide" | "phone";
 };
 
-// Sheet and landscape share everything but the width.
-const roomy = {
-  box: "rounded-paintbox-16 pb-paintbox-200",
-  heading: "pt-paintbox-150",
-  list: "mt-paintbox-100 gap-paintbox-100",
-  option: "[&>[role=menuitemradio]]:min-h-[4.5rem]",
+// Phone and landscape share everything but the width: radius 16, heading 12 12 4, options
+// 80px, touching, 12 below.
+const phoneLayout = {
+  box: "rounded-paintbox-16 pb-paintbox-150",
+  heading: "pt-paintbox-150 pb-paintbox-050",
+  list: "",
+  option: "[&>[role=menuitemradio]]:min-h-[5rem]",
 };
 
 const variantClasses = {
@@ -53,8 +54,14 @@ const variantClasses = {
     list: "mt-paintbox-100 gap-paintbox-100",
     option: "",
   },
-  sheet: { width: "w-[17rem]", ...roomy }, // 272px
-  landscape: { width: "w-[28.6875rem]", ...roomy }, // 459px
+  sheet: {
+    width: "w-[17rem]", // 272px
+    box: "rounded-paintbox-16 pb-paintbox-200",
+    heading: "pt-paintbox-150",
+    list: "mt-paintbox-100 gap-paintbox-100",
+    option: "[&>[role=menuitemradio]]:min-h-[4.5rem]",
+  },
+  landscape: { width: "w-[28.6875rem]", ...phoneLayout }, // 459px
   // The width comes from the caller. Heading 8 12 4; options padding 12 (69px), touching.
   wide: {
     width: "",
@@ -63,14 +70,8 @@ const variantClasses = {
     list: "",
     option: "[&>[role=menuitemradio]]:py-paintbox-150",
   },
-  // The width comes from the caller. Radius 16, heading 12 12 4, options 80px, touching, 12 below.
-  phone: {
-    width: "",
-    box: "rounded-paintbox-16 pb-paintbox-150",
-    heading: "pt-paintbox-150 pb-paintbox-050",
-    list: "",
-    option: "[&>[role=menuitemradio]]:min-h-[5rem]",
-  },
+  // The width comes from the caller.
+  phone: { width: "", ...phoneLayout },
 };
 
 /*
@@ -91,9 +92,9 @@ const variantClasses = {
  * at least 72px tall with its text centred: 295px tall with three
  * formats (1 + 8 + 12 + 16.9 + 8 + 3 × 72 + 2 × 8 + 16 + 1).
  *
- * Landscape variant: the sheet at 459px wide (options 441px), for a phone
- * on its side. Same heights, so 459×295; the samples have room to show
- * in full (all five hex codes).
+ * Landscape variant: the phone menu at 459px wide (options 441px), for a
+ * phone on its side: 459×295, and the samples have room to show in full
+ * (all five hex codes).
  *
  * Wide variant (tablets): the default box at whatever width you give it
  * (712px in the design), with 8px at the bottom, the heading padded
