@@ -41,6 +41,66 @@
   letter-spacing: -0.02em;
 }
 
+/*
+ * Sample page sizes: Presets 1 and 2 at fixed sizes, for the sample page's
+ * desktop, tablet and phone layouts, which follow the page's own width
+ * rather than the window's (so they hold in a preview frame too).
+ */
+
+/* Preset 1 (Desktop) — Funnel Sans Bold, 42px, 105%, -2% (Preset 1 at 1440) */
+@utility text-preset-1-desktop {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 2.625rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 1 (Tablet) — Funnel Sans Bold, 32px, 105%, -2% */
+@utility text-preset-1-tablet {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 1 (Mobile) — Funnel Sans Bold, 28px, 105%, -2% */
+@utility text-preset-1-mobile {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 2 (Desktop) — Funnel Sans Bold, 32px, 115%, -2% (Preset 2 at 1440) */
+@utility text-preset-2-desktop {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 2 (Tablet) — Funnel Sans Bold, 27px, 115%, -2% */
+@utility text-preset-2-tablet {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.6875rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Preset 2 (Mobile) — Funnel Sans Bold, 24px, 115%, -2% */
+@utility text-preset-2-mobile {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
 /* Preset 3 — Funnel Display SemiBold, 24–28px fluid, 120%, 0, lowercase */
 @utility text-preset-3 {
   font-family: var(--font-display);

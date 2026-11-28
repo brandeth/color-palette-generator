@@ -2,7 +2,7 @@
 
 import { useState, type ComponentProps } from "react";
 import { PaletteTypeMenu } from "../../components/palette-type-menu";
-import { paletteTypes } from "./palette-types";
+import { paletteTypes } from "../../components/palette-types";
 
 /*
  * Working palette type menu for the design system page: click a type, or
