@@ -53,14 +53,17 @@ function subscribeDesktop(onChange: () => void) {
  * Holds the one toast on screen and the place it shows. Wraps the app in
  * the root layout; components call useToast().show(message).
  *
- * Placement: bottom centre, fixed over the page. Desktop (64rem and up):
- * a Hug pill, 24px above the bottom of the window. Tablet and phone: Full
- * width inside the page margins (12px on phones, 32 on tablets), 16px
- * above the bottom (24 on tablets). The home-indicator area on phones is
- * added on top.
+ * Placement, fixed over the page. Desktop (64rem and up): a Hug pill,
+ * top centre, 112px from the top of the window: 16px into the generator's
+ * colours, over the swatches, as in the design's Copied state. Tablet and
+ * phone: bottom centre, Full width inside the page margins (12px on
+ * phones, 32 on tablets), 16px above the bottom (24 on tablets), with the
+ * home-indicator area on phones added.
  *
- * Timing: it fades in while rising 8px (200ms), stays 3s (5s for a
- * failure), then fades out (150ms). With reduced motion it only fades.
+ * Timing: it fades in while moving 8px into place (200ms): down from
+ * above at the top, up from below at the bottom. It stays 3s (5s for a
+ * failure), then fades out the way it came (150ms). With reduced motion
+ * it only fades.
  * Hovering it pauses the timer, so it doesn't go while you're reading it.
  *
  * One at a time: a new toast takes the old one's place straight away and
@@ -129,6 +132,8 @@ export function Toaster({ children }: { children: ReactNode }) {
           "pointer-events-none fixed inset-x-0 z-50 flex justify-center",
           "bottom-[calc(var(--spacing-paintbox-200)+env(safe-area-inset-bottom))] px-(--grid-paintbox-margin)",
           "md:bottom-[calc(var(--spacing-paintbox-300)+env(safe-area-inset-bottom))]",
+          // Desktop: top centre, 112px down (32 page padding + 40 header + 24 gap + 16).
+          "lg:top-[7rem] lg:bottom-auto",
         ].join(" ")}
       >
         {current ? (
@@ -145,8 +150,12 @@ export function Toaster({ children }: { children: ReactNode }) {
               "pointer-events-auto transition-[opacity,translate] duration-200 ease-out",
               // Enter: from transparent and 8px lower (just the fade with reduced motion).
               "starting:opacity-0 motion-safe:starting:translate-y-paintbox-100",
+              // At the top (desktop) it comes down from above instead.
+              "lg:motion-safe:starting:-translate-y-paintbox-100",
               // Leave: back to transparent and lower, a little quicker.
-              current.leaving ? "opacity-0 duration-150 ease-in motion-safe:translate-y-paintbox-100" : "",
+              current.leaving
+                ? "opacity-0 duration-150 ease-in motion-safe:translate-y-paintbox-100 lg:motion-safe:-translate-y-paintbox-100"
+                : "",
             ]
               .filter(Boolean)
               .join(" ")}
