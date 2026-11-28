@@ -1,6 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useId, useReducer, useRef, useState, type KeyboardEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useReducer,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent,
+} from "react";
 import { generatePalette, roleNames, type Palette, type PaletteTypeValue } from "../lib/palette";
 import { CopyPaletteButton } from "./copy-palette-button";
 import { GenerateButton } from "./generate-button";
@@ -16,6 +25,7 @@ import { Swatch } from "./swatch";
 import { Tab } from "./tab";
 import { toastMessages } from "./toast-messages";
 import { useToast } from "./toaster";
+import { Tooltip } from "./tooltip";
 
 type View = "palette" | "preview";
 
@@ -44,6 +54,10 @@ function historyReducer(state: History, action: HistoryAction): History {
     }
   }
 }
+
+// Whether to show Mac shortcuts (⌘) in the tooltips; Ctrl elsewhere, and while rendering on the server.
+const noSubscription = () => () => {};
+const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform);
 
 // Space generates only when it isn't already pressing or typing into something.
 const INTERACTIVE =
@@ -99,7 +113,9 @@ const INTERACTIVE =
  * role (Page, Cards, Buttons, Footer, Text) under it, 89px in all; then
  * the sample page in the rest of the height (566px at 1440 × 900),
  * scrolling inside its box (no scrollbar), with the 2px swatch-edge drawn over it. The
- * moon (Dark preview) shows 8px right of the tabs, without moving them;
+ * moon (Dark preview) shows 8px right of the tabs, without moving them,
+ * with its name in a tooltip 8px to its right on hover (Undo and Redo
+ * get theirs below them, with their shortcuts);
  * pressed, the sample page shows its dark version (the darkest role as
  * the page, the lightest as its text; cards, pictures and footer as they
  * are). Tablet and phone, until their designs
@@ -121,6 +137,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   const [generatedType, setGeneratedType] = useState<PaletteTypeValue>("analogous");
   const [view, setView] = useState<View>("palette");
   const [darkPreview, setDarkPreview] = useState(false);
+  const mac = useSyncExternalStore(noSubscription, isMac, () => false);
   const toast = useToast();
   const id = useId();
   const tabs = useRef<Partial<Record<View, HTMLButtonElement | null>>>({});
@@ -226,32 +243,38 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
             ))}
           </div>
           {view === "preview" ? (
-            <IconButton
-              icon={<IconMoon />}
-              label="Dark preview"
-              pressed={darkPreview}
-              onClick={() => setDarkPreview((on) => !on)}
-              className="md:absolute md:left-full md:ml-paintbox-100"
-            />
+            // Its name in a tooltip 8px to its right on hover, as in the design.
+            <Tooltip label="Dark preview" side="right" className="md:absolute md:left-full md:ml-paintbox-100">
+              <IconButton
+                icon={<IconMoon />}
+                label="Dark preview"
+                pressed={darkPreview}
+                onClick={() => setDarkPreview((on) => !on)}
+              />
+            </Tooltip>
           ) : null}
         </div>
 
         <div className="flex items-center justify-end gap-paintbox-100 md:flex-1">
           <div className="flex gap-paintbox-050">
-            <IconButton
-              icon={<IconUndo />}
-              label="Undo"
-              aria-keyshortcuts="Control+Z Meta+Z"
-              disabled={history.past.length === 0}
-              onClick={() => dispatch({ type: "undo" })}
-            />
-            <IconButton
-              icon={<IconRedo />}
-              label="Redo"
-              aria-keyshortcuts="Control+Shift+Z Meta+Shift+Z Control+Y"
-              disabled={history.future.length === 0}
-              onClick={() => dispatch({ type: "redo" })}
-            />
+            <Tooltip label="Undo" shortcut={mac ? "⌘Z" : "Ctrl Z"}>
+              <IconButton
+                icon={<IconUndo />}
+                label="Undo"
+                aria-keyshortcuts="Control+Z Meta+Z"
+                disabled={history.past.length === 0}
+                onClick={() => dispatch({ type: "undo" })}
+              />
+            </Tooltip>
+            <Tooltip label="Redo" shortcut={mac ? "⇧⌘Z" : "Ctrl Shift Z"}>
+              <IconButton
+                icon={<IconRedo />}
+                label="Redo"
+                aria-keyshortcuts="Control+Shift+Z Meta+Shift+Z Control+Y"
+                disabled={history.future.length === 0}
+                onClick={() => dispatch({ type: "redo" })}
+              />
+            </Tooltip>
           </div>
           {/* Below 64rem: just the icon, 40px round; the label stays for screen readers. */}
           <CopyPaletteButton
