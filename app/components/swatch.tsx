@@ -14,8 +14,11 @@ type SwatchProps = Omit<ComponentProps<"div">, "children"> & {
    * code (no copy icon). "strip-icon": just the round Lock, centred.
    * "strip-compact": 64 × 56, the whole swatch is the Lock (phone
    * preview strip). "row-compact": row, shorter, with a 32px Lock.
+   * "row-labelled": the hex code with the labelled Lock right after it
+   * (tablet). "adaptive": Row Labelled below 64rem, Column from 64rem up,
+   * for the generator page.
    */
-  layout?: "column" | "row" | "row-compact" | "strip" | "strip-icon" | "strip-compact";
+  layout?: "column" | "row" | "row-compact" | "row-labelled" | "strip" | "strip-icon" | "strip-compact" | "adaptive";
   /**
    * The ink for everything on the swatch: "dark" (#1B1F24) or "light"
    * (white). Leave it out to pick whichever has more contrast with `hex`.
@@ -54,6 +57,14 @@ const layoutClasses = {
   row: "flex-row items-center justify-between py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
   // The same, padding 4 12 4 4.
   "row-compact": "flex-row items-center justify-between py-paintbox-050 pr-paintbox-150 pl-paintbox-050",
+  // Hex then the labelled Lock, on the left, centred; padding 12 12 12 4, gap 8.
+  "row-labelled": "flex-row items-center py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
+  // Row Labelled, then Column from 64rem. Lock comes first in the code (as
+  // in Column), so the row runs reversed, from the left.
+  adaptive: [
+    "flex-row-reverse items-center justify-end py-paintbox-150 pr-paintbox-150 pl-paintbox-050",
+    "lg:flex-col lg:items-start lg:justify-end lg:pt-paintbox-200 lg:pr-paintbox-200 lg:pb-paintbox-200 lg:pl-paintbox-100",
+  ].join(" "),
   // The same, padding 8 all round.
   strip: "flex-row items-center justify-between p-paintbox-100",
   // Just Lock, centred; padding 12.
@@ -102,6 +113,16 @@ export function inkFor(hex: string): Ink {
  * top, bottom and left and 12 on the right, Copy Hex (large) at 32px
  * tall, and Lock as the 32px circle (icon-tight), 12px from the right.
  *
+ * Row Labelled layout (the design's 704 × 148, tablet): Copy Hex (large)
+ * then Lock (labelled, 122px) 8px after it, both on the left and centred
+ * top to bottom; padding 12 at the top, right and bottom and 4 on the
+ * left, so the code starts 16px in.
+ *
+ * Adaptive layout (the generator page): Row Labelled below 64rem and
+ * Column from 64rem up, switched in CSS so nothing jumps on load. Lock
+ * comes first in the code, as in Column, so on tablets the keyboard
+ * reaches Lock before the hex code, though it shows after it.
+ *
  * Strip layout (the design's 259 × 64): the same arrangement with
  * padding 8 all round, and Copy Hex small without its copy icon (113px
  * for #EEE8DF), so the code starts 16px in (8 + 4 + 4) and the circle
@@ -149,13 +170,18 @@ export function Swatch({
       style={{ backgroundColor: hex, ...style }}
       {...props}
     >
-      {layout === "column" ? (
+      {layout === "column" || layout === "adaptive" ? (
         <>
-          {/* 8px more on the left, so Lock starts 16px in. */}
-          <div className="pl-paintbox-100">
+          {/* 8px more on the left in Column, so Lock starts 16px in. */}
+          <div className={layout === "column" ? "pl-paintbox-100" : "lg:pl-paintbox-100"}>
             <LockButton swatch={swatch} locked={locked} onClick={toggleLock} />
           </div>
           <CopyHex hex={hex} swatch={swatch} />
+        </>
+      ) : layout === "row-labelled" ? (
+        <>
+          <CopyHex hex={hex} swatch={swatch} />
+          <LockButton swatch={swatch} locked={locked} onClick={toggleLock} />
         </>
       ) : layout === "strip-icon" ? (
         <LockButton swatch={swatch} variant="icon" locked={locked} onClick={toggleLock} />

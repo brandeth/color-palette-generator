@@ -47,23 +47,33 @@ function historyReducer(state: History, action: HistoryAction): History {
 const INTERACTIVE = "button, a, input, textarea, select, [contenteditable], [role='menu'], [role='radio'], [role='tab']";
 
 /*
- * The palette generator (the home page), desktop layout: 1440 × 900 in
- * the design, filling the window.
+ * The palette generator (the home page), filling the window. Desktop
+ * (64rem up) is the design's 1440 × 900; tablet (below 64rem) its
+ * 768 × 1024. The layouts switch in CSS, so nothing jumps on load.
  *
  * Page: background colour, padding 32 48, three rows 24px apart.
+ * Tablet: padding 20 32 12, rows 16px apart.
  *
  * Header (40px): the logo with the palette's dots on the left, the
  * Palette / Preview tabs in the middle (4px apart), and Undo, Redo (4px
  * apart) and Copy palette on the right, 8px apart. The left and right
  * parts share the leftover width, so the tabs stay centred.
  *
+ * Tablet header: the same, with the 26px wordmark and Copy palette as a
+ * 40px icon button (same name and menu).
+ *
  * Colours (the rest of the height): five Swatch columns, 12px apart, each
- * with its Lock and Copy hex. Preview shows the sample page here instead,
- * filled with the palette (Page, Cards, Buttons, Footer, Text).
+ * with its Lock and Copy hex. Tablet: five rows sharing the height, 12px
+ * apart, each with the hex code and then Lock on the left. Preview shows
+ * the sample page here instead, filled with the palette (Page, Cards,
+ * Buttons, Footer, Text).
  *
  * Controls (69px): on the same five columns as the colours: the palette
  * types across the first two, the chosen type's description across the
  * next two, and Generate (with the Space shortcut) under the last.
+ * Tablet (padding 8 0, rows 8px apart): the types as five equal cells
+ * across the width (24px icons, 61px tall); below them the description
+ * (14px) and Generate (medium: padding 20, no Space badge).
  *
  * Generate (or Space, when focus isn't on a control) makes a new palette
  * of the chosen type, keeping locked colours; with all five locked it
@@ -137,7 +147,12 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   const description = paletteTypes.find((t) => t.value === type)?.description;
 
   return (
-    <div className="flex h-dvh min-h-[40rem] flex-col gap-paintbox-300 bg-background px-paintbox-600 py-paintbox-400">
+    <div
+      className={[
+        "flex h-dvh min-h-[40rem] flex-col gap-paintbox-200 bg-background px-paintbox-400 pt-paintbox-250 pb-paintbox-150",
+        "lg:gap-paintbox-300 lg:px-paintbox-600 lg:py-paintbox-400",
+      ].join(" ")}
+    >
       <header className="flex items-center gap-paintbox-300">
         <div className="flex flex-1 items-center">
           <PaintboxLogo palette={palette} />
@@ -182,23 +197,29 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
               onClick={() => dispatch({ type: "redo" })}
             />
           </div>
-          <CopyPaletteButton palette={palette} />
+          {/* Below 64rem: just the icon, 40px round; the label stays for screen readers. */}
+          <CopyPaletteButton
+            palette={palette}
+            className="max-lg:size-paintbox-500 max-lg:justify-center max-lg:px-0 max-lg:[&>span]:sr-only"
+          />
         </div>
       </header>
 
-      <main className="flex min-h-0 flex-1 flex-col gap-paintbox-300">
+      <main className="flex min-h-0 flex-1 flex-col gap-paintbox-200 lg:gap-paintbox-300">
         <div
           role="tabpanel"
           id={`${id}-palette-panel`}
           aria-labelledby={`${id}-palette-tab`}
           hidden={view !== "palette"}
-          className="grid min-h-0 flex-1 grid-cols-5 gap-paintbox-150"
+          className="flex min-h-0 flex-1 flex-col gap-paintbox-150 lg:grid lg:grid-cols-5"
         >
           {palette.map((hex, i) => (
             <Swatch
               // By position: the slot stays as its colour changes.
               key={i}
               hex={hex}
+              layout="adaptive"
+              className="min-h-0 flex-1"
               locked={locked[i]}
               onLockedChange={(value) => setLocked((current) => current.map((v, j) => (j === i ? value : v)))}
             />
@@ -219,7 +240,8 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           />
         </div>
 
-        <div className="grid grid-cols-5 items-center gap-paintbox-150">
+        {/* Tablet: types across the top, then the description and Generate. Desktop: one row on the five columns. */}
+        <div className="grid grid-cols-[1fr_auto] items-center gap-paintbox-100 py-paintbox-100 lg:grid-cols-5 lg:gap-paintbox-150 lg:py-0">
           <div
             role="radiogroup"
             aria-label="Palette type"
@@ -237,15 +259,22 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                 selected={option.value === type}
                 tabIndex={option.value === type ? 0 : -1}
                 onClick={() => setType(option.value)}
+                // Tablet: the Cell look, five equal cells with 24px icons.
+                className="max-lg:grow max-lg:basis-0 max-lg:[&>svg]:size-paintbox-300"
               >
                 {option.name}
               </PaletteTypeButton>
             ))}
           </div>
-          <p id={`${id}-type-description`} className="col-span-2 text-preset-7 text-text-muted">
+          <p id={`${id}-type-description`} className="text-preset-8 text-text-muted lg:col-span-2 lg:text-preset-7">
             {description}
           </p>
-          <GenerateButton shortcut="Space" onClick={generate} className="w-full justify-center" />
+          {/* Tablet: Medium, padding 20, without the Space badge (the key still works). */}
+          <GenerateButton
+            shortcut="Space"
+            onClick={generate}
+            className="justify-center max-lg:px-paintbox-250 max-lg:[&>kbd]:hidden lg:w-full"
+          />
         </div>
       </main>
     </div>
