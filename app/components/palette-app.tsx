@@ -1,14 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useId, useReducer, useRef, useState, type KeyboardEvent } from "react";
-import { generatePalette, type Palette, type PaletteTypeValue } from "../lib/palette";
+import { generatePalette, roleNames, type Palette, type PaletteTypeValue } from "../lib/palette";
 import { CopyPaletteButton } from "./copy-palette-button";
 import { GenerateButton } from "./generate-button";
 import { IconButton } from "./icon-button";
-import { IconPalette, IconPreview, IconRedo, IconUndo } from "./icons";
+import { IconMoon, IconPalette, IconPreview, IconRedo, IconUndo } from "./icons";
 import { PaintboxLogo } from "./paintbox-logo";
 import { PaletteTypeButton } from "./palette-type-button";
 import { PaletteTypePicker } from "./palette-type-picker";
+import { RoleLabel } from "./role-label";
 import { paletteTypes } from "./palette-types";
 import { SamplePage } from "./sample-page/sample-page";
 import { Swatch } from "./swatch";
@@ -45,7 +46,8 @@ function historyReducer(state: History, action: HistoryAction): History {
 }
 
 // Space generates only when it isn't already pressing or typing into something.
-const INTERACTIVE = "button, a, input, textarea, select, [contenteditable], [role='menu'], [role='radio'], [role='tab']";
+const INTERACTIVE =
+  "button, a, input, textarea, select, [contenteditable], [role='menu'], [role='radio'], [role='tab']";
 
 /*
  * The palette generator (the home page), filling the window. Desktop
@@ -86,6 +88,18 @@ const INTERACTIVE = "button, a, input, textarea, select, [contenteditable], [rol
  * opens the menu of types, filling the width beside Generate (medium).
  * After you pick a type and before you generate, it says "Tap Generate".
  *
+ * Preview (desktop, the design's Preview): the colours as a strip, five
+ * Strip swatches 64px tall (small hex code, round Lock), each with its
+ * role (Page, Cards, Buttons, Footer, Text) under it, 89px in all; then
+ * the sample page in the rest of the height (566px at 1440 × 900),
+ * scrolling inside its box (no scrollbar), with the 2px swatch-edge drawn over it. The
+ * moon (Dark preview) shows 8px right of the tabs, without moving them;
+ * pressed, the sample page shows its dark version (the darkest role as
+ * the page, the lightest as its text; cards, pictures and footer as they
+ * are). Tablet and phone, until their designs
+ * come: Strip Icon swatches with the role and hex below (tablet), and
+ * Strip Compact with the role name (phone).
+ *
  * Generate (or Space, when focus isn't on a control) makes a new palette
  * of the chosen type, keeping locked colours; with all five locked it
  * says so in a toast instead. Undo and Redo step through the palettes
@@ -100,6 +114,7 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   // The type the current palette was made with: until you generate, a new pick is waiting.
   const [generatedType, setGeneratedType] = useState<PaletteTypeValue>("analogous");
   const [view, setView] = useState<View>("palette");
+  const [darkPreview, setDarkPreview] = useState(false);
   const toast = useToast();
   const id = useId();
   const tabs = useRef<Partial<Record<View, HTMLButtonElement | null>>>({});
@@ -138,9 +153,12 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   // Tabs: Left / Right (and Home / End) move between them and show their panel.
   function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
     const index = views.findIndex((v) => v.value === view);
-    const next = { ArrowRight: (index + 1) % views.length, ArrowLeft: (index + views.length - 1) % views.length, Home: 0, End: views.length - 1 }[
-      event.key
-    ];
+    const next = {
+      ArrowRight: (index + 1) % views.length,
+      ArrowLeft: (index + views.length - 1) % views.length,
+      Home: 0,
+      End: views.length - 1,
+    }[event.key];
     if (next === undefined) return;
     event.preventDefault();
     setView(views[next].value);
@@ -173,26 +191,38 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           <PaintboxLogo palette={palette} />
         </div>
 
-        <div role="tablist" aria-label="View" className="flex gap-paintbox-050 max-md:order-last max-md:w-full">
-          {views.map(({ value, label, Icon }) => (
-            <Tab
-              key={value}
-              ref={(element) => {
-                tabs.current[value] = element;
-              }}
-              id={`${id}-${value}-tab`}
-              aria-controls={`${id}-${value}-panel`}
-              tabIndex={view === value ? 0 : -1}
-              icon={<Icon />}
-              selected={view === value}
-              onClick={() => setView(value)}
-              onKeyDown={onTabKeyDown}
-              // 111px each, as in the design, with the content centred; phones share the width.
-              className="justify-center max-md:grow max-md:basis-0 md:w-[6.9375rem]"
-            >
-              {label}
-            </Tab>
-          ))}
+        {/* The tabs, and in Preview the moon 8px after them; it hangs outside so the tabs stay centred. */}
+        <div className="relative flex items-center gap-paintbox-100 max-md:order-last max-md:w-full">
+          <div role="tablist" aria-label="View" className="flex gap-paintbox-050 max-md:grow">
+            {views.map(({ value, label, Icon }) => (
+              <Tab
+                key={value}
+                ref={(element) => {
+                  tabs.current[value] = element;
+                }}
+                id={`${id}-${value}-tab`}
+                aria-controls={`${id}-${value}-panel`}
+                tabIndex={view === value ? 0 : -1}
+                icon={<Icon />}
+                selected={view === value}
+                onClick={() => setView(value)}
+                onKeyDown={onTabKeyDown}
+                // 111px each, as in the design, with the content centred; phones share the width.
+                className="justify-center max-md:grow max-md:basis-0 md:w-[6.9375rem]"
+              >
+                {label}
+              </Tab>
+            ))}
+          </div>
+          {view === "preview" ? (
+            <IconButton
+              icon={<IconMoon />}
+              label="Dark preview"
+              pressed={darkPreview}
+              onClick={() => setDarkPreview((on) => !on)}
+              className="md:absolute md:left-full md:ml-paintbox-100"
+            />
+          ) : null}
         </div>
 
         <div className="flex items-center justify-end gap-paintbox-100 md:flex-1">
@@ -246,13 +276,68 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           id={`${id}-preview-panel`}
           aria-labelledby={`${id}-preview-tab`}
           hidden={view !== "preview"}
-          tabIndex={0}
-          className="min-h-0 flex-1 overflow-y-auto rounded-paintbox-12 inset-ring-2 inset-ring-swatch-edge focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          className="flex min-h-0 flex-1 flex-col gap-paintbox-150 md:gap-paintbox-200 lg:gap-paintbox-300"
         >
-          <SamplePage
-            embedded
-            roles={{ lightest: palette[0], light: palette[1], mid: palette[2], dark: palette[3], darkest: palette[4] }}
-          />
+          {/* The colours as a strip, one per breakpoint (only one shows), each with its role below. */}
+          {(
+            [
+              // Desktop: Strip (small hex, round Lock), the role name under it.
+              { show: "hidden lg:grid lg:gap-x-paintbox-150", layout: "strip", swatch: "h-paintbox-800", hex: false },
+              // Tablet: Strip Icon (just Lock), the role and its hex under it.
+              {
+                show: "hidden md:grid md:gap-x-paintbox-150 lg:hidden",
+                layout: "strip-icon",
+                swatch: "h-paintbox-800",
+                hex: true,
+              },
+              // Phone: Strip Compact (the whole swatch is Lock), the role name under it.
+              { show: "grid gap-x-paintbox-100 md:hidden", layout: "strip-compact", swatch: "h-[3.5rem]", hex: false },
+            ] as const
+          ).map(({ show, layout, swatch, hex }) => (
+            <ul key={layout} className={["grid-cols-5", show].join(" ")}>
+              {palette.map((colour, i) => (
+                <li key={i} className="flex min-w-0 flex-col">
+                  <Swatch
+                    hex={colour}
+                    layout={layout}
+                    locked={locked[i]}
+                    onLockedChange={(value) => setLocked((current) => current.map((v, j) => (j === i ? value : v)))}
+                    className={swatch}
+                  />
+                  {/* 8px above and at the sides, as the design's 4 + 4 above. */}
+                  <RoleLabel
+                    name={roleNames[i]}
+                    hex={hex ? colour : undefined}
+                    className="px-paintbox-100 pt-paintbox-100"
+                  />
+                </li>
+              ))}
+            </ul>
+          ))}
+
+          {/* The sample page scrolls in its box; the edge is drawn over it, so the page can't cover it.
+              No scrollbar, as in the design: the page keeps the box's full width and scrolls with
+              the wheel, trackpad or touch, or the keyboard once the box has focus. */}
+          <div className="relative min-h-0 flex-1">
+            <div
+              tabIndex={0}
+              aria-label="Sample page"
+              className={[
+                "h-full overflow-y-auto rounded-paintbox-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                "focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus",
+              ].join(" ")}
+            >
+              <SamplePage
+                embedded
+                dark={darkPreview}
+                roles={{ lightest: palette[0], light: palette[1], mid: palette[2], dark: palette[3], darkest: palette[4] }}
+              />
+            </div>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 rounded-paintbox-12 border-2 border-swatch-edge"
+            />
+          </div>
         </div>
 
         {/* Phone: the Palette type button and Generate. Tablet: types across the top, then the
