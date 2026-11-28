@@ -86,7 +86,9 @@ const INTERACTIVE =
  * (14px) and Generate (medium: padding 20, no Space badge).
  * Phone (64px, padding 8 0, 8px apart): the Palette type button, which
  * opens the menu of types, filling the width beside Generate (medium).
- * After you pick a type and before you generate, it says "Tap Generate".
+ * After you pick a type and before you generate, it says "Tap Generate";
+ * on tablets and desktop the caption shows "Press Generate to use it"
+ * (Text Preset 8 Bold, pending green) above the description.
  *
  * Preview (desktop, the design's Preview): the colours as a strip, five
  * Strip swatches 64px tall (small hex code, round Lock), each with its
@@ -177,6 +179,8 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   }
 
   const description = paletteTypes.find((t) => t.value === type)?.description;
+  // A type was picked but the palette was made with another: Generate will use it.
+  const waiting = type !== generatedType;
 
   return (
     <div
@@ -370,14 +374,14 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           <PaletteTypePicker
             selected={type}
             onSelect={setType}
-            waiting={type !== generatedType}
+            waiting={waiting}
             className="md:hidden"
           />
-          <p
-            id={`${id}-type-description`}
-            className="text-preset-8 text-text-muted max-md:hidden lg:col-span-2 lg:text-preset-7"
-          >
-            {description}
+          {/* The caption. Waiting (a type picked, not generated yet): a green "Press Generate to use
+              it" above the description. It's the radio group's description, so it's read with it. */}
+          <p id={`${id}-type-description`} className="flex flex-col max-md:hidden lg:col-span-2">
+            {waiting ? <span className="text-preset-8-bold text-pending">Press Generate to use it</span> : null}
+            <span className="text-preset-8 text-text-muted lg:text-preset-7">{description}</span>
           </p>
           {/* Tablet: Medium, padding 20, without the Space badge (the key still works). */}
           <GenerateButton
