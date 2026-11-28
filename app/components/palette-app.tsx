@@ -86,9 +86,13 @@ const INTERACTIVE =
  * (14px) and Generate (medium: padding 20, no Space badge).
  * Phone (64px, padding 8 0, 8px apart): the Palette type button, which
  * opens the menu of types, filling the width beside Generate (medium).
- * After you pick a type and before you generate, it says "Tap Generate";
- * on tablets and desktop the caption shows "Press Generate to use it"
- * (Text Preset 8 Bold, pending green) above the description.
+ * After you pick a type and before you generate, it says "Tap Generate".
+ *
+ * Caption (tablet and desktop): the chosen type's description. While
+ * waiting, "Press Generate to use it" (Text Preset 8 Bold, pending green)
+ * above it. Hovering another type with a mouse previews that one
+ * instead: its name (Text Preset 7 Bold on desktop, muted) above its
+ * description.
  *
  * Preview (desktop, the design's Preview): the colours as a strip, five
  * Strip swatches 64px tall (small hex code, round Lock), each with its
@@ -179,6 +183,9 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
   }
 
   const description = paletteTypes.find((t) => t.value === type)?.description;
+  // The type under the mouse, previewed in the caption (not the chosen one: that's already there).
+  const [hoveredType, setHoveredType] = useState<PaletteTypeValue | null>(null);
+  const preview = hoveredType && hoveredType !== type ? paletteTypes.find((t) => t.value === hoveredType) : undefined;
   // A type was picked but the palette was made with another: Generate will use it.
   const waiting = type !== generatedType;
 
@@ -364,6 +371,9 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
                 selected={option.value === type}
                 tabIndex={option.value === type ? 0 : -1}
                 onClick={() => setType(option.value)}
+                // Mouse only, so a tap on a touch screen doesn't leave a preview behind.
+                onPointerEnter={(event) => event.pointerType === "mouse" && setHoveredType(option.value)}
+                onPointerLeave={() => setHoveredType(null)}
                 // Tablet: the Cell look, five equal cells with 24px icons.
                 className="max-lg:grow max-lg:basis-0 max-lg:[&>svg]:size-paintbox-300"
               >
@@ -379,9 +389,14 @@ export function PaletteApp({ initialPalette }: { initialPalette: Palette }) {
           />
           {/* The caption. Waiting (a type picked, not generated yet): a green "Press Generate to use
               it" above the description. It's the radio group's description, so it's read with it. */}
+          {/* Hovering another type previews it: its name (bold, muted) above its description. */}
           <p id={`${id}-type-description`} className="flex flex-col max-md:hidden lg:col-span-2">
-            {waiting ? <span className="text-preset-8-bold text-pending">Press Generate to use it</span> : null}
-            <span className="text-preset-8 text-text-muted lg:text-preset-7">{description}</span>
+            {preview ? (
+              <span className="text-preset-8-bold text-text-muted lg:text-preset-7-bold">{preview.name}</span>
+            ) : waiting ? (
+              <span className="text-preset-8-bold text-pending">Press Generate to use it</span>
+            ) : null}
+            <span className="text-preset-8 text-text-muted lg:text-preset-7">{preview ? preview.description : description}</span>
           </p>
           {/* Tablet: Medium, padding 20, without the Space badge (the key still works). */}
           <GenerateButton
